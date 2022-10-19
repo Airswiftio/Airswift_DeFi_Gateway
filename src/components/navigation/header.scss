@@ -1,0 +1,40 @@
+.navWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 1em 2em;
+  background: rgba(4, 11, 36, 0.5);
+  backdrop-filter: blur(5px);
+  min-width: fit-content;
+
+  .logo {
+
+  }
+
+  .navLinks {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2em;
+    min-width: fit-content;
+    cursor: pointer;
+
+    span {
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  .navProfile {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 100%;
+    background: white;
+  } 
+}

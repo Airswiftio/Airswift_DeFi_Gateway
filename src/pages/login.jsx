@@ -10,11 +10,11 @@ const Login = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleSuccess = () => {
-    // setAuth({ ... })
-    // navigate(from, { replace: true })
+    setAuth({ roles: [3000] });
+    navigate(from, { replace: true });
   };
 
   return (
@@ -29,7 +29,9 @@ const Login = () => {
         </div>
 
         <div className="buttons">
-          <button className="connectButton">Connect Metamask Wallet</button>
+          <button onClick={handleSuccess} className="connectButton">
+            Connect Metamask Wallet
+          </button>
           <button className="installMetamask">Install Metamask Wallet</button>
         </div>
       </div>
