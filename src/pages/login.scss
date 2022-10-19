@@ -1,0 +1,69 @@
+.loginWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-width: 100%;
+  backdrop-filter: blur(25px);
+
+  .loginForm{
+    background: radial-gradient(50% 8.83% at 50% 100%, rgba(0, 255, 255, 0.2) 0%, rgba(96, 85, 255, 0) 76.21%), radial-gradient(65.23% 34.55% at 50% 0%, rgba(0, 255, 255, 0.5) 0%, rgba(96, 85, 255, 0) 76.21%), rgba(24, 30, 54, 0.85);
+    box-shadow: inset -1px -1px 0px rgba(24, 30, 54, 0.25), inset 1px 1px 0px rgba(180, 255, 255, 0.2);
+    border-radius: 16px;
+    height: 400px;
+    width: 400px;
+    border: 8px solid;
+    border-image-source: linear-gradient(104.51deg, rgba(208, 205, 255, 0.09) 0%, rgba(208, 205, 255, 0.06) 51.89%, rgba(208, 205, 255, 0.09) 99.63%);
+    padding: 3em 2em;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .formHeader {
+      font-variation-settings: "wght" 500;
+    }
+
+    .formTitle {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+
+      .logoTitle {
+        background: radial-gradient(62.85% 478.88% at 96.81% 11.36%, #6055FF 18.75%, rgba(96, 85, 255, 0) 100%), radial-gradient(9.97% 331.71% at 9.69% -75.61%, #CDF3FF 18.27%, rgba(205, 243, 255, 0) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */, radial-gradient(40.31% 477.28% at 9.69% -75.61%, #CDF3FF 18.27%, rgba(205, 243, 255, 0) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */, radial-gradient(91.68% 253.66% at 83.72% -153.66%, #5FE99F 23.42%, rgba(95, 233, 159, 0) 100%), radial-gradient(78.52% 242.54% at 36.43% -46.34%, #5FE99F 23.42%, rgba(95, 233, 159, 0) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-variation-settings: "wght" 500;
+        font-size: 1.5em;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+
+      .connectButton {
+        font-family: 'ClashDisplay';
+        background: linear-gradient(98.48deg, #8DFE59 -3.85%, #3ACBF6 35.75%, #6055FF 69.61%);
+        box-shadow: inset 0px 2px 0px rgba(255, 255, 255, 0.2), inset 0px -2px 0px rgba(59, 53, 146, 0.5);
+        border-radius: 80px;
+        border: none;
+        padding: 1em 2em;
+        font-size: 1.1em;
+        color: white;
+      }
+  
+      .installMetamask {
+        color: #3ACBF6;
+        text-decoration: underline;
+        background: transparent;
+        border: none;
+        font-family: 'ClashDisplay';
+
+      }
+    }
+  }
+}

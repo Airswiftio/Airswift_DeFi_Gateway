@@ -1,6 +1,10 @@
 .App {
   text-align: center;
   background-color: #040B24;
+  background-image: url("./assets/glows.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   min-height: 100vh;
   color: white;
 }
