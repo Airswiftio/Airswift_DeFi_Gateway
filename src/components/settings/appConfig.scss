@@ -1,0 +1,18 @@
+.appConfigWrapper {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  flex-direction: column;
+  gap: 2em;
+  font-size: 14px;
+  font-family: "Poppins";
+  align-items: center;
+  text-align: left;
+
+  .item {
+    background: #2D344E;
+    opacity: 0.8;
+    border-radius: 8px;
+    padding: 1em;
+    color: rgba(255, 255, 255, 0.2);
+  }
+}

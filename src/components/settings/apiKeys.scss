@@ -1,0 +1,35 @@
+.apiKeysWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  font-size: 14px;
+  font-family: "Poppins";
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    gap: 3em;
+    align-items: center;
+    justify-content: flex-start;
+    color: rgba(255, 255, 255, 0.8);
+
+    span {
+      width: 300px;
+      text-align: left;
+    }
+
+    img {
+      width: 18px;
+    }
+
+    .time {
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      width: fit-content;
+    }
+
+    .time, .img {
+      width: 100px;
+    }
+  }
+}

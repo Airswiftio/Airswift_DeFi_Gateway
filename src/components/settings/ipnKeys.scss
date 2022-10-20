@@ -1,0 +1,44 @@
+.ipnKeysWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  font-size: 14px;
+  font-family: "Poppins";
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1em;
+
+    span {
+      text-align: left;
+      display: flex;
+      min-width: 200px;
+    }
+
+    .message {
+      color: rgba(95, 255, 169, 1);
+      display: flex;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .time {
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .message, .time, .button { 
+      width: 300px;
+    }
+  }
+}

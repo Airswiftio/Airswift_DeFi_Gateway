@@ -3,7 +3,7 @@ import "./defaultButton.scss";
 
 const DefaultButton = ({ title, type, align }) => {
   const createClass = () => {
-    const aligns = ["alignStart", "", "alignEnd"];
+    const aligns = ["alignStart", "alignCenter", "alignEnd"];
     let c = `buttonWrapper ${type ? "" : "fixedWidth"} ${aligns[align]}`;
 
     return c;
