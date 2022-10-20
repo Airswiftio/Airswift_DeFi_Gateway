@@ -1,0 +1,23 @@
+.buttonWrapper {
+  font-family: 'ClashDisplay';
+  background: linear-gradient(98.48deg, #8DFE59 -3.85%, #3ACBF6 35.75%, #6055FF 69.61%);
+  box-shadow: inset 0px 2px 0px rgba(255, 255, 255, 0.2), inset 0px -2px 0px rgba(59, 53, 146, 0.5);
+  border-radius: 80px;
+  border: none;
+  padding: 1em 2em;
+  font-size: 16px;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.alignStart {
+  align-self: flex-start;
+}
+
+.alignEnd {
+  align-self: flex-end;
+}
+
+.fixedWidth {
+  max-width: 200px;
+}
