@@ -16,6 +16,9 @@ import AppConfig from "./settings/appConfig";
 import IpnKeys from "./settings/ipnKeys";
 import MyStore from "./settings/mystore";
 
+// Dropdown
+import Dropdown from "./dropdown/dropdown";
+
 export {
   Navbar,
   InfoCard,
@@ -25,4 +28,5 @@ export {
   AppConfig,
   IpnKeys,
   MyStore,
+  Dropdown,
 };

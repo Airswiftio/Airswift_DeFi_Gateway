@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Dropdown } from "../";
+
 import "./mystore.scss";
 
 const mystore = () => {
@@ -17,14 +19,14 @@ const mystore = () => {
         </div>
 
         <div className="row">
-          <span className="label">SStore ID</span>
+          <span className="label">Store ID</span>
           <span>AWI1098</span>
         </div>
       </div>
 
       <div className="bottomSection">
-        <span className="title">Base Currency</span>
-        {/* Add in currency dropdown */}
+        <span className="bottomSectionTitle">Base Currency</span>
+        <Dropdown options={["USD", "CAD"]} />
       </div>
     </div>
   );

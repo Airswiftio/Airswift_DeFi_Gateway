@@ -1,0 +1,43 @@
+.dropdownWrapper {
+  display: flex;
+  justify-content: center;
+
+  button {
+    background: rgba(4, 11, 36, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 35px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: "Poppins";
+    padding: 0.75em 2em;
+    width: 120px;
+  }
+  
+  .options {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    display: none;
+    list-style: none;
+    padding: 4px 0;
+    margin-top: 0.5em;
+  }
+  
+  .show {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .options li {
+    padding: 6px 10px;
+  }
+  
+  .options li:active,
+  .options li:focus,
+  .options li:hover {
+    color: #8DFE59;
+    cursor: pointer;
+  }
+}
+
+
+
