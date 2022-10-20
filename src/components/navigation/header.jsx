@@ -10,10 +10,7 @@ const Header = () => {
     <div className="navWrapper">
       <img className="logo" src={Logo} alt="Airswift" />
       <div className="navLinks">
-        <Link
-          to="/dashboard"
-          className={url.includes("dashboard") ? "underline" : ""}
-        >
+        <Link to="/" className={url.includes("dashboard") ? "underline" : ""}>
           DASHBOARD
         </Link>
         <Link

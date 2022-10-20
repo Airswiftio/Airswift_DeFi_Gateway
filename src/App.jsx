@@ -3,7 +3,7 @@ import Login from "./pages/login";
 import Assets from "./pages/myassets";
 import Settings from "./pages/settings";
 import Layout from "./components/Layout";
-import Unauthorized from "./components/unauthorized";
+import Unauthorized from "./components/Unauthorized";
 import RequireAuth from "./components/RequireAuth";
 import { Routes, Route } from "react-router-dom";
 
@@ -26,7 +26,7 @@ function App() {
 
         {/* Protected Routes Codes: */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="assets" element={<Assets />} />
           <Route path="settings" element={<Settings />} />
         </Route>
