@@ -21,11 +21,17 @@
     min-width: fit-content;
     cursor: pointer;
 
-    span {
+    a {
       transition: all 0.3s ease-in-out;
+      color: white;
+      text-decoration: none;
       &:hover {
         opacity: 0.7;
       }
+    }
+
+    .underline {
+      border-bottom: 2px solid #3ACBF6;
     }
   }
 
