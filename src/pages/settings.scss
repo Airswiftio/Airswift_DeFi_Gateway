@@ -7,7 +7,6 @@
   .sideColumn {
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(25px);
     border-radius: 16px;
     padding: 2em;
 
@@ -31,9 +30,9 @@
     width: 100%;
     flex-direction: column;
     background: rgba(24, 30, 54, 0.9);
-    box-shadow: inset -1px -1px 0px rgba(24, 30, 54, 0.25), inset 1px 1px 0px rgba(180, 255, 255, 0.2);
     backdrop-filter: blur(25px);
     border-radius: 16px;
+    border: 6px solid #D0CDFF17;
     padding: 2em;
 
     .title {
