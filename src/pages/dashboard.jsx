@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import InfoCard from "../components/cards/InfoCard";
-import { Navbar } from "../components/";
+import { Navbar, InfoCard, DefaultButton } from "../components/";
 
 import "./dashboard.scss";
 
@@ -15,13 +14,30 @@ const Dashboard = () => {
           <InfoCard title="Total Balance" value={4556} type={0} />
         </div>
         <div className="balanceOverview">
-          <span>Balance Overview</span>
+          <span className="title">Balance Overview</span>
           <div className="buttonSelectors">
-            <button onClick={() => setTimeframe(0)}>24H</button>
-            <button onClick={() => setTimeframe(1)}>7D</button>
-            <button onClick={() => setTimeframe(2)}>1M</button>
+            <button
+              onClick={() => setTimeframe(0)}
+              className={timeframe === 0 ? "selected" : ""}
+            >
+              24H
+            </button>
+            <button
+              onClick={() => setTimeframe(1)}
+              className={timeframe === 1 ? "selected" : ""}
+            >
+              7D
+            </button>
+            <button
+              onClick={() => setTimeframe(2)}
+              className={timeframe === 2 ? "selected" : ""}
+            >
+              1M
+            </button>
           </div>
           <div className="chart"></div>
+
+          <DefaultButton title="View More" type={0} align={2} />
         </div>
       </div>
     </div>
