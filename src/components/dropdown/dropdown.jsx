@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import "./dropdown.scss";
 
-const Dropdown = ({ options, images = null }) => {
+const Dropdown = ({ options, images = null, defaultTitle = null }) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(0);
+  const [initial, setInitial] = useState(true);
 
   const toggleOptions = () => {
     setIsOptionsOpen(!isOptionsOpen);
@@ -20,7 +21,36 @@ const Dropdown = ({ options, images = null }) => {
           className={isOptionsOpen ? "expanded" : ""}
           onClick={toggleOptions}
         >
-          {options[selectedOption]}
+          {initial && defaultTitle ? defaultTitle : options[selectedOption]}
+          {isOptionsOpen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.5 15.75l7.5-7.5 7.5 7.5"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          )}
         </button>
         <ul
           className={`options ${isOptionsOpen ? "show" : ""}`}
@@ -38,6 +68,7 @@ const Dropdown = ({ options, images = null }) => {
               onClick={() => {
                 setSelectedOption(index);
                 setIsOptionsOpen(false);
+                setInitial(false);
               }}
             >
               {option}

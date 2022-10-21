@@ -11,7 +11,7 @@
     justify-content: center;
   }
 
-  .incomeHistory {
+  .history {
     display: flex;
     flex-direction: column;
     background: rgba(24, 30, 54, 0.9);
@@ -21,6 +21,7 @@
     width: 60%;
     padding: 2em;
     margin: 2em;
+    min-height: 300px;
 
     .title {
       align-self: flex-start;

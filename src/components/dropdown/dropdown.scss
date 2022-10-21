@@ -1,6 +1,9 @@
 .dropdownWrapper {
   display: flex;
   justify-content: center;
+  max-height: 40px;
+  height: 40px;
+  font-size: 14px;
 
   button {
     background: rgba(4, 11, 36, 0.3);
@@ -9,8 +12,19 @@
     width: 100%;
     color: rgba(255, 255, 255, 0.7);
     font-family: "Poppins";
-    padding: 0.75em 2em;
+    padding: 0.75em;
     width: 120px;
+   
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+
+    svg {
+      width: 18px;
+    }
   }
   
   .options {

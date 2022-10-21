@@ -1,0 +1,20 @@
+.datepickerWrapper {
+  background: rgba(4, 11, 36, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 35px;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Poppins";
+  padding: 0 1em;
+  max-height: 40px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  font-size: 14px;
+  svg {
+    width: 18px;
+  }
+}

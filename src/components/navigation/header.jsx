@@ -26,7 +26,9 @@ const Header = () => {
           SETTINGS
         </Link>
       </div>
-      <div className="navProfile"></div>
+      <div className="profileContainer">
+        <div className="navProfile" />
+      </div>
     </div>
   );
 };
