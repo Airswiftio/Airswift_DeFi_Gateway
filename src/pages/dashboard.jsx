@@ -14,30 +14,30 @@ import "./dashboard.scss";
 
 const Dashboard = () => {
   const data = [
-    { time: "1am", balance: 350 },
-    { time: "1am", balance: 270 },
-    { time: "3am", balance: 390 },
-    { time: "3am", balance: 490 },
-    { time: "5am", balance: 420 },
-    { time: "5am", balance: 520 },
-    { time: "7am", balance: 810 },
-    { time: "7am", balance: 730 },
-    { time: "9am", balance: 600 },
-    { time: "9am", balance: 414 },
-    { time: "11am", balance: 240 },
-    { time: "11am", balance: 260 },
-    { time: "1pm", balance: 240 },
-    { time: "1pm", balance: 380 },
-    { time: "3pm", balance: 500 },
-    { time: "3pm", balance: 470 },
-    { time: "5pm", balance: 410 },
-    { time: "5pm", balance: 250 },
-    { time: "7pm", balance: 190 },
-    { time: "7pm", balance: 210 },
-    { time: "9pm", balance: 195 },
-    { time: "9pm", balance: 165 },
-    { time: "11pm", balance: 220 },
-    { time: "11pm", balance: 280 },
+    { time: "1am", balance: 350, lineBal: 470 },
+    { time: "1am", balance: 270, lineBal: 370 },
+    { time: "3am", balance: 390, lineBal: 490 },
+    { time: "3am", balance: 490, lineBal: 590 },
+    { time: "5am", balance: 420, lineBal: 520 },
+    { time: "5am", balance: 520, lineBal: 620 },
+    { time: "7am", balance: 810, lineBal: 910 },
+    { time: "7am", balance: 730, lineBal: 830 },
+    { time: "9am", balance: 600, lineBal: 700 },
+    { time: "9am", balance: 414, lineBal: 514 },
+    { time: "11am", balance: 240, lineBal: 340 },
+    { time: "11am", balance: 260, lineBal: 360 },
+    { time: "1pm", balance: 240, lineBal: 340 },
+    { time: "1pm", balance: 380, lineBal: 480 },
+    { time: "3pm", balance: 500, lineBal: 600 },
+    { time: "3pm", balance: 470, lineBal: 570 },
+    { time: "5pm", balance: 410, lineBal: 510 },
+    { time: "5pm", balance: 250, lineBal: 350 },
+    { time: "7pm", balance: 190, lineBal: 290 },
+    { time: "7pm", balance: 210, lineBal: 310 },
+    { time: "9pm", balance: 195, lineBal: 295 },
+    { time: "9pm", balance: 165, lineBal: 265 },
+    { time: "11pm", balance: 220, lineBal: 320 },
+    { time: "11pm", balance: 280, lineBal: 380 },
   ];
   const [timeframe, setTimeframe] = useState(0);
   return (
@@ -85,7 +85,7 @@ const Dashboard = () => {
                   <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#CDF3FF" stopOpacity={0.8} />
                     <stop offset="53%" stopColor="#3ACBF6" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#6055FF" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="#6055FF" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
@@ -97,7 +97,7 @@ const Dashboard = () => {
                 <YAxis dataKey="balance" />
                 <Area
                   type="monotone"
-                  dataKey="balance"
+                  dataKey="lineBal"
                   stroke="#8884d8"
                   fillOpacity={0.7}
                   fill="url(#areaGradient)"

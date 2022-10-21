@@ -12,9 +12,10 @@ const HistoryElement = ({
   time,
   viewMore,
   vc = null,
+  click,
 }) => {
   return (
-    <div className="historyElementWrapper">
+    <div className="historyElementWrapper" onClick={click}>
       <span>{transId}</span>
       <span>{status}</span>
       <span>{currency}</span>

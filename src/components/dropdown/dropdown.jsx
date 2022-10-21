@@ -64,6 +64,7 @@ const Dropdown = ({ options, images = null, defaultTitle = null }) => {
               role="option"
               aria-selected={selectedOption === index}
               tabIndex={0}
+              key={index}
               // Upon clicking, set as selected option then close the dropdown
               onClick={() => {
                 setSelectedOption(index);
