@@ -12,6 +12,8 @@ import Toggle from "./myassets/toggle";
 import Income from "./myassets/income";
 import Withdraw from "./myassets/withdraw";
 import Selectors from "./myassets/selectors";
+import HistoryTable from "./myassets/historyTable";
+import HistoryElement from "./myassets/historyElement";
 
 // Settings
 import ApiKeys from "./settings/apiKeys";
@@ -43,4 +45,6 @@ export {
   Selectors,
   Search,
   Datepicker,
+  HistoryTable,
+  HistoryElement,
 };

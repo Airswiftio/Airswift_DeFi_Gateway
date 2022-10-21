@@ -19,8 +19,16 @@ const Assets = () => {
       <div className="assetsContent">
         <Toggle toggle={setState} state={state} />
         <div className="cardRow">
-          <InfoCard title="Total Income" value={2019.8} type={1} />
-          <InfoCard title="Todays's Income" value={19.8} type={2} />
+          <InfoCard
+            title={state ? "Total Withdraw" : "Total Income"}
+            value={2019.8}
+            type={1}
+          />
+          <InfoCard
+            title={state ? "Available Balance" : "Todays's Income"}
+            value={19.8}
+            type={2}
+          />
         </div>
         <div className="history">
           <span className="title">

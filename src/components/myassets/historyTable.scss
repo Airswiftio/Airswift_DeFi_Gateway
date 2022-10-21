@@ -1,0 +1,27 @@
+.historyTableWrapper {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  margin-bottom: 2em;
+  
+  .columnLabels {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(4, 11, 36, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.75em;
+    font-size: 14px;
+    font-family: "Poppins";
+
+    span {
+      width: 100px;
+    }
+  }
+
+  .historyTableContent {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
