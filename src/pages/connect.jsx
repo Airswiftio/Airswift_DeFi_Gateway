@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { ProgressCircle } from "../components";
+import { ProgressCircle, NameDid } from "../components";
 
 import "./connect.scss";
 
 const Connect = () => {
+  const [conn, setConn] = useState(true);
   return (
     <div className="connectWrapper">
-      <ProgressCircle />
+      {conn ? <NameDid /> : <ProgressCircle />}
     </div>
   );
 };

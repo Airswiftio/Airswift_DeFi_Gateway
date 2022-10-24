@@ -34,6 +34,9 @@ import Datepicker from "./datepicker/datepicker";
 // Progress
 import ProgressCircle from "./progress/progressCircle";
 
+// Connect
+import NameDid from "./connect/nameDid";
+
 export {
   Navbar,
   InfoCard,
@@ -53,4 +56,5 @@ export {
   HistoryElement,
   Modal,
   ProgressCircle,
+  NameDid,
 };
