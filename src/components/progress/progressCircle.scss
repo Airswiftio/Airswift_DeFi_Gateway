@@ -1,0 +1,42 @@
+.progressCircle {
+  height: 200px;
+  width: 200px;
+  position: relative;
+  .outer {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    padding: 20px;
+    .inner {
+      height: 160px;
+      width: 160px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      #number {
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+    }
+  }
+
+  circle {
+    fill: none;
+    stroke: url(#GradientColor);
+    stroke-width: 12px;
+    stroke-dasharray: 472;
+    stroke-dashoffset: 100;
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}

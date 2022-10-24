@@ -12,6 +12,7 @@ import "./myassets.scss";
 
 const Assets = () => {
   const [state, setState] = useState(0);
+  const [filters, setFilters] = useState([]);
 
   return (
     <div>
@@ -34,7 +35,7 @@ const Assets = () => {
           <span className="title">
             {state === 0 ? "Income" : "Withdraw"} History
           </span>
-          <Selectors />
+          <Selectors setFilters={setFilters} filters={filters} />
           {state === 0 ? <Income /> : <Withdraw />}
         </div>
       </div>

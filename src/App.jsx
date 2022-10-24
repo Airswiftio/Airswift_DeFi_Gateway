@@ -2,6 +2,7 @@ import Dashboard from "./pages/dashboard";
 import Login from "./pages/login";
 import Assets from "./pages/myassets";
 import Settings from "./pages/settings";
+import Connect from "./pages/connect";
 import Layout from "./components/Layout";
 import Unauthorized from "./components/Unauthorized";
 import RequireAuth from "./components/RequireAuth";
@@ -23,6 +24,7 @@ function App() {
         {/* Public Routes */}
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
+        <Route path="connect" element={<Connect />} />
 
         {/* Protected Routes Codes: */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>

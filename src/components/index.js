@@ -14,6 +14,7 @@ import Withdraw from "./myassets/withdraw";
 import Selectors from "./myassets/selectors";
 import HistoryTable from "./myassets/historyTable";
 import HistoryElement from "./myassets/historyElement";
+import Modal from "./myassets/modal";
 
 // Settings
 import ApiKeys from "./settings/apiKeys";
@@ -29,6 +30,9 @@ import Search from "./search/search";
 
 // Datepicker
 import Datepicker from "./datepicker/datepicker";
+
+// Progress
+import ProgressCircle from "./progress/progressCircle";
 
 export {
   Navbar,
@@ -47,4 +51,6 @@ export {
   Datepicker,
   HistoryTable,
   HistoryElement,
+  Modal,
+  ProgressCircle,
 };

@@ -1,14 +1,38 @@
 import React, { useState } from "react";
+import useFilters from "../../hooks/useFilters";
 
 import "./dropdown.scss";
 
-const Dropdown = ({ options, images = null, defaultTitle = null }) => {
+const Dropdown = ({
+  options,
+  images = null,
+  defaultTitle = null,
+  isFilter,
+}) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(0);
   const [initial, setInitial] = useState(true);
+  const { filters, setFilters } = useFilters();
 
   const toggleOptions = () => {
     setIsOptionsOpen(!isOptionsOpen);
+    addFilter(selectedOption);
+    console.log("Filters: ", filters);
+  };
+
+  const addFilter = (f) => {
+    if (isFilter) {
+      switch (defaultTitle) {
+        case "Status":
+          setFilters({ status: f, currency: filters?.currency });
+          break;
+        case "Currency":
+          setFilters({ status: filters?.status, currency: f });
+          break;
+        default:
+          break;
+      }
+    }
   };
 
   return (

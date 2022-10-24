@@ -8,7 +8,9 @@ const Header = () => {
 
   return (
     <div className="navWrapper">
-      <img className="logo" src={Logo} alt="Airswift" />
+      <Link to="/">
+        <img className="logo" src={Logo} alt="Airswift" />
+      </Link>
       <div className="navLinks">
         <Link to="/" className={url.length === 1 ? "underline" : ""}>
           DASHBOARD

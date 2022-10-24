@@ -2,7 +2,7 @@
   "incomeHistory": [
     {
       "transId": "IN7",
-      "status": "Finished",
+      "status": "Pending",
       "currency": "USDC",
       "amount": 2019.1,
       "time": "12:20 Sept 28",
@@ -11,7 +11,7 @@
     },
     {
       "transId": "IN6",
-      "status": "Finished",
+      "status": "Pending",
       "currency": "USDT",
       "amount": 222,
       "time": "12:20 Sept 28",
