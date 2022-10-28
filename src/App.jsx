@@ -7,11 +7,12 @@ import Withdraw from "./pages/withdraw";
 import Choose from "./pages/stores/choose";
 import Setup from "./pages/stores/setup";
 import Layout from "./components/Layout";
-import Unauthorized from "./components/Unauthorized";
+import Unauthorized from "./components/unauthorized";
 import RequireAuth from "./components/RequireAuth";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.scss";
+import SimonList from "./pages/list";
 
 /* Protected route codes -> user: 2000, merchant: 3000, admin: 5000 */
 const ROLES = {
