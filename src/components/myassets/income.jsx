@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import useFilters from "../../hooks/useFilters";
 
-import { HistoryTable, HistoryElement, Modal } from "../";
+import { HistoryTable, HistoryElement, Modal, Pagination } from "../";
 
 import "./income.scss";
 import dummyData from "../../sample_data.json";
 
 const Income = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [page, setPage] = useState(0);
   const { filters } = useFilters();
 
   const openModal = () => {
@@ -57,6 +58,11 @@ const Income = () => {
             )
         )}
       </HistoryTable>
+      <Pagination
+        pages={parseInt(dummyData.incomeHistory.length / 4)}
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 };

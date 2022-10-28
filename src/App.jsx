@@ -3,6 +3,9 @@ import Login from "./pages/login";
 import Assets from "./pages/myassets";
 import Settings from "./pages/settings";
 import Connect from "./pages/connect";
+import Withdraw from "./pages/withdraw";
+import Choose from "./pages/stores/choose";
+import Setup from "./pages/stores/setup";
 import Layout from "./components/Layout";
 import Unauthorized from "./components/Unauthorized";
 import RequireAuth from "./components/RequireAuth";
@@ -31,10 +34,15 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="assets" element={<Assets />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="withdraw" element={<Withdraw />} />
+          <Route path="stores/choose" element={<Choose />} />
+          <Route path="stores/setup" element={<Setup />} />
         </Route>
 
         {/* Catch all Route */}
-        <Route path="*" element={<Dashboard />} />
+        <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>
+          <Route path="*" element={<Dashboard />} />
+        </Route>
       </Route>
     </Routes>
   );

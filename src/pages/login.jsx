@@ -1,6 +1,6 @@
 import React from "react";
 import useAuth from "../hooks/useAuth";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import "./login.scss";
 import Airswift from "../assets/airswift_payment_logo.svg";

@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Navbar,
-  InfoCard,
-  Toggle,
-  Income,
-  Withdraw,
-  Selectors,
-} from "../components/";
+import { InfoCard, Toggle, Income, Withdraw, Selectors } from "../components/";
 
 import "./myassets.scss";
 
@@ -16,7 +9,6 @@ const Assets = () => {
 
   return (
     <div>
-      <Navbar />
       <div className="assetsContent">
         <Toggle toggle={setState} state={state} />
         <div className="cardRow">

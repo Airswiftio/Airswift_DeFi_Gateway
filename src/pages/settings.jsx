@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar, ApiKeys, IpnKeys, AppConfig, MyStore } from "../components/";
+import { ApiKeys, IpnKeys, AppConfig, MyStore } from "../components/";
 
 import "./settings.scss";
 
@@ -11,7 +11,6 @@ const Settings = () => {
 
   return (
     <div>
-      <Navbar />
       <div className="settingsWrapper">
         <div className="sideColumn">
           <button

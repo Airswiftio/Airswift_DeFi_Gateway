@@ -1,13 +1,36 @@
-import React from "react";
-
-import { HistoryTable, HistoryElement, DefaultButton } from "../";
+import React, { useState } from "react";
+import Popup from "reactjs-popup";
+import {
+  HistoryTable,
+  HistoryElement,
+  DefaultButton,
+  Pagination,
+  TipsModal,
+} from "../";
 
 import "./withdraw.scss";
 import dummyData from "../../sample_data.json";
+import { useNavigate } from "react-router-dom";
 
 const Withdraw = () => {
+  const [page, setPage] = useState(0);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const openModal = () => {
+    setIsOpen(true);
+    console.log("Clicked");
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div className="withdrawWrapper">
+      <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
+        <TipsModal click={closeModal} />
+      </Popup>
       <HistoryTable vc={false}>
         {dummyData.withdrawHistory.map(
           (
@@ -22,11 +45,21 @@ const Withdraw = () => {
               time={time}
               viewMore={viewMore}
               key={index}
+              click={openModal}
             />
           )
         )}
       </HistoryTable>
-      <DefaultButton title="Withdraw" align={1} />
+      <Pagination
+        pages={parseInt(dummyData.withdrawHistory.length / 2)}
+        page={page}
+        setPage={setPage}
+      />
+      <DefaultButton
+        title="Withdraw"
+        align={1}
+        click={() => navigate("/withdraw")}
+      />
       <div className="help">How can I use VP?</div>
     </div>
   );
