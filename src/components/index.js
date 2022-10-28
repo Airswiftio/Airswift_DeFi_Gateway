@@ -49,6 +49,10 @@ import TipsModal from "./modals/tipsModal";
 import ProfileModal from "./modals/profileModal";
 import ProcessModal from "./modals/processModal";
 
+// Admin
+import AdminHistoryTable from "./admin/historyTable";
+import AdminHistoryElement from "./admin/historyElement";
+
 export {
   Navbar,
   InfoCard,
@@ -75,4 +79,6 @@ export {
   ProfileModal,
   Unauthorized,
   ProcessModal,
+  AdminHistoryTable,
+  AdminHistoryElement,
 };

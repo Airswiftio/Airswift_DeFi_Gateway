@@ -36,13 +36,38 @@
   }
 
   .profileContainer {
-    .navProfile {
-      width: 50px;
-      height: 50px;
-      min-width: 50px;
-      min-height: 50px;
+    position: relative;
+
+    .imageContainer {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 50px;
+      max-height: 50px;
       border-radius: 100%;
-      background: white;
+      outline: 2px solid rgba(4, 11, 36, 0.7);
+      outline-offset: -1px;
+      .navProfile {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+        border-radius: 100%;
+        background: white;
+        zoom: 160%;
+      }
+    }
+
+    .online {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 100%;
+      outline: 2px solid rgba(4, 11, 36, 0.7);
+      background: rgba(95, 255, 169, 1);
+      top: 75%;
+      right: 5%;
     }
   }
 }

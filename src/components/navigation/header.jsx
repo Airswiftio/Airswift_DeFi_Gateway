@@ -5,6 +5,8 @@ import Logo from "../../assets/airswift.svg";
 import { ProfileModal } from "../";
 import "./header.scss";
 
+import ProfilePhoto from "../../assets/sample_profile.svg";
+
 const Header = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const url = window.location.pathname;
@@ -41,9 +43,21 @@ const Header = () => {
         >
           SETTINGS
         </Link>
+        <Link to="/admin" className={url.includes("admin") ? "underline" : ""}>
+          ADMIN
+        </Link>
       </div>
       <div className="profileContainer">
-        <div className="navProfile" onClick={() => setIsOpen(true)} />
+        <div className="imageContainer">
+          <img
+            src={ProfilePhoto}
+            alt="profile"
+            className="navProfile"
+            onClick={() => setIsOpen(true)}
+          />
+        </div>
+
+        <div className="online" />
       </div>
     </div>
   );

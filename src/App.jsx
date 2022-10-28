@@ -6,6 +6,7 @@ import Connect from "./pages/connect";
 import Withdraw from "./pages/withdraw";
 import Choose from "./pages/stores/choose";
 import Setup from "./pages/stores/setup";
+import Admin from "./pages/admin";
 import Layout from "./components/Layout";
 import { Unauthorized } from "./components/";
 import RequireAuth from "./components/RequireAuth";
@@ -37,6 +38,7 @@ function App() {
           <Route path="withdraw" element={<Withdraw />} />
           <Route path="stores/choose" element={<Choose />} />
           <Route path="stores/setup" element={<Setup />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
 
         {/* Catch all Route */}
