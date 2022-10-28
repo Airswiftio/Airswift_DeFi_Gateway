@@ -4,11 +4,12 @@ import Assets from "./pages/myassets";
 import Settings from "./pages/settings";
 import Connect from "./pages/connect";
 import Layout from "./components/Layout";
-import Unauthorized from "./components/Unauthorized";
+import Unauthorized from "./components/unauthorized";
 import RequireAuth from "./components/RequireAuth";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.scss";
+import SimonList from "./pages/list";
 
 /* Protected route codes -> user: 2000, merchant: 3000, admin: 5000 */
 const ROLES = {
