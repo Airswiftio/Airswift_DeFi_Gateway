@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Popup from "reactjs-popup";
 import Logo from "../../assets/airswift.svg";
+import { ProfileModal } from "../";
 import "./header.scss";
 
 const Header = () => {
+  const [modalIsOpen, setIsOpen] = useState(false);
   const url = window.location.pathname;
 
+  const openModal = () => {
+    setIsOpen(true);
+    console.log("Clicked");
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   return (
     <div className="navWrapper">
+      <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
+        <ProfileModal click={closeModal} />
+      </Popup>
       <Link to="/">
         <img className="logo" src={Logo} alt="Airswift" />
       </Link>
@@ -29,7 +43,7 @@ const Header = () => {
         </Link>
       </div>
       <div className="profileContainer">
-        <div className="navProfile" />
+        <div className="navProfile" onClick={() => setIsOpen(true)} />
       </div>
     </div>
   );

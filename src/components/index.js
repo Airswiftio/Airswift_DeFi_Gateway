@@ -1,5 +1,6 @@
 // Navigation
 import Navbar from "./navigation/header";
+import ProfileModal from "./navigation/profileModal";
 
 // Cards
 import InfoCard from "./cards/InfoCard";
@@ -67,4 +68,5 @@ export {
   ConfirmWithdraw,
   Pagination,
   TipsModal,
+  ProfileModal,
 };
