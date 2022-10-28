@@ -2,6 +2,9 @@
 import Navbar from "./navigation/header";
 import ProfileModal from "./navigation/profileModal";
 
+// Unauthorized
+import Unauthorized from "./Unauthorized";
+
 // Cards
 import InfoCard from "./cards/InfoCard";
 
@@ -69,4 +72,5 @@ export {
   Pagination,
   TipsModal,
   ProfileModal,
+  Unauthorized,
 };
