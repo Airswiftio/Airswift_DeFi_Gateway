@@ -1,0 +1,102 @@
+.withdrawPageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 2em;
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2em;
+
+    .backButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 18px;
+      background: none;
+      border: none;
+      font-family: "Poppins";
+      gap: 0.5em;
+
+      svg {
+        width: 20px;
+      }
+    }
+
+    .banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(24, 30, 54, 0.9);
+      border-radius: 60px;
+      padding: 1em 2em;
+      min-width: 200px;
+    }
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(24, 30, 54, 0.9);
+    box-shadow: inset -1px -1px 0px rgba(24, 30, 54, 0.25),
+      inset 1px 1px 0px rgba(180, 255, 255, 0.2);
+    backdrop-filter: blur(25px);
+    border-radius: 16px;
+    padding: 2em 4em;
+    gap: 2em;
+    min-height: 350px;
+    min-width: 60%;
+    max-width: 900px;
+
+    .title {
+      font-weight: 600;
+      font-size: 24px;
+    }
+
+    .tip {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1em;
+      background: linear-gradient(
+          0deg,
+          rgba(0, 255, 255, 0.15),
+          rgba(0, 255, 255, 0.15)
+        ),
+        rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.5em 1em;
+      max-width: 55%;
+
+      .title {
+        font-size: 18px;
+      }
+
+      .text {
+        font-size: 13px;
+        text-align: left;
+      }
+    }
+
+    .selectors {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-evenly;
+      gap: 2em;
+
+      .select {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+    }
+  }
+}

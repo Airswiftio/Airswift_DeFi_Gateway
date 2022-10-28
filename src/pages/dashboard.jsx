@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   ComposedChart,
 } from "recharts";
-import { Navbar, InfoCard, DefaultButton } from "../components/";
+import { InfoCard, DefaultButton } from "../components/";
 
 import "./dashboard.scss";
 
@@ -42,7 +42,6 @@ const Dashboard = () => {
   const [timeframe, setTimeframe] = useState(0);
   return (
     <div>
-      <Navbar />
       <div className="dashboardContent">
         <div className="cardRow">
           <InfoCard title="Total Balance" value={9898} type={0} />

@@ -15,6 +15,7 @@ import Selectors from "./myassets/selectors";
 import HistoryTable from "./myassets/historyTable";
 import HistoryElement from "./myassets/historyElement";
 import Modal from "./myassets/modal";
+import ConfirmWithdraw from "./myassets/confirmWithdraw";
 
 // Settings
 import ApiKeys from "./settings/apiKeys";
@@ -37,6 +38,12 @@ import ProgressCircle from "./progress/progressCircle";
 // Connect
 import NameDid from "./connect/nameDid";
 
+// Pagination
+import Pagination from "./pagination/pagination";
+
+// Tips
+import TipsModal from "./tips/tipsModal";
+
 export {
   Navbar,
   InfoCard,
@@ -57,4 +64,7 @@ export {
   Modal,
   ProgressCircle,
   NameDid,
+  ConfirmWithdraw,
+  Pagination,
+  TipsModal,
 };

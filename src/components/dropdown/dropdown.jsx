@@ -45,6 +45,9 @@ const Dropdown = ({
           className={isOptionsOpen ? "expanded" : ""}
           onClick={toggleOptions}
         >
+          {images && !initial ? (
+            <img src={images[selectedOption]} alt="Eth" />
+          ) : null}
           {initial && defaultTitle ? defaultTitle : options[selectedOption]}
           {isOptionsOpen ? (
             <svg
@@ -96,6 +99,7 @@ const Dropdown = ({
                 setInitial(false);
               }}
             >
+              {images ? <img src={images[index]} alt="Eth" /> : null}
               {option}
             </li>
           ))}

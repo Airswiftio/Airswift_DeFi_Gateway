@@ -13,20 +13,23 @@
     color: rgba(255, 255, 255, 0.7);
     font-family: "Poppins";
     padding: 0.75em;
-    width: 120px;
-   
+    width: 150px;
 
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 1em;
+    gap: 0.5em;
 
     svg {
       width: 18px;
     }
+
+    img {
+      width: 22px;
+    }
   }
-  
+
   .options {
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
@@ -36,23 +39,28 @@
     margin-top: 0.5em;
     background: rgba(4, 11, 36, 0.9);
   }
-  
+
   .show {
     display: flex;
     flex-direction: column;
   }
-  
+
   .options li {
     padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+
+    img {
+      width: 22px;
+    }
   }
-  
+
   .options li:active,
   .options li:focus,
   .options li:hover {
-    color: #8DFE59;
+    color: #8dfe59;
     cursor: pointer;
   }
 }
-
-
-

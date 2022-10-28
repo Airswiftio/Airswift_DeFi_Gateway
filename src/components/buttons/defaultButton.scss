@@ -1,7 +1,13 @@
 .buttonWrapper {
-  font-family: 'ClashDisplay';
-  background: linear-gradient(98.48deg, #8DFE59 -3.85%, #3ACBF6 35.75%, #6055FF 69.61%);
-  box-shadow: inset 0px 2px 0px rgba(255, 255, 255, 0.2), inset 0px -2px 0px rgba(59, 53, 146, 0.5);
+  font-family: "ClashDisplay";
+  background: linear-gradient(
+    98.48deg,
+    #8dfe59 -3.85%,
+    #3acbf6 35.75%,
+    #6055ff 69.61%
+  );
+  box-shadow: inset 0px 2px 0px rgba(255, 255, 255, 0.2),
+    inset 0px -2px 0px rgba(59, 53, 146, 0.5);
   border-radius: 80px;
   border: none;
   padding: 0.75em 2em;
@@ -9,6 +15,11 @@
   color: white;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
+  min-height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .alignStart {
@@ -25,4 +36,8 @@
 
 .fixedWidth {
   max-width: 160px;
+}
+
+.fullWidth {
+  width: 100%;
 }
