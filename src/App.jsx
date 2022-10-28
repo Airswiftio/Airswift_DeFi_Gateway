@@ -7,7 +7,7 @@ import Withdraw from "./pages/withdraw";
 import Choose from "./pages/stores/choose";
 import Setup from "./pages/stores/setup";
 import Layout from "./components/Layout";
-import Unauthorized from "./components/Unauthorized";
+import Unauthorized from "./components/unauthorized";
 import RequireAuth from "./components/RequireAuth";
 import { Routes, Route } from "react-router-dom";
 
