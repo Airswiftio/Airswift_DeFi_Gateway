@@ -15,7 +15,7 @@ const TipsModal = ({ click }) => {
 
   const navigate = useNavigate();
   return (
-    <div className="modal">
+    <div className="tipsModal">
       <div className="modalContent">
         <div className="title">Tips</div>
         <div className="tip">

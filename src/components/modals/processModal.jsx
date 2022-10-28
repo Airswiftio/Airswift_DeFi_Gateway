@@ -15,7 +15,7 @@ const ProcessModal = ({ click }) => {
 
   const navigate = useNavigate();
   return (
-    <div className="modal">
+    <div className="processModal">
       <div className="modalContent">
         <div className="title">View Process</div>
         <div className="process">
