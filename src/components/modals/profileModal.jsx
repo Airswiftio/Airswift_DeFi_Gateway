@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { DefaultButton } from "../";
+import { DefaultButton } from "..";
 import "./profileModal.scss";
 import Verified from "../../assets/verified_green.svg";
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { DefaultButton } from "../";
+import { DefaultButton } from "..";
 import "./tipsModal.scss";
 
 const TipsModal = ({ click }) => {

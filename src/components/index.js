@@ -1,6 +1,5 @@
 // Navigation
 import Navbar from "./navigation/header";
-import ProfileModal from "./navigation/profileModal";
 
 // Unauthorized
 import Unauthorized from "./Unauthorized";
@@ -45,8 +44,10 @@ import NameDid from "./connect/nameDid";
 // Pagination
 import Pagination from "./pagination/pagination";
 
-// Tips
-import TipsModal from "./tips/tipsModal";
+// Modals
+import TipsModal from "./modals/tipsModal";
+import ProfileModal from "./modals/profileModal";
+import ProcessModal from "./modals/processModal";
 
 export {
   Navbar,
@@ -73,4 +74,5 @@ export {
   TipsModal,
   ProfileModal,
   Unauthorized,
+  ProcessModal,
 };

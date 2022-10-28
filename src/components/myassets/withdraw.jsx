@@ -5,7 +5,7 @@ import {
   HistoryElement,
   DefaultButton,
   Pagination,
-  TipsModal,
+  ProcessModal,
 } from "../";
 
 import "./withdraw.scss";
@@ -29,7 +29,7 @@ const Withdraw = () => {
   return (
     <div className="withdrawWrapper">
       <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
-        <TipsModal click={closeModal} />
+        <ProcessModal click={closeModal} />
       </Popup>
       <HistoryTable vc={false}>
         {dummyData.withdrawHistory.map(
