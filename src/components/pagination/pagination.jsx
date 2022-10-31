@@ -28,6 +28,7 @@ const Pagination = ({ pages, page, setPage }) => {
         <button
           className={`pageButton ${e === page ? "selected" : null}`}
           onClick={() => setPage(e)}
+          key={e}
         >
           {e}
         </button>

@@ -1,0 +1,61 @@
+.progressModal {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 11, 36, 0.7);
+  backdrop-filter: blur(25px);
+
+  .modalContent {
+    width: 350px;
+    min-width: 350px;
+    height: 350px;
+    background: white;
+    padding: 2em;
+    border-radius: 16px;
+    background: rgba(24, 30, 54, 0.8);
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1em;
+    font-size: 12px;
+    font-family: "Poppins";
+
+    .title {
+      font-size: 24px;
+      color: white;
+    }
+
+    .withdrawTotal {
+      font-size: 18px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 40%;
+    }
+
+    .currency {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+
+      img {
+        width: 25px;
+      }
+    }
+
+    .gas {
+      background: rgba(0, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 1.5em 2em;
+      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}

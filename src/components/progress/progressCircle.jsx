@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import "./progressCircle.scss";
 
-const ProgressCircle = () => {
-  const [percentage, setPercentage] = useState(33);
+const ProgressCircle = ({ percentage = 0 }) => {
   return (
     <div className="progressCircle">
       <CircularProgressbar
         text={`${percentage}%`}
-        value={percentage}
+        value={percentage || 0}
         styles={buildStyles({
           // Text size
           textSize: "16px",

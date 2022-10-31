@@ -1,12 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HistoryTable, HistoryElement, DefaultButton } from "../";
+import Popup from "reactjs-popup";
+import {
+  HistoryTable,
+  HistoryElement,
+  DefaultButton,
+  ConfirmWithdrawModal,
+} from "../";
 import dummyData from "../../sample_data.json";
 import "./confirmWithdraw.scss";
 
 const ConfirmWithdraw = () => {
   const [checked, setChecked] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false);
+
   const navigate = useNavigate();
+
+  const openModal = () => {
+    setIsOpen(true);
+    console.log("Clicked");
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   const selectRow = (key) => {
     if (checked.includes(key)) {
@@ -20,6 +37,9 @@ const ConfirmWithdraw = () => {
 
   return (
     <div className="confWithdrawWrapper">
+      <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
+        <ConfirmWithdrawModal click={closeModal} />
+      </Popup>
       <div className="title">Select available transactions</div>
       <HistoryTable vc={false} select>
         {dummyData.withdrawHistory.map(
@@ -42,7 +62,7 @@ const ConfirmWithdraw = () => {
       <DefaultButton
         title="Confirm Withdraw"
         align={1}
-        click={() => navigate("/assets")}
+        click={() => setIsOpen(true)}
       />
       <div className="help">How can I use VP?</div>
     </div>

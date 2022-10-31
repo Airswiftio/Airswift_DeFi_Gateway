@@ -48,10 +48,13 @@ import Pagination from "./pagination/pagination";
 import TipsModal from "./modals/tipsModal";
 import ProfileModal from "./modals/profileModal";
 import ProcessModal from "./modals/processModal";
+import ConfirmWithdrawModal from "./modals/confirmWithdrawModal";
+import ProgressModal from "./modals/progressModal";
 
 // Admin
 import AdminHistoryTable from "./admin/historyTable";
 import AdminHistoryElement from "./admin/historyElement";
+import Invite from "./admin/invite";
 
 export {
   Navbar,
@@ -81,4 +84,7 @@ export {
   ProcessModal,
   AdminHistoryTable,
   AdminHistoryElement,
+  ConfirmWithdrawModal,
+  Invite,
+  ProgressModal,
 };

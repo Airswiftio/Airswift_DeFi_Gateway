@@ -8,7 +8,7 @@ const Connect = () => {
   const [conn, setConn] = useState(true);
   return (
     <div className="connectWrapper">
-      {conn ? <NameDid /> : <ProgressCircle />}
+      {conn ? <NameDid /> : <ProgressCircle percentage={0} />}
     </div>
   );
 };

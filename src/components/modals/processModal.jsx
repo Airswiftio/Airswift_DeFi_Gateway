@@ -1,19 +1,16 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router";
-import { DefaultButton } from "..";
 import "./processModal.scss";
 
 const ProcessModal = ({ click }) => {
   useEffect(() => {
-    const modal = document.getElementsByClassName("modal");
+    const modal = document.getElementsByClassName("processModal");
     modal[0].addEventListener("click", (e) => {
-      if (e.target.classList[0] === "modal") {
+      if (e.target.classList[0] === "processModal") {
         click();
       }
     });
   }, []);
 
-  const navigate = useNavigate();
   return (
     <div className="processModal">
       <div className="modalContent">
