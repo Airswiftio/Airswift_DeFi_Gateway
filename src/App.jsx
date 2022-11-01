@@ -7,6 +7,8 @@ import Withdraw from "./pages/withdraw";
 import Choose from "./pages/stores/choose";
 import Setup from "./pages/stores/setup";
 import Admin from "./pages/admin";
+import Farms from "./pages/liquidity/farms";
+import Pools from "./pages/liquidity/pools";
 import Layout from "./components/Layout";
 import { Unauthorized } from "./components/";
 import RequireAuth from "./components/RequireAuth";
@@ -29,6 +31,8 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="connect" element={<Connect />} />
+        <Route path="liquidity/farms" element={<Farms />} />
+        <Route path="liquidity/pools" element={<Pools />} />
 
         {/* Protected Routes Codes: */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>

@@ -6,6 +6,8 @@ import Unauthorized from "./Unauthorized";
 
 // Cards
 import InfoCard from "./cards/InfoCard";
+import FarmCard from "./cards/farmCard";
+import PoolCard from "./cards/poolCard";
 
 // Buttons
 import DefaultButton from "./buttons/DefaultButton";
