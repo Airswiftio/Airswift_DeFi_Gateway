@@ -1,7 +1,45 @@
 import React from "react";
 
-const PoolCard = () => {
-  return <div>PoolCard</div>;
+import { DefaultButton } from "../";
+import "./poolCard.scss";
+
+const PoolCard = ({ icon, title }) => {
+  return (
+    <div className="poolCardWrapper">
+      <div className="header">
+        <img src={icon} alt={title} />
+        <span className="title">{title}</span>
+      </div>
+      <div className="row">
+        <div className="info">APR</div>
+        <div className="info">22.199191%</div>
+      </div>
+
+      <div className="btn">
+        <DefaultButton title="Deposit" type={2} />
+        <DefaultButton title="Withdraw" type={2} />
+      </div>
+      <div className="row">
+        <div className="info">TVL</div>
+        <div className="info">0.0112</div>
+      </div>
+      <div className="row">
+        <div className="info">Earning</div>
+        <div className="info">14/DAY</div>
+      </div>
+      <div className="row">
+        <div className="info">
+          Available
+          <br />
+          Profit Share
+        </div>
+        <div className="info">14.20214</div>
+      </div>
+      <div className="btn">
+        <DefaultButton title="Harvest" type={2} />
+      </div>
+    </div>
+  );
 };
 
 export default PoolCard;
