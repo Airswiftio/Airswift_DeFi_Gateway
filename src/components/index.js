@@ -89,4 +89,6 @@ export {
   ConfirmWithdrawModal,
   Invite,
   ProgressModal,
+  PoolCard,
+  FarmCard,
 };

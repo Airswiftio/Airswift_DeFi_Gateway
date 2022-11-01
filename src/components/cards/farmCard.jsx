@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DefaultButton } from "../";
+import { DefaultButton } from "..";
 import "./farmCard.scss";
 
 const FarmCard = ({ icon, title }) => {
@@ -11,28 +11,32 @@ const FarmCard = ({ icon, title }) => {
         <span className="title">{title}</span>
       </div>
       <div className="row">
-        <div className="info">Your Position</div>
-        <div className="info">122</div>
-      </div>
-      <div className="row">
-        <div className="info">Pool Share</div>
-        <div className="info">13441%</div>
+        <div className="info">APR</div>
+        <div className="info">22.199191%</div>
       </div>
 
       <div className="btn">
-        <DefaultButton title="Add Liquidity" type={1} />
+        <DefaultButton title="Deposit" type={2} />
+        <DefaultButton title="Withdraw" type={2} />
       </div>
       <div className="row">
-        <div className="info">Total Supply</div>
+        <div className="info">TVL</div>
         <div className="info">0.0112</div>
       </div>
       <div className="row">
-        <div className="info">APR</div>
-        <div className="info">01.221</div>
+        <div className="info">Earning</div>
+        <div className="info">14/DAY</div>
       </div>
-
+      <div className="row">
+        <div className="info">
+          Available
+          <br />
+          Profit Share
+        </div>
+        <div className="info">14.20214</div>
+      </div>
       <div className="btn">
-        <DefaultButton title="Remove Liquidity" type={1} />
+        <DefaultButton title="Harvest" type={2} />
       </div>
     </div>
   );

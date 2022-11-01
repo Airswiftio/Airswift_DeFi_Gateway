@@ -4,6 +4,8 @@
   align-items: center;
   gap: 1.5em;
   font-family: "Poppins";
+  min-width: 350px;
+  max-width: 350px;
   background: radial-gradient(
       65.23% 34.55% at 50% 0%,
       rgba(0, 255, 255, 0.5) 0%,
@@ -53,7 +55,11 @@
   }
 
   .btn {
-    width: 60%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
   }
 
   .info {

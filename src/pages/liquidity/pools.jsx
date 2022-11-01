@@ -1,5 +1,5 @@
 import React from "react";
-import PoolCard from "../../components/cards/poolCard";
+import { PoolCard } from "../../components/";
 import { DAI, ETH, USDC, USDT, WBTC } from "../../assets/liquidity";
 
 import "./pools.scss";
