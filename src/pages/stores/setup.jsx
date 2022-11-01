@@ -1,5 +1,5 @@
 import React from "react";
-import { DefaultButton } from "../../components";
+import { DefaultButton } from "@@/components";
 import { useNavigate } from "react-router-dom";
 import "./setup.scss";
 

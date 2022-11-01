@@ -1,18 +1,17 @@
-import Dashboard from "./pages/dashboard";
-import Login from "./pages/login";
-import Assets from "./pages/myassets";
-import Settings from "./pages/settings";
-import Connect from "./pages/connect";
-import Withdraw from "./pages/withdraw";
-import Choose from "./pages/stores/choose";
-import Setup from "./pages/stores/setup";
-import Admin from "./pages/admin";
-import Layout from "./components/Layout";
-import { Unauthorized } from "./components/";
-import RequireAuth from "./components/RequireAuth";
 import { Routes, Route } from "react-router-dom";
-
-import "./App.scss";
+import Dashboard from "@@/pages/dashboard";
+import Login from "@@/pages/login";
+import Assets from "@@/pages/myassets";
+import Settings from "@@/pages/settings";
+import Connect from "@@/pages/connect";
+import Withdraw from "@@/pages/withdraw";
+import Choose from "@@/pages/stores/choose";
+import Setup from "@@/pages/stores/setup";
+import Admin from "@@/pages/admin";
+import Layout from "@@/components/Layout";
+import Unauthorized from "@@/components/unauthorized";
+import RequireAuth from "@@/components/RequireAuth";
+import "@@/App.scss";
 
 /* Protected route codes -> user: 2000, merchant: 3000, admin: 5000 */
 const ROLES = {

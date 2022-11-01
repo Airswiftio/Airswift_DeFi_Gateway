@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import useAuth from "../hooks/useAuth";
+import useAuth from "@@/hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import Popup from "reactjs-popup";
-import { ProgressModal } from "../components";
+import { ProgressModal } from "@@/components";
 
 import "./login.scss";
-import Airswift from "../assets/airswift_payment_logo.svg";
+import AirSwift from "@@/assets/airswift_payment_logo.svg";
 
 const Login = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -40,11 +40,11 @@ const Login = () => {
       </Popup>
       <div className="loginForm">
         <div className="formHeader">
-          <img src={Airswift} alt="Airswift" />
+          <img src={AirSwift} alt="AirSwift" />
         </div>
         <div className="formTitle">
           <span>Welcome to</span>
-          <span className="logoTitle">Airswift Payment Gateway</span>
+          <span className="logoTitle">AirSwift Payment Gateway</span>
         </div>
 
         <div className="buttons">

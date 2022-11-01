@@ -1,8 +1,8 @@
 import React from "react";
-import { DefaultButton } from "../../components";
+import { DefaultButton } from "@@/components";
 import { useNavigate } from "react-router-dom";
 import "./choose.scss";
-import Login from "../../assets/login.svg";
+import Login from "@@/assets/login.svg";
 const stores = ["Omnisolu", "Spotify"];
 
 const Choose = () => {

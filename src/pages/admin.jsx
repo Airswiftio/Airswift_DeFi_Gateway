@@ -6,7 +6,7 @@ import {
   AdminHistoryTable,
   AdminHistoryElement,
   Invite,
-} from "../components";
+} from "@@/components";
 
 import "./admin.scss";
 

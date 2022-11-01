@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { ProgressCircle, NameDid } from "../components";
+import { ProgressCircle, NameDid } from "@@/components";
 
 import "./connect.scss";
 

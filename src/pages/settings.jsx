@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ApiKeys, IpnKeys, AppConfig, MyStore } from "../components/";
+import { ApiKeys, IpnKeys, AppConfig, MyStore } from "@@/components";
 
 import "./settings.scss";
 

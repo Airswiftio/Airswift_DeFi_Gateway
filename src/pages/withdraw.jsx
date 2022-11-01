@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Dropdown, ConfirmWithdraw, TipsModal } from "../components";
+import { Dropdown, ConfirmWithdraw, TipsModal } from "@@/components";
 
 import "./withdraw.scss";
-import ETH from "../assets/eth_icon.svg";
+import ETH from "@@/assets/eth_icon.svg";
 
 const Withdraw = () => {
   const [confirm, setConfirm] = useState(false);

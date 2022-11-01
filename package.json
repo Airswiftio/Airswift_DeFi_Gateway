@@ -16,12 +16,16 @@
     "reactjs-popup": "^2.0.5",
     "recharts": "^2.1.15",
     "sass": "^1.55.0",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "axios": "^0.27.2",
+    "js-md5": "^0.7.3",
+    "dayjs": "^1.11.5",
+    "ethers": "^5.7.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "dotenv -e .env.local craco start",
+    "build:dev": "dotenv -e .env.development craco build",
+    "build:production": "dotenv -e .env.production craco build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -41,5 +45,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^6.4.5",
+    "dotenv-cli": "^6.0.0"
   }
 }

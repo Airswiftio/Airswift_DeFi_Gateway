@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   ComposedChart,
 } from "recharts";
-import { InfoCard, DefaultButton } from "../components/";
+import { InfoCard, DefaultButton } from "@@/components";
 
 import "./dashboard.scss";
 

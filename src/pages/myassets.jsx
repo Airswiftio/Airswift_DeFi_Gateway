@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { InfoCard, Toggle, Income, Withdraw, Selectors } from "../components/";
+import { InfoCard, Toggle, Income, Withdraw, Selectors } from "@@/components";
 
 import "./myassets.scss";
 
