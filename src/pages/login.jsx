@@ -6,6 +6,7 @@ import { ProgressModal } from "@@/components";
 
 import "./login.scss";
 import AirSwift from "@@/assets/airswift_payment_logo.svg";
+import {connectWallet} from "@@/utils/chain/wallet";
 
 const Login = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -29,6 +30,11 @@ const Login = () => {
     navigate(from, { replace: true });
   };
 
+  const connect = async () => {
+    const aa = await connectWallet();
+    console.log('aa',aa);
+  };
+
   return (
     <div className="loginWrapper">
       <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
@@ -48,7 +54,7 @@ const Login = () => {
         </div>
 
         <div className="buttons">
-          <button onClick={() => setIsOpen(true)} className="connectButton">
+          <button onClick={() => connect()} className="connectButton">
             Connect Metamask Wallet
           </button>
           <button className="installMetamask">Install Metamask Wallet</button>
