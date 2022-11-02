@@ -1,5 +1,6 @@
-import React from "react";
-import { FarmCard } from "../../components/";
+import React, { useState } from "react";
+import Popup from "reactjs-popup";
+import { FarmCard, DepositModal, WithdrawModal } from "../../components/";
 import { DAI, ETH, USDC, USDT, WBTC } from "../../assets/liquidity";
 
 import "./farms.scss";

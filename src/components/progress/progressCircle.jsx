@@ -8,7 +8,7 @@ const ProgressCircle = ({ percentage = 0 }) => {
   return (
     <div className="progressCircle">
       <CircularProgressbar
-        text={`${percentage}%`}
+        text={`${percentage === 100 ? "SUCCESS" : percentage}`}
         value={percentage || 0}
         styles={buildStyles({
           // Text size

@@ -53,6 +53,14 @@ import ProcessModal from "./modals/processModal";
 import ConfirmWithdrawModal from "./modals/confirmWithdrawModal";
 import ProgressModal from "./modals/progressModal";
 
+// Pools
+import AddLiquidityModal from "./modals/pools/addLiquidityModal";
+import RemoveLiquidityModal from "./modals/pools/removeLiquidityModal";
+
+// Farms
+import DepositModal from "./modals/farms/despositModal";
+import WithdrawModal from "./modals/farms/withdrawModal";
+
 // Admin
 import AdminHistoryTable from "./admin/historyTable";
 import AdminHistoryElement from "./admin/historyElement";
@@ -91,4 +99,8 @@ export {
   ProgressModal,
   PoolCard,
   FarmCard,
+  AddLiquidityModal,
+  RemoveLiquidityModal,
+  DepositModal,
+  WithdrawModal,
 };

@@ -1,11 +1,40 @@
-import React from "react";
-
-import { DefaultButton } from "..";
+import React, { useState } from "react";
+import Popup from "reactjs-popup";
+import { DefaultButton, AddLiquidityModal, RemoveLiquidityModal } from "..";
 import "./poolCard.scss";
 
 const PoolCard = ({ icon, title }) => {
+  const [addModalIsOpen, setIsAddOpen] = useState(false);
+  const [removeModalIsOpen, setIsRemoveOpen] = useState(false);
+
+  const openAddModal = () => {
+    setIsAddOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setIsAddOpen(false);
+  };
+
+  const openRemoveModal = () => {
+    setIsRemoveOpen(true);
+  };
+
+  const closeRemoveModal = () => {
+    setIsRemoveOpen(false);
+  };
+
   return (
     <div className="poolCardWrapper">
+      <Popup open={addModalIsOpen} closeOnDocumentClick onClose={closeAddModal}>
+        <AddLiquidityModal click={closeAddModal} />
+      </Popup>
+      <Popup
+        open={removeModalIsOpen}
+        closeOnDocumentClick
+        onClose={closeRemoveModal}
+      >
+        <RemoveLiquidityModal click={closeRemoveModal} />
+      </Popup>
       <div className="header">
         <img src={icon} alt={title} />
         <span className="title">{title}</span>
@@ -20,7 +49,7 @@ const PoolCard = ({ icon, title }) => {
       </div>
 
       <div className="btn">
-        <DefaultButton title="Add Liquidity" type={1} />
+        <DefaultButton title="Add Liquidity" type={1} click={openAddModal} />
       </div>
       <div className="row">
         <div className="info">Total Supply</div>
@@ -32,7 +61,11 @@ const PoolCard = ({ icon, title }) => {
       </div>
 
       <div className="btn">
-        <DefaultButton title="Remove Liquidity" type={1} />
+        <DefaultButton
+          title="Remove Liquidity"
+          type={1}
+          click={openRemoveModal}
+        />
       </div>
     </div>
   );

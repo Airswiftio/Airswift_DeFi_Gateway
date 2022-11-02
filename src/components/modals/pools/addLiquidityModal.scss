@@ -1,0 +1,73 @@
+.addLiquidityModalWrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 11, 36, 0.7);
+  backdrop-filter: blur(25px);
+
+  .modalContent {
+    width: 500px;
+    min-width: 500px;
+    height: 350px;
+    background: white;
+    padding: 2em;
+    border-radius: 16px;
+    background: rgba(24, 30, 54, 0.8);
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1em;
+    font-size: 12px;
+    font-family: "Poppins";
+
+    .title {
+      font-size: 20px;
+      color: white;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 70%;
+    }
+
+    .input {
+      background: rgba(96, 85, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 80px;
+      width: 70%;
+      padding: 0.5em;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      input {
+        border: none;
+        background: none;
+        padding: 0 1em;
+        font-size: 16px;
+        font-family: "Poppins";
+        outline: none;
+        color: rgba(255, 255, 255, 0.3);
+        height: 40px;
+      }
+
+      .btn {
+        width: 80px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 80px;
+      }
+    }
+  }
+}
