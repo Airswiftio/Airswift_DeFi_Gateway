@@ -66,6 +66,11 @@ import AdminHistoryTable from "./admin/historyTable";
 import AdminHistoryElement from "./admin/historyElement";
 import Invite from "./admin/invite";
 
+// Management
+import ManagementCreateAccount from "./management/login/createAccount";
+import ManagementLogin from "./management/login/login";
+import ManagementResetPassword from "./management/login/resetPassword";
+
 export {
   Navbar,
   InfoCard,
@@ -103,4 +108,7 @@ export {
   RemoveLiquidityModal,
   DepositModal,
   WithdrawModal,
+  ManagementCreateAccount,
+  ManagementLogin,
+  ManagementResetPassword,
 };

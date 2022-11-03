@@ -1,14 +1,18 @@
-import Dashboard from "./pages/dashboard";
-import Login from "./pages/login";
-import Assets from "./pages/myassets";
-import Settings from "./pages/settings";
-import Connect from "./pages/connect";
-import Withdraw from "./pages/withdraw";
-import Choose from "./pages/stores/choose";
-import Setup from "./pages/stores/setup";
-import Admin from "./pages/admin";
-import Farms from "./pages/liquidity/farms";
-import Pools from "./pages/liquidity/pools";
+import {
+  Dashboard,
+  Login,
+  MyAssets,
+  Settings,
+  Connect,
+  ChooseStore,
+  SetupStore,
+  Admin,
+  Farms,
+  Pools,
+  Withdraw,
+  ManagementLogin,
+  ManagementForgotPassword,
+} from "./pages";
 import Layout from "./components/Layout";
 import { Unauthorized } from "./components/";
 import RequireAuth from "./components/RequireAuth";
@@ -33,15 +37,17 @@ function App() {
         <Route path="connect" element={<Connect />} />
         <Route path="liquidity/farms" element={<Farms />} />
         <Route path="liquidity/pools" element={<Pools />} />
+        <Route path="management/login" element={<ManagementLogin />} />
+        <Route path="management/pw" element={<ManagementForgotPassword />} />
 
         {/* Protected Routes Codes: */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="assets" element={<Assets />} />
+          <Route path="assets" element={<MyAssets />} />
           <Route path="settings" element={<Settings />} />
           <Route path="withdraw" element={<Withdraw />} />
-          <Route path="stores/choose" element={<Choose />} />
-          <Route path="stores/setup" element={<Setup />} />
+          <Route path="stores/choose" element={<ChooseStore />} />
+          <Route path="stores/setup" element={<SetupStore />} />
           <Route path="admin" element={<Admin />} />
         </Route>
 
