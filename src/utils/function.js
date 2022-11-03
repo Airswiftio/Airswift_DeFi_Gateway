@@ -124,11 +124,16 @@ export function dbGetJWTToken() {
 }
 export function dbSetJWTToken(value) {
   return  dbStore.set(JWTTokenKey,value)
-
 }
 
 export function dbClearAccount() {
   return  dbStore.clear()
+}
+
+
+const SignDataKey = 'SignData';
+export function dbSetSignData(value) {
+  return  dbStore.set(SignDataKey,value)
 }
 
 

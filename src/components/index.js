@@ -39,7 +39,6 @@ import Datepicker from "./datepicker/datepicker";
 import ProgressCircle from "./progress/progressCircle";
 
 // Connect
-import NameDid from "./connect/nameDid";
 
 // Pagination
 import Pagination from "./pagination/pagination";
@@ -75,7 +74,6 @@ export {
   HistoryElement,
   Modal,
   ProgressCircle,
-  NameDid,
   ConfirmWithdraw,
   Pagination,
   TipsModal,

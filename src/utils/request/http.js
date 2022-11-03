@@ -91,8 +91,10 @@ export const get = (url, params, config = {}) => {
             params,
             ...config
         }).then(response => {
+            response.code = 1000;
             resolve(response)
         }).catch(error => {
+            error.code = -1;
             reject(error)
         })
     })
@@ -107,8 +109,10 @@ export const post = (url, data, config = {}) => {
             data,
             ...config
         }).then(response => {
+            response.code = 1000;
             resolve(response)
         }).catch(error => {
+            error.code = -1;
             reject(error)
         })
     })

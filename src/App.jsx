@@ -3,10 +3,7 @@ import Dashboard from "@@/pages/dashboard";
 import Login from "@@/pages/login";
 import Assets from "@@/pages/myassets";
 import Settings from "@@/pages/settings";
-import Connect from "@@/pages/connect";
 import Withdraw from "@@/pages/withdraw";
-import Choose from "@@/pages/stores/choose";
-import Setup from "@@/pages/stores/setup";
 import Admin from "@@/pages/admin";
 import Layout from "@@/components/Layout";
 import Unauthorized from "@@/components/unauthorized";
@@ -27,7 +24,7 @@ function App() {
         {/* Public Routes */}
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        <Route path="connect" element={<Connect />} />
+        {/*<Route path="connect" element={<Connect />} />*/}
 
         {/* Protected Routes Codes: */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>
@@ -35,8 +32,6 @@ function App() {
           <Route path="assets" element={<Assets />} />
           <Route path="settings" element={<Settings />} />
           <Route path="withdraw" element={<Withdraw />} />
-          <Route path="stores/choose" element={<Choose />} />
-          <Route path="stores/setup" element={<Setup />} />
           <Route path="admin" element={<Admin />} />
         </Route>
 

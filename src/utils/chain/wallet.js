@@ -2,7 +2,7 @@ import {ethers, WEthereum, Web3Provider, signer, isEth} from '@@/utils/chain/cha
 import md5 from 'js-md5';
 import {
   dbClearAccount,
-  dbGetUserWallet, dbSetJWTToken, dbSetUserWallet,
+  dbGetUserWallet, dbSetJWTToken, dbSetSignData, dbSetUserWallet,
   empty,
   hideStr,
   json_to_obj
@@ -271,20 +271,17 @@ export const connectWallet = async () => {
   if(!dbGetUserWallet()?.account) {
     let res1 = await detectionEnvironment();
     if(res1.code === 100){
-      // popupAlert({type:'wentWrong',data:{msg:res.msg}});
+      // popupAlert({type:'wentWrong',data:{msg:res.msg}}); //todo 999
       window.open(res1.url);
       return res1;
     }
     else if(res1.code === 101){
-      // popupAlert({type:'switchingNetwork',data:{msg:res.msg}});
+      // popupAlert({type:'switchingNetwork',data:{msg:res.msg}});//todo 999
       return res1;
     }
 
-
-
     //Get account address
     let accounts = await requestAccounts();
-
     if(empty(accounts) || empty(accounts[0])){
       return {code:-1,msg:'Account not exist!'};
     }
@@ -294,8 +291,17 @@ export const connectWallet = async () => {
     let balance = await getBalance(account);//Get the account balance and format it
     let network = await getNetwork();
     let networkName = network.chainId === 1 ? 'Mainnet':network.name;
+    let chainId = network.chainId.toString();
 
-    //
+    //Get the signature verification message from the back end
+    let res_challenge = await challengeGenerate({address:account,chainId: chainId});
+    if(typeof res_challenge?.code === 'undefined' || res_challenge.code !== 1000 || empty(res_challenge.data)){
+      dbClearAccount();
+      return res_challenge;
+    }
+
+    dbSetSignData(res_challenge?.data?.content)
+
     let userWallet = {
       balance:balance,
       chainId:network.chainId,
@@ -304,34 +310,33 @@ export const connectWallet = async () => {
       simple_account:hideStr(account,5,4,'.',3)
     };
     dbSetUserWallet(userWallet)
-
-    let chainId = dbGetUserWallet()['chainId'].toString();
-
-    //Get the signature verification message from the back end
-    let res_challenge = await challengeGenerate({walletAddress:account,chainId: chainId});
-    if(typeof res_challenge?.code === 'undefined' || res_challenge.code !== 1000 || empty(res_challenge.data)){
-      dbClearAccount();
-      return res_challenge;
-    }
-
-    let signature = await Web3SignData(account,res_challenge.data);
-    if(typeof signature?.code === 'undefined' || signature.code !== 1000 || empty(signature.data)){
-      dbClearAccount();
-      return signature;
-    }
-
-    //Verify signature
-    let res_verity = await challengeVerify({walletAddress:account,chainId: chainId,signature: signature.data.slice(2)});
-    if(typeof res_verity?.code === 'undefined' || res_verity.code !== 1000 || empty(res_verity.data) || empty(res_verity.data.token)){
-      dbClearAccount();
-      return res_verity;
-    }
-
-    dbSetJWTToken(res_verity.data.token);
-    return {code:1000,msg:'ok',data:userWallet};
   }
 
   return {code:1000,msg:'ok'};
+}
+export const connectWallet1 = async () => {
+  // //First, check whether the environment supports and whether metamask plug-ins are installed
+  // let res = beforeSend(false);
+  // if(res.code !== 1000){
+  //   return res;
+  // }
+  //
+  // if(!dbGetUserWallet()?.account) {
+  //   let signature = await Web3SignData(account,res_challenge.data.content);
+  //   if(typeof signature?.code === 'undefined' || signature.code !== 1000 || empty(signature.data)){
+  //     dbClearAccount();
+  //     return signature;
+  //   }
+  //
+  //   //Verify signature
+  //   let res_verity = await challengeVerify({eth_address:account,chainId: chainId,signature: signature.data.slice(2)});
+  //   if(typeof res_verity?.code === 'undefined' || res_verity.code !== 1000 || empty(res_verity.data) || empty(res_verity.data.token)){
+  //     dbClearAccount();
+  //     return res_verity;
+  //   }
+  //
+  //   dbSetJWTToken(res_verity.data.token);
+  //   return {code:1000,msg:'ok',data:userWallet};
 }
 
 
@@ -350,5 +355,13 @@ const beforeSend = (checkUser = true)=>{
   }
   return {code:1000,msg:'ok'};
 }
+
+
+export function didCreate() {
+  //todo 999
+  const didAddress = `did:veric:${dbGetUserWallet()?.account}`;
+  return  didAddress
+}
+
 
 export {Web3Provider,signer}
