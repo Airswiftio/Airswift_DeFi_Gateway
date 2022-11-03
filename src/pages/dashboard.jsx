@@ -45,7 +45,7 @@ const Dashboard = () => {
       <div className="dashboardContent">
         <div className="cardRow">
           <InfoCard title="Total Balance" value={9898} type={0} />
-          <InfoCard title="Total Balance" value={4556} type={0} />
+          <InfoCard title="Today's Income" value={4556} type={0} />
         </div>
         <div className="balanceOverview">
           <span className="title">Balance Overview</span>

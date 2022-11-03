@@ -1,3 +1,7 @@
+// Layout
+import Layout from "./Layout";
+import RequireAuth from "./RequireAuth";
+
 // Navigation
 import Navbar from "./navigation/header";
 
@@ -70,6 +74,9 @@ import Invite from "./admin/invite";
 import ManagementCreateAccount from "./management/login/createAccount";
 import ManagementLogin from "./management/login/login";
 import ManagementResetPassword from "./management/login/resetPassword";
+import ManagementLayout from "./ManagementLayout";
+import ManagementHeader from "./management/managementHeader";
+import SmallCard from "./management/dashboard/smallCard";
 
 export {
   Navbar,
@@ -111,4 +118,9 @@ export {
   ManagementCreateAccount,
   ManagementLogin,
   ManagementResetPassword,
+  ManagementHeader,
+  ManagementLayout,
+  Layout,
+  RequireAuth,
+  SmallCard,
 };

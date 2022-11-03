@@ -12,10 +12,14 @@ import {
   Withdraw,
   ManagementLogin,
   ManagementForgotPassword,
+  ManagementDashboard,
 } from "./pages";
-import Layout from "./components/Layout";
-import { Unauthorized } from "./components/";
-import RequireAuth from "./components/RequireAuth";
+import {
+  ManagementLayout,
+  Layout,
+  Unauthorized,
+  RequireAuth,
+} from "./components/";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.scss";
@@ -35,10 +39,19 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="connect" element={<Connect />} />
-        <Route path="liquidity/farms" element={<Farms />} />
-        <Route path="liquidity/pools" element={<Pools />} />
-        <Route path="management/login" element={<ManagementLogin />} />
-        <Route path="management/pw" element={<ManagementForgotPassword />} />
+
+        {/* Dev - Unprotected Management */}
+        <Route path="/management" element={<ManagementLayout />}>
+          <Route path="login" element={<ManagementLogin />} />
+          <Route path="pw" element={<ManagementForgotPassword />} />
+          <Route path="dashboard" element={<ManagementDashboard />} />
+        </Route>
+
+        {/* Liquidity Pools & Farms */}
+        <Route path="/liquidity" element={<ManagementLayout />}>
+          <Route path="farms" element={<Farms />} />
+          <Route path="pools" element={<Pools />} />
+        </Route>
 
         {/* Protected Routes Codes: */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>
