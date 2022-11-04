@@ -4,7 +4,8 @@ const apiPost = (url,p)=>post(url, p).then((res)=>{return res;}).catch((ee)=>{re
 
 export const challengeGenerate = p => apiGet('https://mock.apifox.cn/m1/1595489-0-default/merchant/sign_content', p);
 export const challengeVerify = p => apiPost('/challenge/verify', p);
+export const GetUserRelatedMerchant = p => apiGet('https://mock.apifox.cn/m1/1595489-0-default/merchant/related_merchant', p);
 export const GetUserNickname = p => apiGet('https://mock.apifox.cn/m1/1595489-0-default/merchant/nickname', p);
 export const SetNicknameUseEthSignature = p => apiPost('https://mock.apifox.cn/m1/1595489-0-default/merchant/nickname', p);
-export const GetUserRelatedMerchant = p => apiGet('https://mock.apifox.cn/m1/1595489-0-default/merchant/related_merchant', p);
+export const Register = p => apiPost('https://mock.apifox.cn/m1/1595489-0-default/merchant/register', p);
 

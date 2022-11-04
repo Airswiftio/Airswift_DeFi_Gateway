@@ -108,34 +108,46 @@ export function conversionUtcDate(date, type) {
   }
 }
 
-
-const userWalletKey = 'userWallet'
-export function dbGetUserWallet() {
-  return  dbStore.get(userWalletKey)
-}
-
-export function dbSetUserWallet(value){
-  return  dbStore.set(userWalletKey,value)
-}
-
-const JWTTokenKey = 'JWTToken'
-export function dbGetJWTToken() {
-  return  dbStore.get(JWTTokenKey)
-}
-export function dbSetJWTToken(value) {
-  return  dbStore.set(JWTTokenKey,value)
-}
-
 export function dbClearAccount() {
   return  dbStore.clear()
 }
+
+const userWalletKey = 'userWallet';
+export function dbSetUserWallet(value){
+  return  dbStore.set(userWalletKey,value)
+}
+export function dbGetUserWallet() {
+  return  dbStore.get(userWalletKey)
+}
+export function dbDelUserWallet() {
+  return  dbStore.delete(userWalletKey)
+}
+
+
+const JWTTokenKey = 'JWTToken'
+export function dbSetJWTToken(value) {
+  return  dbStore.set(JWTTokenKey,value)
+}
+export function dbGetJWTToken() {
+  return  dbStore.get(JWTTokenKey)
+}
+export function dbDelJWTToken() {
+  return  dbStore.delete(JWTTokenKey)
+}
+
+
 
 
 const SignDataKey = 'SignData';
 export function dbSetSignData(value) {
   return  dbStore.set(SignDataKey,value)
 }
-
+export function dbGetSignData() {
+  return  dbStore.get(SignDataKey)
+}
+export function dbDelSignData() {
+  return  dbStore.delete(SignDataKey)
+}
 
 
 

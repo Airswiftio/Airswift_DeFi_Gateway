@@ -59,13 +59,21 @@ export const Web3SignData = async (account, data) => {
   if(!isEth){
     return {code:-1,msg:'Ethereum Provider not exist!'};
   }
-  return await Web3Provider.send('eth_signTypedData_v4',[account, JSON.stringify(data)])
+
+  return await signer.signMessage(data)
       .then((res)=>{
         return {code:1000,data:res};
       })
       .catch((ee)=>{
         return analysisErrorMsg(ee);
       });
+  /*return await Web3Provider.send('eth_signTypedData_v4',[account, JSON.stringify(data)])
+      .then((res)=>{
+        return {code:1000,data:res};
+      })
+      .catch((ee)=>{
+        return analysisErrorMsg(ee);
+      });*/
   // return await signer._signTypedData(domain, types, message); //_signTypedData功能不完善，是实验中的功能，只能签名特定的数据结构
 }
 
@@ -294,20 +302,27 @@ export const connectWallet = async () => {
     let chainId = network.chainId.toString();
 
     //Get the signature verification message from the back end
-    let res_challenge = await challengeGenerate({address:account,chainId: chainId});
-    if(typeof res_challenge?.code === 'undefined' || res_challenge.code !== 1000 || empty(res_challenge.data)){
+    let res2 = await challengeGenerate({address:account,chainId: chainId});
+    if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2.msg.content)){
       dbClearAccount();
-      return res_challenge;
+      res2.msg = 'Failed to get sign message! '
+      return res2;
     }
 
-    dbSetSignData(res_challenge?.data?.content)
+    let res3 = await Web3SignData(account,res2.msg.content);
+    if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
+      dbClearAccount();
+      return res3;
+    }
 
+    dbSetSignData(res3?.data)
     let userWallet = {
       balance:balance,
       chainId:network.chainId,
       network:networkName,
       account:account,
-      simple_account:hideStr(account,5,4,'.',3)
+      simple_account:hideStr(account,5,4,'.',3),
+      did:didCreate(),
     };
     dbSetUserWallet(userWallet)
   }
@@ -340,7 +355,7 @@ export const connectWallet1 = async () => {
 }
 
 
-const beforeSend = (checkUser = true)=>{
+export const beforeSend = (checkUser = true)=>{
   if (!isEth) {
     return {code:-1,msg:'Ethereum Provider not exist!'};
   }
@@ -362,6 +377,7 @@ export function didCreate() {
   const didAddress = `did:veric:${dbGetUserWallet()?.account}`;
   return  didAddress
 }
+
 
 
 export {Web3Provider,signer}
