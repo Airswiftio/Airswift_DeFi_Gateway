@@ -13,6 +13,8 @@ import {
   ManagementLogin,
   ManagementForgotPassword,
   ManagementDashboard,
+  MerchantManagement,
+  LiquidityManagement,
 } from "./pages";
 import {
   ManagementLayout,
@@ -45,6 +47,8 @@ function App() {
           <Route path="login" element={<ManagementLogin />} />
           <Route path="pw" element={<ManagementForgotPassword />} />
           <Route path="dashboard" element={<ManagementDashboard />} />
+          <Route path="merchant" element={<MerchantManagement />} />
+          <Route path="liquidity" element={<LiquidityManagement />} />
         </Route>
 
         {/* Liquidity Pools & Farms */}

@@ -1,0 +1,99 @@
+{
+  "management": [
+    {
+      "id": 1,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 2,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 3,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": false
+    },
+    {
+      "id": 4,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 5,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 6,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 7,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": false
+    },
+    {
+      "id": 8,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 9,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 10,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 11,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 12,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": false
+    },
+    {
+      "id": 13,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 14,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    },
+    {
+      "id": 15,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": false
+    },
+    {
+      "id": 16,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": false
+    },
+    {
+      "id": 17,
+      "did": "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
+      "status": true
+    }
+  ],
+  "liquidity": [
+    { "Pool": "DAI/USDC", "status": true },
+    { "Pool": "USDC/ETH", "status": true },
+    { "Pool": "DAI/USDC", "status": true },
+    { "Pool": "USDC/ETH", "status": false },
+    { "Pool": "USDC/ETH", "status": true },
+    { "Pool": "DAI/USDC", "status": false },
+    { "Pool": "DAI/USDC", "status": false },
+    { "Pool": "DAI/USDC", "status": true }
+  ]
+}

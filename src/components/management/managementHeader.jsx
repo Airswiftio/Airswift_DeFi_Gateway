@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import Popup from "reactjs-popup";
 import Logo from "../../assets/management/logo.svg";
 import { ProfileModal } from "../";
@@ -7,19 +7,21 @@ import "./managementHeader.scss";
 
 import ProfilePhoto from "../../assets/sample_profile.svg";
 
-const Header = () => {
+const ManagementHeader = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(true);
   const url = window.location.pathname;
 
+  const navigate = useNavigate();
+
   const openModal = () => {
     setIsOpen(true);
-    console.log("Clicked");
   };
 
   const closeModal = () => {
     setIsOpen(false);
   };
+
   return (
     <div className="managementNavWrapper">
       <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
@@ -31,28 +33,23 @@ const Header = () => {
       <div className="navLinks">
         <Link
           to="/management/dashboard"
-          className={url.length === 1 ? "underline" : ""}
+          className={url.includes("management/dashboard") ? "underline" : ""}
         >
           Dashboard
         </Link>
         <Link
-          to="/assets"
-          className={url.includes("assets") ? "underline" : ""}
+          to="/management/merchant"
+          className={url.includes("management/merchant") ? "underline" : ""}
         >
           Merchant
         </Link>
         <Link
-          to="/liquidity/pools"
-          className={url.includes("settings") ? "underline" : ""}
+          to="/management/liquidity"
+          className={url.includes("management/liquidity") ? "underline" : ""}
         >
-          Liquidity Pool
+          Liquidity
         </Link>
-        <Link
-          to="/liquidity/farms"
-          className={url.includes("settings") ? "underline" : ""}
-        >
-          Farms
-        </Link>
+
         {loggedIn ? (
           <div className="profileContainer">
             <div className="imageContainer">
@@ -60,7 +57,7 @@ const Header = () => {
                 src={ProfilePhoto}
                 alt="profile"
                 className="navProfile"
-                onClick={() => setIsOpen(true)}
+                onClick={() => openModal()}
               />
             </div>
             <div className="online" />
@@ -68,7 +65,7 @@ const Header = () => {
         ) : (
           <Link
             to="/management/login"
-            className={url.includes("settings") ? "underline" : ""}
+            className={url.includes("login") ? "underline" : ""}
           >
             Login
           </Link>
@@ -78,4 +75,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ManagementHeader;

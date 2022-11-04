@@ -1,0 +1,76 @@
+@import "../../_breakpoints.scss";
+@import "../../_mixins.scss";
+
+.managementTableWrapper {
+  background: rgba(24, 30, 54, 0.9);
+  box-shadow: inset -1px -1px 0px rgba(24, 30, 54, 0.25),
+    inset 1px 1px 0px rgba(180, 255, 255, 0.2);
+  backdrop-filter: blur(25px);
+  border-radius: 16px;
+  height: 450px;
+  padding: 2em;
+  font-family: "Poppins";
+  overflow: scroll;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .mTableHeader {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0 1em 1em 1em;
+    justify-content: space-between;
+    min-width: 500px;
+
+    div {
+      display: flex;
+    }
+
+    span {
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .bordered {
+      // border-left: 1px solid rgba(255, 255, 255, 0.3);
+      // border-right: 1px solid rgba(255, 255, 255, 0.3);
+      width: 300px;
+      text-align: left;
+      @include md {
+        min-width: 0;
+        max-width: 100px;
+      }
+    }
+
+    .status {
+      align-self: flex-end;
+      text-align: center;
+    }
+  }
+
+  .mTableRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5em;
+    font-size: 12px;
+    min-width: 500px;
+
+    div {
+      display: flex;
+    }
+
+    .col {
+      min-width: 100px;
+      text-align: left;
+    }
+
+    .status {
+      align-self: flex-end;
+      text-align: right;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import React from "react";
 
 import "./search.scss";
 
-const Search = () => {
+const Search = ({ title = "Trans ID" }) => {
   return (
     <div className="searchWrapper">
       <svg
@@ -19,7 +19,7 @@ const Search = () => {
         />
       </svg>
 
-      <input className="input" placeholder="Trans ID" />
+      <input className="input" placeholder={title} />
     </div>
   );
 };

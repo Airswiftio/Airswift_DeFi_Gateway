@@ -17,6 +17,8 @@ import Pools from "./liquidity/pools";
 import ManagementLogin from "./management/login";
 import ManagementForgotPassword from "./management/forgotPassword";
 import ManagementDashboard from "./management/dashboard";
+import MerchantManagement from "./management/merchantManagement";
+import LiquidityManagement from "./management/liquidityManagement";
 
 export {
   Admin,
@@ -33,4 +35,6 @@ export {
   ManagementLogin,
   ManagementForgotPassword,
   ManagementDashboard,
+  MerchantManagement,
+  LiquidityManagement,
 };

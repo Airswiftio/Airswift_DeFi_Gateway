@@ -1,0 +1,29 @@
+@import "../../_breakpoints.scss";
+@import "../../_mixins.scss";
+
+.merchantManagementWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  max-width: 100vw;
+
+  @include md {
+    min-height: 100vh;
+  }
+
+  .management {
+    display: flex;
+    margin-top: 50px;
+    min-width: 400px;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    .managementSearchWrapper {
+      padding: 0 15%;
+    }
+  }
+}

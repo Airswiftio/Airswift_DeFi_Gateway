@@ -77,6 +77,9 @@ import ManagementResetPassword from "./management/login/resetPassword";
 import ManagementLayout from "./ManagementLayout";
 import ManagementHeader from "./management/managementHeader";
 import SmallCard from "./management/dashboard/smallCard";
+import ManagementTable from "./management/managementTable";
+import SwitchToggle from "./management/switchToggle";
+import ManagementPagination from "./management/pagination";
 
 export {
   Navbar,
@@ -123,4 +126,7 @@ export {
   Layout,
   RequireAuth,
   SmallCard,
+  ManagementTable,
+  SwitchToggle,
+  ManagementPagination,
 };
