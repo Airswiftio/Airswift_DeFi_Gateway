@@ -80,6 +80,7 @@ import SmallCard from "./management/dashboard/smallCard";
 import ManagementTable from "./management/managementTable";
 import SwitchToggle from "./management/switchToggle";
 import ManagementPagination from "./management/pagination";
+import ConfirmationModal from "./management/confirmationModal";
 
 export {
   Navbar,
@@ -129,4 +130,5 @@ export {
   ManagementTable,
   SwitchToggle,
   ManagementPagination,
+  ConfirmationModal,
 };

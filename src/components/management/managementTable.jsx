@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { SwitchToggle, ManagementPagination } from "../";
+import { SwitchToggle, ManagementPagination, ConfirmationModal } from "../";
+import Popup from "reactjs-popup";
 import "./managementTable.scss";
 
 const ManagementTable = ({ data }) => {
@@ -25,7 +26,6 @@ const ManagementTable = ({ data }) => {
       );
     }
     rows.push(temp);
-    console.log(rows);
     return rows;
   };
 
@@ -53,11 +53,24 @@ const ManagementTable = ({ data }) => {
   );
 };
 
-const TableRow = ({ id, did, status, data }) => {
+const TableRow = ({ id, status, data }) => {
   const [value, setValue] = useState(status);
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+    console.log("Clicked");
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   return (
     <div className="mTableRow">
+      <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
+        <ConfirmationModal click={closeModal} setValue={setValue} />
+      </Popup>
       <div>
         {Object.values(data).map((e, i) => (
           <span className="col">{e}</span>
@@ -69,6 +82,7 @@ const TableRow = ({ id, did, status, data }) => {
           isOn={value}
           handleToggle={() => setValue(!value)}
           id={id}
+          open={openModal}
         />
       </span>
     </div>

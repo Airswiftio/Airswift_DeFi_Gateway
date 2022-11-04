@@ -2,12 +2,18 @@ import React, { useState } from "react";
 
 import "./switchToggle.scss";
 
-const SwitchToggle = ({ isOn, handleToggle, id }) => {
+const SwitchToggle = ({ isOn, handleToggle, id, open }) => {
   return (
     <div>
       <input
         checked={isOn}
-        onChange={handleToggle}
+        onChange={() => {
+          if (isOn) {
+            open();
+          } else {
+            handleToggle();
+          }
+        }}
         className="react-switch-checkbox"
         id={`react-switch-new${id}`}
         type="checkbox"
