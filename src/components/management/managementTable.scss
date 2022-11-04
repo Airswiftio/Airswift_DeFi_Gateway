@@ -15,6 +15,19 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 2em;
+
+  @include md {
+    width: 80vw;
+  }
+
+  .row {
+    min-width: 500px;
+
+    @include md {
+      min-width: fit-content;
+    }
+  }
 
   .mTableHeader {
     display: flex;
@@ -22,25 +35,18 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     padding: 0 1em 1em 1em;
     justify-content: space-between;
-    min-width: 500px;
 
-    div {
-      display: flex;
+    @include md {
+      min-width: fit-content;
     }
 
     span {
       min-width: 100px;
       text-align: left;
-    }
 
-    .bordered {
-      // border-left: 1px solid rgba(255, 255, 255, 0.3);
-      // border-right: 1px solid rgba(255, 255, 255, 0.3);
-      width: 300px;
-      text-align: left;
       @include md {
-        min-width: 0;
-        max-width: 100px;
+        min-width: 30px;
+        margin-right: 1em;
       }
     }
 
@@ -59,6 +65,10 @@
     font-size: 12px;
     min-width: 500px;
 
+    @include md {
+      min-width: fit-content;
+    }
+
     div {
       display: flex;
     }
@@ -66,6 +76,11 @@
     .col {
       min-width: 100px;
       text-align: left;
+
+      @include md {
+        min-width: 30px;
+        margin-right: 1em;
+      }
     }
 
     .status {

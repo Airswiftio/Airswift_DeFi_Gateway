@@ -31,7 +31,7 @@ const ManagementTable = ({ data }) => {
 
   return (
     <div className="managementTableWrapper">
-      <div>
+      <div className="row">
         <div className="mTableHeader">
           <div>
             {Object.keys(data[0]).map((e, i) =>

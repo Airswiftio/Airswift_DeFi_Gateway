@@ -1,3 +1,6 @@
+@import "../../_breakpoints.scss";
+@import "../../_mixins.scss";
+
 .confirmationModal {
   width: 100vw;
   height: 100vh;
@@ -23,6 +26,10 @@
     gap: 1em;
     font-size: 12px;
     font-family: "Poppins";
+
+    @include md {
+      padding: 0;
+    }
 
     .title {
       font-size: 24px;
