@@ -1,3 +1,7 @@
+// Layout
+import Layout from "./Layout";
+import RequireAuth from "./RequireAuth";
+
 // Navigation
 import Navbar from "./navigation/header";
 
@@ -6,6 +10,8 @@ import Unauthorized from "./unauthorized";
 
 // Cards
 import InfoCard from "./cards/InfoCard";
+import FarmCard from "./cards/farmCard";
+import PoolCard from "./cards/poolCard";
 
 // Buttons
 import DefaultButton from "./buttons/DefaultButton";
@@ -50,10 +56,30 @@ import ProcessModal from "./modals/processModal";
 import ConfirmWithdrawModal from "./modals/confirmWithdrawModal";
 import ProgressModal from "./modals/progressModal";
 
+// Pools
+import AddLiquidityModal from "./modals/pools/addLiquidityModal";
+import RemoveLiquidityModal from "./modals/pools/removeLiquidityModal";
+
+// Farms
+import DepositModal from "./modals/farms/despositModal";
+import WithdrawModal from "./modals/farms/withdrawModal";
+
 // Admin
 import AdminHistoryTable from "./admin/historyTable";
 import AdminHistoryElement from "./admin/historyElement";
 import Invite from "./admin/invite";
+
+// Management
+import ManagementCreateAccount from "./management/login/createAccount";
+import ManagementLogin from "./management/login/login";
+import ManagementResetPassword from "./management/login/resetPassword";
+import ManagementLayout from "./ManagementLayout";
+import ManagementHeader from "./management/managementHeader";
+import SmallCard from "./management/dashboard/smallCard";
+import ManagementTable from "./management/managementTable";
+import SwitchToggle from "./management/switchToggle";
+import ManagementPagination from "./management/pagination";
+import ConfirmationModal from "./management/confirmationModal";
 
 export {
   Navbar,
@@ -85,4 +111,22 @@ export {
   ConfirmWithdrawModal,
   Invite,
   ProgressModal,
+  PoolCard,
+  FarmCard,
+  AddLiquidityModal,
+  RemoveLiquidityModal,
+  DepositModal,
+  WithdrawModal,
+  ManagementCreateAccount,
+  ManagementLogin,
+  ManagementResetPassword,
+  ManagementHeader,
+  ManagementLayout,
+  Layout,
+  RequireAuth,
+  SmallCard,
+  ManagementTable,
+  SwitchToggle,
+  ManagementPagination,
+  ConfirmationModal,
 };

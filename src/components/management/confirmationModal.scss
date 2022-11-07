@@ -1,0 +1,48 @@
+@import "../../_breakpoints.scss";
+@import "../../_mixins.scss";
+
+.confirmationModal {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 11, 36, 0.7);
+  backdrop-filter: blur(25px);
+
+  .modalContent {
+    width: 350px;
+    min-width: 350px;
+    height: 350px;
+    background: white;
+    padding: 2em;
+    border-radius: 16px;
+    background: rgba(24, 30, 54, 0.8);
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1em;
+    font-size: 12px;
+    font-family: "Poppins";
+
+    @include md {
+      padding: 0;
+    }
+
+    .title {
+      font-size: 24px;
+      color: white;
+    }
+
+    .tip {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .btn {
+      width: 70%;
+    }
+  }
+}

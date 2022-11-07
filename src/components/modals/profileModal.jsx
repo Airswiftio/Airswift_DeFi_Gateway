@@ -24,6 +24,7 @@ const ProfileModal = ({ click }) => {
   return (
     <div className="profileModal">
       <div className="modalContent">
+        <div className="username">AtomX</div>
         <div className="info">
           <img src={Verified} alt="Verified" />
           <div className="col">

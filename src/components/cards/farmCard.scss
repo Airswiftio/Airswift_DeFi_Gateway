@@ -1,0 +1,75 @@
+.farmCardWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5em;
+  font-family: "Poppins";
+  min-width: 350px;
+  max-width: 350px;
+  background: radial-gradient(
+      65.23% 34.55% at 50% 0%,
+      rgba(0, 255, 255, 0.5) 0%,
+      rgba(96, 85, 255, 0) 76.21%
+    ),
+    radial-gradient(
+      50% 8.83% at 50% 100%,
+      rgba(0, 255, 255, 0.2) 0%,
+      rgba(96, 85, 255, 0) 76.21%
+    ),
+    radial-gradient(
+        61.73% 466.5% at 100% 23.74%,
+        rgba(96, 85, 255, 0.1) 18.75%,
+        rgba(96, 85, 255, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    radial-gradient(
+        54.3% 484.96% at -19.76% -74.89%,
+        rgba(205, 243, 255, 0.1) 18.27%,
+        rgba(205, 243, 255, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    radial-gradient(
+        106.5% 268.12% at 83.72% -153.66%,
+        rgba(95, 233, 159, 0.1) 23.42%,
+        rgba(95, 233, 159, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    radial-gradient(
+        75.28% 327.09% at 36.43% -46.34%,
+        rgba(95, 233, 159, 0.1) 23.42%,
+        rgba(95, 233, 159, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  padding: 2em 1em;
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 32px;
+    img {
+      width: 50px;
+    }
+  }
+
+  .btn {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+  }
+
+  .info {
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 70%;
+  }
+}
