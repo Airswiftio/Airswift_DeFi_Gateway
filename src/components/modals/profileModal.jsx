@@ -3,8 +3,14 @@ import { useNavigate } from "react-router";
 import { DefaultButton } from "..";
 import "./profileModal.scss";
 import Verified from "../../assets/verified_green.svg";
+import {dbClearAccount, dbGetUserWallet} from "@@/utils/function";
 
 const ProfileModal = ({ click }) => {
+  const user = dbGetUserWallet();
+  const disConnect = () => {
+    dbClearAccount();
+    navigate('/login')
+  }
   useEffect(() => {
     const modal = document.getElementsByClassName("profileModal");
     modal[0].addEventListener("click", (e) => {
@@ -23,7 +29,7 @@ const ProfileModal = ({ click }) => {
           <div className="col">
             <div className="title">DID</div>
             <div className="subtitle">
-              7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61
+              {user.did}
             </div>
           </div>
         </div>
@@ -33,14 +39,14 @@ const ProfileModal = ({ click }) => {
           <div className="col">
             <div className="title">Address</div>
             <div className="subtitle">
-              0x0c82dF11b5dF20f7e33486e796a246Cf7EDDba1e
+              {user.account}
             </div>
           </div>
         </div>
 
         <DefaultButton
           title="Disconnect"
-          click={() => console.log("disconnect")}
+          click={() => disConnect()}
         />
       </div>
     </div>

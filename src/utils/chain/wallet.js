@@ -322,7 +322,7 @@ export const connectWallet = async () => {
       network:networkName,
       account:account,
       simple_account:hideStr(account,5,4,'.',3),
-      did:didCreate(),
+      did:didCreate(account),
     };
     dbSetUserWallet(userWallet)
   }
@@ -372,9 +372,10 @@ export const beforeSend = (checkUser = true)=>{
 }
 
 
-export function didCreate() {
+export function didCreate(account = '') {
   //todo 999
-  const didAddress = `did:veric:${dbGetUserWallet()?.account}`;
+  account = empty(account) ? dbGetUserWallet()?.account : account;
+  const didAddress =`did:veric:${account}`;
   return  didAddress
 }
 

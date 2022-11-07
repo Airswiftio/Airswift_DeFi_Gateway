@@ -69,6 +69,11 @@ export function empty(value){
   return typeof value === 'undefined' || value === null || value === false || value.length === 0;
 }
 
+export function array_column(array, field) {
+  return array.map(v => v[field]);
+}
+
+
 /* The seconds are optimized and displayed as days,hours,minutes */
 export function timeToFriendly(time = 0) {
   let days = parseInt((time / ( 60 * 60 * 24)).toString());

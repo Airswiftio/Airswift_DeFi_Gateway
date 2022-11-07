@@ -12,9 +12,9 @@ import "@@/App.scss";
 
 /* Protected route codes -> user: 2000, merchant: 3000, admin: 5000 */
 const ROLES = {
-  User: 2000,
-  Merchant: 3000,
-  Admin: 5000,
+  Contributor: 'contributor',
+  ShopManager: 'shop_manager',
+  Admin: 'admin',
 };
 
 function App() {
@@ -24,10 +24,9 @@ function App() {
         {/* Public Routes */}
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        {/*<Route path="connect" element={<Connect />} />*/}
 
         {/* Protected Routes Codes: */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Contributor,ROLES.ShopManager,ROLES.Admin]} />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="assets" element={<Assets />} />
           <Route path="settings" element={<Settings />} />
@@ -35,8 +34,12 @@ function App() {
           <Route path="admin" element={<Admin />} />
         </Route>
 
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+          <Route path="admin" element={<Admin />} />
+        </Route>
+
         {/* Catch all Route */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Merchant]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Contributor,ROLES.ShopManager,ROLES.Admin]} />}>
           <Route path="*" element={<Dashboard />} />
         </Route>
       </Route>

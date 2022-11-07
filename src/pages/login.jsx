@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import useAuth from "@@/hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import Popup from "reactjs-popup";
-import {DefaultButton, NameDid, ProgressModal} from "@@/components";
+import {DefaultButton, ProgressModal} from "@@/components";
 
 import "./login.scss";
 import AirSwift from "@@/assets/airswift_payment_logo.svg";
 import {beforeSend, connectWallet, didCreate} from "@@/utils/chain/wallet";
-import {GetUserNickname, GetUserRelatedMerchant, Register, SetNicknameUseEthSignature} from "@@/utils/request/api";
-import {dbGetSignData, dbGetUserWallet, empty} from "@@/utils/function";
+import {
+  GetUserNickname,
+  GetUserRelatedMerchant,
+  SetNicknameUseEthSignature,
+  UserLogin, UserRegister
+} from "@@/utils/request/api";
+import {array_column, dbGetSignData, dbGetUserWallet, dbSetUserWallet, empty} from "@@/utils/function";
 import LoginSvg from "@@/assets/login.svg";
 import IconBack from "@@/assets/icon/back.svg";
 
@@ -35,14 +40,14 @@ const Login = () => {
   };
 
   const handleSuccess = () => {
-    setAuth({ roles: [3000] });
+    // setAuth({ roles: [3000] });
     navigate(from, { replace: true });
   };
 
   const changeStoreInfo = (key,value) => {
     const data = storeInfo;
-    storeInfo[key] = value;
-    setStoreInfo(storeInfo);
+    data[key] = value;
+    setStoreInfo(data);
   };
 
   const connect = async () => {
@@ -61,7 +66,7 @@ const Login = () => {
       return false;
     }
 
-    res_um.msg.merchant_users = [];//todo 888
+    // res_um.msg.merchant_users = [];//todo 888
     // console.log('res_um?.msg?.merchant_users',res_um?.msg?.merchant_users);
     if(res_um?.msg?.merchant_users?.length > 0){
       setStores(res_um?.msg?.merchant_users);
@@ -75,7 +80,7 @@ const Login = () => {
       alert('Failed to get User Nickname!')
     }
 
-    res_uu.msg.content = '';//todo 888
+    // res_uu.msg.content = '';//todo 888
     if(empty(res_uu?.msg?.content)){
       //set the nickname first
       setStep(1);
@@ -143,12 +148,55 @@ const Login = () => {
       "callback_url": storeInfo.callback_url,
     }
 
-    const res = await Register(data);
+    const res = await UserRegister(data);
     if(res?.code !== 1000 || res.success !== true){
       alert('Failed to register user!')
       return false;
     }
 
+    //store user info
+    const user = dbGetUserWallet();
+    user.roles = ['admin'];
+    dbSetUserWallet(user);
+    navigate("/dashboard")
+  };
+  const SignIn = async (storeInfo) => {
+    if(storeInfo?.merchant_id?.length <= 0){
+      alert('The merchant id cannot be empty!')
+      return false;
+    }
+    if(storeInfo?.merchant_name?.length <= 0){
+      alert('The store name cannot be empty!')
+      return false;
+    }
+    if(storeInfo?.role?.length <= 0){
+      alert('The role cannot be empty!')
+      return false;
+    }
+
+
+    let res1 = beforeSend();
+    if(res1.code !== 1000){
+      alert(res1.msg)
+      return false;
+    }
+
+    const data = {
+      "eth_address":dbGetUserWallet()?.account,
+      "sign_data": dbGetSignData(),
+      "merchant_id": storeInfo.merchant_id,
+    }
+
+    const res = await UserLogin(data);
+    if(res?.code !== 1000 || res.success !== true){
+      alert('Failed to Login!')
+      return false;
+    }
+
+    //store user info
+    const user = dbGetUserWallet();
+    user.roles = [storeInfo?.role];
+    dbSetUserWallet(user);
     navigate("/dashboard")
   };
   return (
@@ -262,7 +310,7 @@ const Login = () => {
                       <div
                           className="store"
                           key={kk}
-                          onClick={() => navigate("/dashboard")}
+                          onClick={() => SignIn(vv)}
                       >
                         {vv.merchant_name} ( {vv.role} )
                         <div>
@@ -272,12 +320,16 @@ const Login = () => {
                       </div>
                   ))}
                 </div>
+                {!array_column(stores,'role').includes('admin')
+                    &&
+                    <DefaultButton
+                        title="Create a new store"
+                        type={1}
+                        click={() => navigate("/stores/setup")}
+                    />
+                }
 
-                {/*<DefaultButton*/}
-                {/*    title="Create a new store"*/}
-                {/*    type={1}*/}
-                {/*    click={() => navigate("/stores/setup")}*/}
-                {/*/>*/}
+
               </div>
             </div>
         )}
