@@ -247,3 +247,28 @@ export const GetWithdrawList = p => apiGet1(
         }
     }
 );
+
+
+//get app info
+export const GetApplicationDetail = p => apiGet1(
+    {
+        "success": true,
+        "msg": {
+            "id": 2,
+            "created_at": "2022-10-23T02:06:25.228+08:00",
+            "updated_at": "2022-10-23T02:06:25.228+08:00",
+            "merchant_id": 2,
+            "name": "George Garcia",
+            "describe": "",
+            "link": "https://www.google.com",
+            "slippage": 0,
+            "currencies": null,
+            "callbackUrl": "https://www.google.com",
+            "api_key": "pdZulwDBWfnsnIwBZmfGKWdgqhtHrzUQ",
+            "api_key_created_at": "2022-10-23T02:06:25.217+08:00",
+            "ipn_key": "rXcOrvbyCYokQGrLlljJHjtTDucSlapM",
+            "ipn_key_created_at": "2022-10-23T02:06:25.217+08:00",
+            "status": "available"
+        }
+    }
+);

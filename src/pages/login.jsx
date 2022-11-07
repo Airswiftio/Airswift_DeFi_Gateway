@@ -15,7 +15,6 @@ import {
 } from "@@/utils/request/api";
 import {array_column, dbGetSignData, dbGetUserWallet, dbSetUserWallet, empty} from "@@/utils/function";
 import LoginSvg from "@@/assets/login.svg";
-import IconBack from "@@/assets/icon/back.svg";
 
 const Login = () => {
   const [modalIsOpen, setIsOpen] = useState(false);

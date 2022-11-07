@@ -13,7 +13,7 @@
     justify-content: flex-start;
     color: rgba(255, 255, 255, 0.8);
 
-    span {
+    &>span:first-child {
       width: 300px;
       text-align: left;
     }
@@ -29,7 +29,7 @@
     }
 
     .time, .img {
-      width: 100px;
+      //width: 100px;
     }
   }
 }

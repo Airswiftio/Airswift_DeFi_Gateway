@@ -1,20 +1,33 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 
 import "./appConfig.scss";
+import {GetApplicationDetail} from "@@/utils/request/api";
 
-const appConfig = () => {
+const AppConfig = () => {
+    const [storeInfo, setStoreInfo] = useState({});
+
+    const getAppDetail = async () => {
+        const res = await GetApplicationDetail({app_id:0})
+        if(res?.code === 1000){
+            setStoreInfo(res?.msg)
+        }
+    }
+
+    useEffect(() => {
+        getAppDetail();
+    }, []);
   return (
     <div className="appConfigWrapper">
       <span className="label">App Name</span>
-      <div className="item">Omnisolu</div>
+      <div className="item">{storeInfo.name}</div>
 
       <span className="label">Application Link</span>
-      <div className="item">111.111.111</div>
+      <div className="item">{storeInfo.link}</div>
 
       <span className="label">Callback Url</span>
-      <div className="item">176.298</div>
+      <div className="item">{storeInfo.callbackUrl}</div>
     </div>
   );
 };
 
-export default appConfig;
+export default AppConfig;

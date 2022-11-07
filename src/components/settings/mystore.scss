@@ -21,11 +21,12 @@
       gap: 2em;
       margin: 0.5em 0;
 
-      span {
+      &>span:first-child {
         width: 100px;
         text-align: left;
         color: rgba(255, 255, 255, 0.5);
       }
+
     
       .label {
         color: white;

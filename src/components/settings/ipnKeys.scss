@@ -11,10 +11,14 @@
     justify-content: flex-start;
     gap: 1em;
 
-    span {
+    //span {
+    //  text-align: left;
+    //  display: flex;
+    //  min-width: 200px;
+    //}
+    &>span:first-child {
+      width: 300px;
       text-align: left;
-      display: flex;
-      min-width: 200px;
     }
 
     .message {

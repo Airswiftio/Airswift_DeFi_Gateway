@@ -1,13 +1,27 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { DefaultButton } from "../";
 
 import "./ipnKeys.scss";
+import {GetApplicationDetail} from "@@/utils/request/api";
 
-const ipnKeys = () => {
+const IpnKeys = () => {
+    const [storeInfo, setStoreInfo] = useState({});
+
+    const getAppDetail = async () => {
+        const res = await GetApplicationDetail({app_id:0})
+        if(res?.code === 1000){
+            setStoreInfo(res?.msg)
+        }
+    }
+
+    useEffect(() => {
+        getAppDetail();
+    }, []);
+
   return (
     <div className="ipnKeysWrapper">
       <div className="row">
-        <span>*****************</span>
+        <span>{storeInfo.ipn_key}</span>
         <span className="message">
           Tips：For security reasons we show it only once.
         </span>
@@ -16,7 +30,7 @@ const ipnKeys = () => {
       <div className="row">
         <span>Last Created Time</span>
         <span className="time">
-          24 Mar 2022 <br /> 11:38 am
+         {storeInfo.created_at}
         </span>
       </div>
 
@@ -30,4 +44,4 @@ const ipnKeys = () => {
   );
 };
 
-export default ipnKeys;
+export default IpnKeys;

@@ -1,15 +1,29 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 
 import Copy from "../../assets/copy.svg";
 import Refresh from "../../assets/refresh.svg";
 
 import "./apiKeys.scss";
+import {GetApplicationDetail} from "@@/utils/request/api";
 
-const apiKeys = () => {
+const ApiKeys = () => {
+    const [storeInfo, setStoreInfo] = useState({});
+
+    const getAppDetail = async () => {
+        const res = await GetApplicationDetail({app_id:0})
+        if(res?.code === 1000){
+            setStoreInfo(res?.msg)
+        }
+    }
+
+    useEffect(() => {
+        getAppDetail();
+    }, []);
+
   return (
     <div className="apiKeysWrapper">
       <div className="row">
-        <span>EY6JZ44-9BKMNYN-GC7QMDP-N28K2KM</span>
+        <span>{storeInfo.api_key}</span>
         <div className="img">
           <img src={Copy} alt="copy" />
         </div>
@@ -18,7 +32,7 @@ const apiKeys = () => {
       <div className="row">
         <span>Created Time</span>
         <span className="time">
-          24 Mar 2022 <br /> 11:38 am
+          {storeInfo.created_at}
         </span>
       </div>
 
@@ -32,4 +46,4 @@ const apiKeys = () => {
   );
 };
 
-export default apiKeys;
+export default ApiKeys;
