@@ -18,7 +18,7 @@ import LoginSvg from "@@/assets/login.svg";
 
 const Login = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState('0');
   const [stores, setStores] = useState([]);
   const [nickname, setNickname] = useState('');
   const [storeInfo, setStoreInfo] = useState({});
@@ -29,6 +29,8 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
 
+  let nickname_type = '';
+  let role = '';
   const openModal = () => {
     setIsOpen(true);
     console.log("Clicked");
@@ -58,36 +60,45 @@ const Login = () => {
       return false;
     }
 
-    //Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
-    const res_um = await GetUserRelatedMerchant();
-    if(res_um?.code !== 1000){
-      alert('Failed to get store information!')
-      return false;
-    }
+    const user_address = dbGetUserWallet()?.account;
 
-    // res_um.msg.merchant_users = [];//todo 888
-    // console.log('res_um?.msg?.merchant_users',res_um?.msg?.merchant_users);
-    if(res_um?.msg?.merchant_users?.length > 0){
+    // Judge whether the user exists. If it exists, enter the login interface. Otherwise, register the user
+    const user_exist = false;//todo 888 还差一个判断地址是否注册的接口
+    if(user_exist){
+      // login
+
+      //Query the user's nickname. If there is no nickname, set the nickname first
+      const res_uu = await GetUserNickname({address:dbGetUserWallet()?.account});
+      if(res_uu?.code !== 1000){
+        alert('Failed to get User Nickname!')
+        return false;
+      }
+
+      console.log('res_uu',res_uu);
+      if(empty(res_uu?.msg?.content)){
+        //set the nickname
+        setStep('set_nickname');
+        return false;
+      }
+
+      // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
+      const res_um = await GetUserRelatedMerchant({address:user_address});
+      console.log('res_um',res_um);
+      if(res_um?.code !== 1000 || res_um?.msg?.merchant_users?.length <= 0){
+        alert('Failed to get store information!')
+        return false;
+      }
+
       setStores(res_um?.msg?.merchant_users);
-      setStep(3);
+      setStep('choose_store');
       return false;
-    }
-
-    //Query the user's nickname. If there is no nickname, set the nickname first
-    const res_uu = await GetUserNickname();
-    if(res_uu?.code !== 1000){
-      alert('Failed to get User Nickname!')
-    }
-
-    // res_uu.msg.content = '';//todo 888
-    if(empty(res_uu?.msg?.content)){
-      //set the nickname first
-      setStep(1);
     }
     else{
-      setStep(2);
+      //register
+      setStep('set_store');
+
     }
-    return false;
+
   };
 
   const enterNickname = async () => {
@@ -112,10 +123,19 @@ const Login = () => {
       alert('Failed to set user nickname')
       return false;
     }
-    else{
-      setStep(2);
-      return false;
+
+    if(nickname_type === 'dashboard'){
+      const user = dbGetUserWallet();
+      user.roles = role;
+      console.log('user',user,role);
+      dbSetUserWallet(user);
+      navigate("/dashboard")
     }
+    else{
+      setStep('choose_store');
+    }
+
+
   };
 
   const SignUp = async () => {
@@ -153,11 +173,10 @@ const Login = () => {
       return false;
     }
 
-    //store user info
-    const user = dbGetUserWallet();
-    user.roles = ['admin'];
-    dbSetUserWallet(user);
-    navigate("/dashboard")
+    //set the nickname
+    role = 'admin';
+    nickname_type = 'dashboard'
+    setStep('set_nickname');
   };
   const SignIn = async (storeInfo) => {
     if(storeInfo?.merchant_id?.length <= 0){
@@ -194,13 +213,13 @@ const Login = () => {
 
     //store user info
     const user = dbGetUserWallet();
-    user.roles = [storeInfo?.role];
+    user.roles = storeInfo?.role;
     dbSetUserWallet(user);
     navigate("/dashboard")
   };
   return (
       <>
-        {step === 0 && (
+        {step === '0' && (
             <div className="loginWrapper">
               <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
                 <ProgressModal
@@ -228,7 +247,7 @@ const Login = () => {
             </div>
         )}
 
-        {step === 1 && (
+        {step === 'set_nickname' && (
             <div className="connectWrapper">
               <div className="nameDidWrapper">
                 <div className="title">
@@ -241,7 +260,7 @@ const Login = () => {
               {/*{conn ? <NameDid /> : <ProgressCircle percentage={0} />}*/}
             </div>
         )}
-        {step === 2 && (
+        {step === 'set_store' && (
             <div className="setupWrapper">
               <div className="setup">
                 <button
@@ -296,7 +315,7 @@ const Login = () => {
 
         )}
 
-        {step === 3 && (
+        {step === 'choose_store' && (
             <div className="chooseWrapper">
               <div className="choose">
                 <div className="titles">

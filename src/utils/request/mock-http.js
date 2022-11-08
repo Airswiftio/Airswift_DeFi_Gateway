@@ -15,11 +15,11 @@ const LOGIN =  '/'
 //Create an axis instance, where you can set the default configuration of the request
 const instance = axios.create({
     timeout: 10000, // Set request timeout for 10s
-    baseURL: ApiUrl   //Set the baeUrl of different environments according to the reverse proxy configured by yourself
+    baseURL: ''   //Set the baeUrl of different environments according to the reverse proxy configured by yourself
 })
 
 // Set the post request header uniformly in the document. The following will talk about several 'Content Type' of post requests
-instance.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8'
+instance.defaults.headers.post['Content-Type'] = 'application/json'
 
 //Here I simply list some common http status code information, and you can adjust the configuration yourself
 let httpCode = {

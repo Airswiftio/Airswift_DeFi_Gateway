@@ -1,5 +1,6 @@
 import {ethers, WEthereum, Web3Provider, signer, isEth} from '@@/utils/chain/chainBase';
 import md5 from 'js-md5';
+import Web3 from 'web3';
 import {
   dbClearAccount,
   dbGetUserWallet, dbSetJWTToken, dbSetSignData, dbSetUserWallet,
@@ -55,19 +56,39 @@ const analysisErrorMsg =  (error) => {
   }
 }
 
-export const Web3SignData = async (account, data) => {
+export const Web3SignData = async (address, data) => {
   if(!isEth){
     return {code:-1,msg:'Ethereum Provider not exist!'};
   }
 
-  return await signer.signMessage(data)
+  let web399999 = new Web3(Web3.givenProvider);
+
+  console.log('data1',data);
+  console.log('address',address);
+
+  return await web399999.eth.personal.sign(data, address, null)
       .then((res)=>{
         return {code:1000,data:res};
       })
       .catch((ee)=>{
         return analysisErrorMsg(ee);
       });
-  /*return await Web3Provider.send('eth_signTypedData_v4',[account, JSON.stringify(data)])
+  //
+  // return await Web3Provider.eth.personal.sign(data,address)
+  //     .then((res)=>{
+  //       return {code:1000,data:res};
+  //     })
+  //     .catch((ee)=>{
+  //       return analysisErrorMsg(ee);
+  //     });
+  return await Web3Provider.send('eth_signTypedData_v4',[address, JSON.stringify(data)])
+      .then((res)=>{
+        return {code:1000,data:res};
+      })
+      .catch((ee)=>{
+        return analysisErrorMsg(ee);
+      });
+  /*return await Web3Provider.send('eth_signTypedData_v4',[address, JSON.stringify(data)])
       .then((res)=>{
         return {code:1000,data:res};
       })
@@ -302,7 +323,7 @@ export const connectWallet = async () => {
     let chainId = network.chainId.toString();
 
     //Get the signature verification message from the back end
-    let res2 = await challengeGenerate({address:account,chainId: chainId});
+    let res2 = await challengeGenerate({address:account});
     if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2.msg.content)){
       dbClearAccount();
       res2.msg = 'Failed to get sign message! '
