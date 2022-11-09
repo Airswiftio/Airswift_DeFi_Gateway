@@ -1,6 +1,5 @@
 import {ethers, WEthereum, Web3Provider, signer, isEth} from '@@/utils/chain/chainBase';
 import md5 from 'js-md5';
-import Web3 from 'web3';
 import {
   dbClearAccount,
   dbGetUserWallet, dbSetJWTToken, dbSetSignData, dbSetUserWallet,
@@ -8,7 +7,7 @@ import {
   hideStr,
   json_to_obj
 } from "@@/utils/function";
-import {challengeGenerate, challengeVerify} from "@@/utils/request/api";
+import {challengeGenerate} from "@@/utils/request/api";
 // import BaseConfig from "@@/config.json";
 // import {popupAlert} from "@@/components/PopAlert/Index";
 
@@ -60,19 +59,6 @@ export const Web3SignData = async (address, data) => {
   if(!isEth){
     return {code:-1,msg:'Ethereum Provider not exist!'};
   }
-
-  // let web399999 = new Web3(Web3.givenProvider);
-  //
-  // console.log('data1',data);
-  // console.log('address',address);
-  //
-  // return await web399999.eth.personal.sign(data, address, null)
-  //     .then((res)=>{
-  //       return {code:1000,data:res};
-  //     })
-  //     .catch((ee)=>{
-  //       return analysisErrorMsg(ee);
-  //     });
 
   return await signer.signMessage(data)
       .then((res)=>{

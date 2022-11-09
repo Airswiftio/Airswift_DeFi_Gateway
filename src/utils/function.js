@@ -58,6 +58,9 @@ export function arrListSort(arrList = [],key = 'id'){
     return function(a,b){
       const val1 = a[property];
       const val2 = b[property];
+      console.log('val1',val1);
+      console.log('val2',val2);
+      console.log('val1 - val2',val1 - val2);
       return val1 - val2;
     }
   }
@@ -71,6 +74,10 @@ export function empty(value){
 
 export function array_column(array, field) {
   return array.map(v => v[field]);
+}
+
+export function explode(str,separator){
+  return str.split(separator)
 }
 
 

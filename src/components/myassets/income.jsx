@@ -24,7 +24,16 @@ const Income = () => {
     };
 
     const getList = async () => {
-        const res = await GetPaymentList()
+        let params = {
+            // app_id:0,
+            page:1,
+            size:10,
+            status:'pending',
+            // payment_num:0,
+            // currency_id:0,
+            // date:0,
+        }
+        const res = await GetPaymentList(params)
         if(res?.code === 1000){
             setDataList(res?.msg?.payments ?? [])
             setDataTotal(res?.msg?.total)

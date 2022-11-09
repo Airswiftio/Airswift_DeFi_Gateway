@@ -2,7 +2,7 @@
   "name": "airswift-gateway",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://34.221.50.218:23456/api",
+  "proxy": "http://34.221.50.218:23456",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -22,8 +22,7 @@
     "reactjs-popup": "^2.0.5",
     "recharts": "^2.1.15",
     "sass": "^1.55.0",
-    "web-vitals": "^2.1.4",
-    "web3": "^1.8.0"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "dotenv -e .env.local craco start",

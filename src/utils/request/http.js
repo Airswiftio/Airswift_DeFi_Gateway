@@ -15,7 +15,8 @@ const LOGIN =  '/'
 //Create an axis instance, where you can set the default configuration of the request
 const instance = axios.create({
     timeout: 10000, // Set request timeout for 10s
-    baseURL: ApiUrl   //Set the baeUrl of different environments according to the reverse proxy configured by yourself
+    baseURL: '/api'
+    // baseURL: ApiUrl   //Set the baeUrl of different environments according to the reverse proxy configured by yourself
 })
 
 // Set the post request header uniformly in the document. The following will talk about several 'Content Type' of post requests
@@ -36,11 +37,9 @@ let httpCode = {
 
 /** Add request interceptor **/
 instance.interceptors.request.use(config => {
-    console.log('config',config);
-
-    config.headers = {
-        "Cookie": `user-auth-token=${dbGetJWTToken()};`
-    }
+    // config.headers = {
+    //     "Cookie": `user-auth-token=${dbGetJWTToken()};`
+    // }
     // config.headers['user-auth-token'] = dbGetJWTToken();
     // hide = message.loading({content: 'Loading...', duration: 0});
 
@@ -60,9 +59,6 @@ instance.interceptors.request.use(config => {
 
 /** Add Response Interceptor  **/
 instance.interceptors.response.use(response => {
-    let allCookies = document.cookie
-    console.log('aaresponse',response);
-    console.log('allCookies',allCookies);
     // hide()
     if (response.status === 200) {
         return Promise.resolve(response.data)

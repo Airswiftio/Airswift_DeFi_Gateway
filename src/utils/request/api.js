@@ -20,7 +20,7 @@ export const UserRegister = p => apiPost('/merchant/register', p);
 export const UserLogin = p => apiPost('/merchant/login', p);
 
 // export const GetMerchantBaseSummary = p => apiGet('/merchant/summary/base', p); todo 888
-export const GetMerchantBaseSummary = p => apiGet1('/merchant/summary/base', p);
+export const GetMerchantBaseSummary = p => apiGet('/merchant/summary/base', p);
 
 export const GetMerchantPaymentStatChart = p => apiGet('/merchant/chart/payment', p);
 
@@ -28,37 +28,37 @@ export const GetMerchantPaymentStatChart = p => apiGet('/merchant/chart/payment'
 export const GetPaymentSummary = p => apiGet(`/merchant/application/${app_id}/payment/summary`, p);
 
 //Withdraw Summary
-export const GetWithdrawSummary = p => apiGet1(`/merchant/application/${app_id}/withdraw/summary`, p);
+export const GetWithdrawSummary = p => apiGet(`/merchant/application/${app_id}/withdraw/summary`, p);
 
 //Income list
-export const GetPaymentList = p => apiGet1(`/merchant/application/${app_id}/payment/list`, p);
+export const GetPaymentList = p => apiGet(`/merchant/application/${app_id}/payment/list`, p);
 
 //Withdraw list
 export const GetWithdrawList = p => apiGet1(`/merchant/application/${app_id}/withdraw/list`, p);
 
 //get app info
-export const GetApplicationDetail = p => apiGet1(`/merchant/application/${app_id}/detail`, p);
+export const GetApplicationDetail = p => apiGet(`/merchant/application/${app_id}/detail`, p);
 
 
 
 
 
 
-// export const CreateApplication = p => apiPost1('/merchant/application/create', p);
-// export const GetApplicationList = p => apiGet1(`/merchant/${merchant_id}/application/list`, p);
+// export const CreateApplication = p => apiPost('/merchant/application/create', p);
+// export const GetApplicationList = p => apiGet(`/merchant/${merchant_id}/application/list`, p);
 
-export const ModifyApplicationBase = p => apiPost1('/merchant/application/base', p);
-export const ModifyApplicationCurrency = p => apiPost1('/merchant/application/currency', p);
-export const ModifyApplicationApiKey = p => apiPost1('/merchant/application/api_key', p);
-export const ModifyApplicationIpnKey = p => apiPost1('/merchant/application/ipn_key', p);
-export const GetAvailableCurrency = p => apiGet1(`/merchant/config/all_currency`, p);
-export const GetPaymentDetail = p => apiGet1(`/merchant/application/${app_id}/payment/${payment_id}`, p);
-export const GetWithdrawDetail = p => apiGet1(`/merchant/application/withdraw/${withdraw_id}`, p);
+export const ModifyApplicationBase = p => apiPost('/merchant/application/base', p);
+export const ModifyApplicationCurrency = p => apiPost('/merchant/application/currency', p);
+export const ModifyApplicationApiKey = p => apiPost('/merchant/application/api_key', p);
+export const ModifyApplicationIpnKey = p => apiPost('/merchant/application/ipn_key', p);
+export const GetAvailableCurrency = p => apiGet(`/merchant/config/all_currency`, p);
+export const GetPaymentDetail = p => apiGet(`/merchant/application/${app_id}/payment/${payment_id}`, p);
+export const GetWithdrawDetail = p => apiGet(`/merchant/application/withdraw/${withdraw_id}`, p);
 
-// export const PaymentRefund = p => apiPost1('/merchant/payment/refund', p);
-// export const PaymentWithdraw = p => apiPost1('/merchant/payment/withdraw', p);
+// export const PaymentRefund = p => apiPost('/merchant/payment/refund', p);
+// export const PaymentWithdraw = p => apiPost('/merchant/payment/withdraw', p);
 
-export const GetMerchantUserList = p => apiGet1(`/merchant/user/list`, p);
-export const GrantUserMerchantRole = p => apiPost1('/merchant/user/role/grant', p);
-export const RevokeUserMerchantRole = p => apiPost1('/merchant/user/role/revoke', p);
-export const ChangeUserMerchantRole = p => apiPost1('/merchant/user/role/change', p);
+export const GetMerchantUserList = p => apiGet(`/merchant/user/list`, p);
+export const GrantUserMerchantRole = p => apiPost('/merchant/user/role/grant', p);
+export const RevokeUserMerchantRole = p => apiPost('/merchant/user/role/revoke', p);
+export const ChangeUserMerchantRole = p => apiPost('/merchant/user/role/change', p);
