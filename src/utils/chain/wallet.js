@@ -61,27 +61,20 @@ export const Web3SignData = async (address, data) => {
     return {code:-1,msg:'Ethereum Provider not exist!'};
   }
 
-  let web399999 = new Web3(Web3.givenProvider);
-
-  console.log('data1',data);
-  console.log('address',address);
-
-  return await web399999.eth.personal.sign(data, address, null)
-      .then((res)=>{
-        return {code:1000,data:res};
-      })
-      .catch((ee)=>{
-        return analysisErrorMsg(ee);
-      });
+  // let web399999 = new Web3(Web3.givenProvider);
   //
-  // return await Web3Provider.eth.personal.sign(data,address)
+  // console.log('data1',data);
+  // console.log('address',address);
+  //
+  // return await web399999.eth.personal.sign(data, address, null)
   //     .then((res)=>{
   //       return {code:1000,data:res};
   //     })
   //     .catch((ee)=>{
   //       return analysisErrorMsg(ee);
   //     });
-  return await Web3Provider.send('eth_signTypedData_v4',[address, JSON.stringify(data)])
+
+  return await signer.signMessage(data)
       .then((res)=>{
         return {code:1000,data:res};
       })
