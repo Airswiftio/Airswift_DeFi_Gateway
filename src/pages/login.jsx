@@ -13,7 +13,7 @@ import {
   SetNicknameUseEthSignature,
   UserLogin, UserRegister
 } from "@@/utils/request/api";
-import {array_column, dbGetSignData, dbGetUserWallet, dbSetUserWallet, empty} from "@@/utils/function";
+import {array_column, dbGetSignData, dbGetUserWallet, dbSetJWTToken, dbSetUserWallet, empty} from "@@/utils/function";
 import LoginSvg from "@@/assets/login.svg";
 
 const Login = () => {
@@ -31,6 +31,8 @@ const Login = () => {
 
   let nickname_type = '';
   let role = '';
+  // let user = {};
+  // let sign_data = '';
   const openModal = () => {
     setIsOpen(true);
     console.log("Clicked");
@@ -59,46 +61,48 @@ const Login = () => {
       alert(res?.msg);
       return false;
     }
+    // user = res?.data?.user;
+    // sign_data = res?.data?.sign_data;
 
     const user_address = dbGetUserWallet()?.account;
 
+
+    //Query the user's nickname. If there is no nickname, set the nickname first
+    const res_uu = await GetUserNickname({address:dbGetUserWallet()?.account});
+    if(res_uu?.code !== 1000){
+      alert('Failed to get User Nickname!')
+      return false;
+    }
+
+    if(empty(res_uu?.msg?.nickname)){
+      //set the nickname
+      setStep('set_nickname');
+      return false;
+    }
+
+    // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
+    const res_um = await GetUserRelatedMerchant({address:user_address});
+    console.log('res_um',res_um);
+    if(res_um?.code !== 1000 || res_um?.msg?.merchant_users?.length <= 0){
+      alert('Failed to get store information!')
+      return false;
+    }
+
+    setStores(res_um?.msg?.merchant_users);
+
+
     // Judge whether the user exists. If it exists, enter the login interface. Otherwise, register the user
-    const user_exist = false;//todo 888 还差一个判断地址是否注册的接口
+    const user_exist = true;//todo 888 还差一个判断地址是否注册的接口
     if(user_exist){
       // login
-
-      //Query the user's nickname. If there is no nickname, set the nickname first
-      const res_uu = await GetUserNickname({address:dbGetUserWallet()?.account});
-      if(res_uu?.code !== 1000){
-        alert('Failed to get User Nickname!')
-        return false;
-      }
-
-      console.log('res_uu',res_uu);
-      if(empty(res_uu?.msg?.content)){
-        //set the nickname
-        setStep('set_nickname');
-        return false;
-      }
-
-      // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
-      const res_um = await GetUserRelatedMerchant({address:user_address});
-      console.log('res_um',res_um);
-      if(res_um?.code !== 1000 || res_um?.msg?.merchant_users?.length <= 0){
-        alert('Failed to get store information!')
-        return false;
-      }
-
-      setStores(res_um?.msg?.merchant_users);
       setStep('choose_store');
       return false;
     }
     else{
-      //register
+      nickname_type = 'dashboard'
       setStep('set_store');
-
+      return false;
     }
-
   };
 
   const enterNickname = async () => {
@@ -124,16 +128,17 @@ const Login = () => {
       return false;
     }
 
-    if(nickname_type === 'dashboard'){
-      const user = dbGetUserWallet();
-      user.roles = role;
-      console.log('user',user,role);
-      dbSetUserWallet(user);
-      navigate("/dashboard")
-    }
-    else{
-      setStep('choose_store');
-    }
+    setStep('choose_store');
+    //
+    // if(nickname_type === 'dashboard'){
+    //   user.roles = role;
+    //   console.log('user',user,role);
+    //   dbSetUserWallet(user);
+    //   navigate("/dashboard")
+    // }
+    // else{
+    //   setStep('choose_store');
+    // }
 
 
   };
@@ -168,16 +173,21 @@ const Login = () => {
     }
 
     const res = await UserRegister(data);
+    console.log('aa',res);
+
     if(res?.code !== 1000 || res.success !== true){
       alert('Failed to register user!')
       return false;
     }
 
-    //set the nickname
-    role = 'admin';
-    nickname_type = 'dashboard'
-    setStep('set_nickname');
+    //store user info
+    const user = dbGetUserWallet();
+    user.roles = 'admin';
+    dbSetUserWallet(user);
+    navigate("/dashboard")
   };
+
+
   const SignIn = async (storeInfo) => {
     if(storeInfo?.merchant_id?.length <= 0){
       alert('The merchant id cannot be empty!')
@@ -210,11 +220,14 @@ const Login = () => {
       alert('Failed to Login!')
       return false;
     }
+    let allCookies = document.cookie
+    console.log('allCookies11111',allCookies);
 
     //store user info
     const user = dbGetUserWallet();
     user.roles = storeInfo?.role;
     dbSetUserWallet(user);
+    dbSetJWTToken(res?.msg?.token)
     navigate("/dashboard")
   };
   return (
@@ -338,14 +351,11 @@ const Login = () => {
                       </div>
                   ))}
                 </div>
-                {!array_column(stores,'role').includes('admin')
-                    &&
-                    <DefaultButton
-                        title="Create a new store"
-                        type={1}
-                        click={() => navigate("/stores/setup")}
-                    />
-                }
+                <DefaultButton
+                    title="Create a new store"
+                    type={1}
+                    click={() => navigate("/stores/setup")}
+                />
 
 
               </div>

@@ -74,7 +74,7 @@ const Income = () => {
                 )}
             </HistoryTable>
             <Pagination
-                pages={parseInt(dataTotal / 4)}
+                pages={parseInt(dataTotal / 10)}
                 page={page}
                 setPage={setPage}
             />

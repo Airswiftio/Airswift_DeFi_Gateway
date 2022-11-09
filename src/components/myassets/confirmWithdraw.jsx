@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../";
 import dummyData from "../../sample_data.json";
 import "./confirmWithdraw.scss";
+import {GetWithdrawList} from "@@/utils/request/api";
 
 const ConfirmWithdraw = () => {
   const [checked, setChecked] = useState([]);
@@ -35,6 +36,22 @@ const ConfirmWithdraw = () => {
     console.log(checked);
   };
 
+    const [dataList, setDataList] = useState([]);
+    const [dataTotal, setDataTotal] = useState(0);
+
+
+    const getList = async () => {
+        const res = await GetWithdrawList()
+        if(res?.code === 1000){
+            setDataList(res?.msg?.withdraws ?? [])
+            setDataTotal(res?.msg?.total)
+        }
+    }
+    useEffect(() => {
+        getList();
+        // getWithdrawTotal();
+    }, []);
+
   return (
     <div className="confWithdrawWrapper">
       <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
@@ -42,7 +59,7 @@ const ConfirmWithdraw = () => {
       </Popup>
       <div className="title">Select available transactions</div>
       <HistoryTable vc={false} select>
-        {dummyData.withdrawHistory.map(
+        {dataList.map(
           ({ transId, status, currency, amount, time, viewMore }, index) => (
             <HistoryElement
               checked={checked}

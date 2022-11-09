@@ -30,7 +30,7 @@ const MyStore = () => {
 
         <div className="row">
           <span className="label">Role</span>
-          <span>{dbGetUserWallet().roles[0]}</span>
+          <span>{dbGetUserWallet().roles}</span>
         </div>
 
         <div className="row">

@@ -30,13 +30,6 @@ const Withdraw = () => {
         setIsOpen(false);
     };
 
-
-    useEffect(() => {
-        getList();
-        // getWithdrawTotal();
-    }, []);
-
-
     const getList = async () => {
         const res = await GetWithdrawList()
         if(res?.code === 1000){
@@ -44,6 +37,10 @@ const Withdraw = () => {
             setDataTotal(res?.msg?.total)
         }
     }
+    useEffect(() => {
+        getList();
+        // getWithdrawTotal();
+    }, []);
 
     return (
         <div className="withdrawWrapper">
@@ -70,7 +67,7 @@ const Withdraw = () => {
                 )}
             </HistoryTable>
             <Pagination
-                pages={parseInt(dataTotal/ 2)}
+                pages={parseInt(dataTotal/ 10)}
                 page={page}
                 setPage={setPage}
             />

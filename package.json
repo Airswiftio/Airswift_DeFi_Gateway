@@ -2,6 +2,7 @@
   "name": "airswift-gateway",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://34.221.50.218:23456/api",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

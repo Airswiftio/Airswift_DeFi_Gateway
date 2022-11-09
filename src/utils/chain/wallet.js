@@ -290,58 +290,56 @@ export const connectWallet = async () => {
     return res;
   }
 
-  if(!dbGetUserWallet()?.account) {
-    let res1 = await detectionEnvironment();
-    if(res1.code === 100){
-      // popupAlert({type:'wentWrong',data:{msg:res.msg}}); //todo 999
-      window.open(res1.url);
-      return res1;
-    }
-    else if(res1.code === 101){
-      // popupAlert({type:'switchingNetwork',data:{msg:res.msg}});//todo 999
-      return res1;
-    }
-
-    //Get account address
-    let accounts = await requestAccounts();
-    if(empty(accounts) || empty(accounts[0])){
-      return {code:-1,msg:'Account not exist!'};
-    }
-    let account =  accounts[0];
-
-    //Get account balance and connect to the network
-    let balance = await getBalance(account);//Get the account balance and format it
-    let network = await getNetwork();
-    let networkName = network.chainId === 1 ? 'Mainnet':network.name;
-    let chainId = network.chainId.toString();
-
-    //Get the signature verification message from the back end
-    let res2 = await challengeGenerate({address:account});
-    if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2.msg.content)){
-      dbClearAccount();
-      res2.msg = 'Failed to get sign message! '
-      return res2;
-    }
-
-    let res3 = await Web3SignData(account,res2.msg.content);
-    if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
-      dbClearAccount();
-      return res3;
-    }
-
-    dbSetSignData(res3?.data)
-    let userWallet = {
-      balance:balance,
-      chainId:network.chainId,
-      network:networkName,
-      account:account,
-      simple_account:hideStr(account,5,4,'.',3),
-      did:didCreate(account),
-    };
-    dbSetUserWallet(userWallet)
+  let res1 = await detectionEnvironment();
+  if(res1.code === 100){
+    // popupAlert({type:'wentWrong',data:{msg:res.msg}}); //todo 999
+    window.open(res1.url);
+    return res1;
+  }
+  else if(res1.code === 101){
+    // popupAlert({type:'switchingNetwork',data:{msg:res.msg}});//todo 999
+    return res1;
   }
 
-  return {code:1000,msg:'ok'};
+  //Get account address
+  let accounts = await requestAccounts();
+  if(empty(accounts) || empty(accounts[0])){
+    return {code:-1,msg:'Account not exist!'};
+  }
+  let account =  accounts[0];
+
+  //Get account balance and connect to the network
+  let balance = await getBalance(account);//Get the account balance and format it
+  let network = await getNetwork();
+  let networkName = network.chainId === 1 ? 'Mainnet':network.name;
+  let chainId = network.chainId.toString();
+
+  //Get the signature verification message from the back end
+  let res2 = await challengeGenerate({address:account});
+  if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2.msg.content)){
+    dbClearAccount();
+    res2.msg = 'Failed to get sign message! '
+    return res2;
+  }
+
+  let res3 = await Web3SignData(account,res2.msg.content);
+  if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
+    dbClearAccount();
+    return res3;
+  }
+
+  dbSetSignData(res3?.data)
+  let userWallet = {
+    balance:balance,
+    chainId:network.chainId,
+    network:networkName,
+    account:account,
+    simple_account:hideStr(account,5,4,'.',3),
+    did:didCreate(account),
+  };
+  dbSetUserWallet(userWallet)
+
+  return {code:1000,msg:'ok',data:{user:userWallet,sign_data:res3?.data}};
 }
 export const connectWallet1 = async () => {
   // //First, check whether the environment supports and whether metamask plug-ins are installed

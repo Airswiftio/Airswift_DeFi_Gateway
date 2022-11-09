@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Dropdown, ConfirmWithdraw, TipsModal } from "@@/components";
+import {Dropdown, ConfirmWithdraw, TipsModal, DefaultButton} from "@@/components";
 
 import "./withdraw.scss";
 import ETH from "@@/assets/eth_icon.svg";
+import {GetWithdrawList} from "@@/utils/request/api";
 
 const Withdraw = () => {
   const [confirm, setConfirm] = useState(false);
+  const [step, setStep] = useState(0);
   const navigate = useNavigate();
 
-  return (
+
+
+    return (
     <div className="withdrawPageWrapper">
-      {confirm && (
+      {step === 0 && (
         <div className="controls">
           <button className="backButton" onClick={() => navigate("/assets")}>
             <svg
@@ -34,7 +38,7 @@ const Withdraw = () => {
         </div>
       )}
       <div className="main">
-        {confirm ? (
+        {step === 0 && (
           <>
             <div className="title">Select Network and Cryptocurrency</div>
             <div className="tip">
@@ -62,10 +66,21 @@ const Withdraw = () => {
                 />
               </div>
             </div>
+
+            <div className="buttonRow">
+              <DefaultButton
+                  title="Next"
+                  type={2}
+                  click={() => {setStep(1)}}
+              />
+            </div>
           </>
-        ) : (
+        ) }
+
+        {step === 1 &&  (
           <ConfirmWithdraw />
-        )}
+          )
+        }
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ const instance = axios.create({
 
 // Set the post request header uniformly in the document. The following will talk about several 'Content Type' of post requests
 instance.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8'
+instance.defaults.withCredentials = true; // 允许携带cookie
 
 //Here I simply list some common http status code information, and you can adjust the configuration yourself
 let httpCode = {
@@ -35,7 +36,12 @@ let httpCode = {
 
 /** Add request interceptor **/
 instance.interceptors.request.use(config => {
-    config.headers.Authorization = 'Bearer '+ dbGetJWTToken();
+    console.log('config',config);
+
+    config.headers = {
+        "Cookie": `user-auth-token=${dbGetJWTToken()};`
+    }
+    // config.headers['user-auth-token'] = dbGetJWTToken();
     // hide = message.loading({content: 'Loading...', duration: 0});
 
    /* // Here: What can be done before sending a request according to business requirements: for example, my interface is used to export files. Because the returned stream is binary, you need to set the request response type as blob, which can be set here.
@@ -54,6 +60,9 @@ instance.interceptors.request.use(config => {
 
 /** Add Response Interceptor  **/
 instance.interceptors.response.use(response => {
+    let allCookies = document.cookie
+    console.log('aaresponse',response);
+    console.log('allCookies',allCookies);
     // hide()
     if (response.status === 200) {
         return Promise.resolve(response.data)

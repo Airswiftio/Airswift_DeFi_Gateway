@@ -15,7 +15,7 @@ const LOGIN =  '/'
 //Create an axis instance, where you can set the default configuration of the request
 const instance = axios.create({
     timeout: 10000, // Set request timeout for 10s
-    baseURL: ''   //Set the baeUrl of different environments according to the reverse proxy configured by yourself
+    baseURL: 'https://mock.apifox.cn/m1/1595489-0-default'   //Set the baeUrl of different environments according to the reverse proxy configured by yourself
 })
 
 // Set the post request header uniformly in the document. The following will talk about several 'Content Type' of post requests

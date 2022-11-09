@@ -4,7 +4,7 @@ import Copy from "../../assets/copy.svg";
 import Refresh from "../../assets/refresh.svg";
 
 import "./apiKeys.scss";
-import {GetApplicationDetail} from "@@/utils/request/api";
+import {GetApplicationDetail, ModifyApplicationApiKey} from "@@/utils/request/api";
 
 const ApiKeys = () => {
     const [storeInfo, setStoreInfo] = useState({});
@@ -13,6 +13,13 @@ const ApiKeys = () => {
         const res = await GetApplicationDetail({app_id:0})
         if(res?.code === 1000){
             setStoreInfo(res?.msg)
+        }
+    }
+
+    const renewApiKeys = async () => {
+        const res = await ModifyApplicationApiKey({app_id:0})
+        if(res?.code === 1000){
+            setStoreInfo({api_key:res?.data?.key,created_at:res?.data?.created_at})
         }
     }
 
@@ -38,7 +45,7 @@ const ApiKeys = () => {
 
       <div className="row">
         <span>Renew</span>
-        <div className="img">
+        <div className="img" onClick={()=>renewApiKeys()}>
           <img src={Refresh} alt="refresh" />
         </div>
       </div>
