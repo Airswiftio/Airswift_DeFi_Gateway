@@ -8,6 +8,7 @@ import {
   json_to_obj
 } from "@@/utils/function";
 import {challengeGenerate} from "@@/utils/request/api";
+import {didCreate} from "@@/utils/chain/did";
 // import BaseConfig from "@@/config.json";
 // import {popupAlert} from "@@/components/PopAlert/Index";
 
@@ -369,13 +370,13 @@ export const beforeSend = (checkUser = true)=>{
   return {code:1000,msg:'ok'};
 }
 
-
-export function didCreate(account = '') {
-  //todo 999
-  account = empty(account) ? dbGetUserWallet()?.account : account;
-  const didAddress =`did:veric:${account}`;
-  return  didAddress
-}
+//
+// export function didCreate(account = '') {
+//   //todo 999
+//   account = empty(account) ? dbGetUserWallet()?.account : account;
+//   const didAddress =`did:veric:${account}`;
+//   return  didAddress
+// }
 
 
 

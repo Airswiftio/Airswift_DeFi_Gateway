@@ -20,7 +20,7 @@ export const UserRegister = p => apiPost('/merchant/register', p);
 export const UserLogin = p => apiPost('/merchant/login', p);
 
 // export const GetMerchantBaseSummary = p => apiGet('/merchant/summary/base', p); todo 888
-export const GetMerchantBaseSummary = p => apiGet('/merchant/summary/base', p);
+export const GetMerchantBaseSummary = p => apiGet1('/merchant/summary/base', p);
 
 export const GetMerchantPaymentStatChart = p => apiGet('/merchant/chart/payment', p);
 
@@ -48,7 +48,7 @@ export const GetApplicationDetail = p => apiGet(`/merchant/application/${app_id}
 // export const GetApplicationList = p => apiGet(`/merchant/${merchant_id}/application/list`, p);
 
 export const ModifyApplicationBase = p => apiPost('/merchant/application/base', p);
-export const ModifyApplicationCurrency = p => apiPost('/merchant/application/currency', p);
+// export const ModifyApplicationCurrency = p => apiPost('/merchant/application/currency', p);
 export const ModifyApplicationApiKey = p => apiPost('/merchant/application/api_key', p);
 export const ModifyApplicationIpnKey = p => apiPost('/merchant/application/ipn_key', p);
 export const GetAvailableCurrency = p => apiGet(`/merchant/config/all_currency`, p);

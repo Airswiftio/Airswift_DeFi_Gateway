@@ -28,7 +28,7 @@ const Income = () => {
             // app_id:0,
             page:1,
             size:10,
-            status:'pending',
+            status:'success',
             // payment_num:0,
             // currency_id:0,
             // date:0,
@@ -52,15 +52,15 @@ const Income = () => {
             </Popup>
             <HistoryTable>
                 {dataList.map(
-                    ({ transId, status, currency, amount, time, viewMore, vc }, index) =>
+                    ({ payment_num, status, currency_symbol, amount, created_at, viewMore, vc }, index) =>
                         filters?.status ? (
                             status === filters?.status && (
                                 <HistoryElement
-                                    transId={transId}
+                                    transId={payment_num}
                                     status={status}
-                                    currency={currency}
+                                    currency={currency_symbol}
                                     amount={amount}
-                                    time={time}
+                                    time={created_at}
                                     viewMore={viewMore}
                                     vc={vc}
                                     key={index}
@@ -69,11 +69,11 @@ const Income = () => {
                             )
                         ) : (
                             <HistoryElement
-                                transId={transId}
+                                transId={payment_num}
                                 status={status}
-                                currency={currency}
+                                currency={currency_symbol}
                                 amount={amount}
-                                time={time}
+                                time={created_at}
                                 viewMore={viewMore}
                                 vc={vc}
                                 key={index}

@@ -58,9 +58,6 @@ export function arrListSort(arrList = [],key = 'id'){
     return function(a,b){
       const val1 = a[property];
       const val2 = b[property];
-      console.log('val1',val1);
-      console.log('val2',val2);
-      console.log('val1 - val2',val1 - val2);
       return val1 - val2;
     }
   }
@@ -148,8 +145,6 @@ export function dbDelJWTToken() {
 }
 
 
-
-
 const SignDataKey = 'SignData';
 export function dbSetSignData(value) {
   return  dbStore.set(SignDataKey,value)
@@ -162,4 +157,44 @@ export function dbDelSignData() {
 }
 
 
+
+export function select_role(type = 0) {
+  // dbStore.set('select_role',value)
+  if(type === 0){
+    return  {admin:'Admin',shop_manager:'Shop Manager',contributor:'Contributor'}
+  }
+  else{
+    return  {shop_manager:'Shop Manager',contributor:'Contributor'}
+  }
+}
+
+export function select_status(type = 'income') {
+  if(type === 'income'){
+    return  {pending:'Pending',success:'Finished'}
+  }
+  else if(type === 'withdraw'){
+    return  {pending:'Pending',success:'Finished'}
+  }
+  else{
+    return {};
+  }
+}
+
+export function select_currency(type = 'list') {
+  if(type === 'list'){
+    return  {weth:'WETH',tether:'USDT'}
+  }
+  else if(type === 'tree'){
+    return  {Ethereum:{weth:'WETH',tether:'USDT'}}
+  }
+  else{
+    return {};
+  }
+}
+
+export function base_currency() {
+  // return  ['USD','CAD']
+  // return  {usd:{name:'USD'},cad:{name:'CAD'}}
+  return  [{key:'usd',name:'USD'},{key:'cad',name:'CAD'}]
+}
 

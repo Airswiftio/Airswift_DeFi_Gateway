@@ -1,13 +1,41 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { ApiKeys, IpnKeys, AppConfig, MyStore } from "@@/components";
 
 import "./settings.scss";
+import {GetApplicationDetail} from "@@/utils/request/api";
 
 const Settings = () => {
-  const [currentPage, setCurrentPage] = useState(0);
 
-  const pages = [<MyStore />, <ApiKeys />, <IpnKeys />, <AppConfig />];
+  const [currentPage, setCurrentPage] = useState(0);
+  const [myStore, setMyStore] = useState({});
+  const [apiKeys, setApiKeys] = useState({});
+  const [ipnKeys, setIpnKeys] = useState({});
+  const [appConfig, setAppConfig] = useState({});
+
+  const pages = [
+    <MyStore myStore={myStore} setMyStore={setMyStore}/>,
+    <ApiKeys apiKeys={apiKeys} setApiKeys={setApiKeys} />,
+    <IpnKeys ipnKeys={ipnKeys} setIpnKeys={setIpnKeys}/>,
+    <AppConfig appConfig={appConfig} setAppConfig={setAppConfig}/>
+  ];
   const titles = ["My Store", "API Keys", "IPN Keys", "App Configuration"];
+
+
+  const getAppDetail = async () => {
+    const res = await GetApplicationDetail({app_id:0})
+    if(res?.code === 1000){
+      setMyStore({id:res?.msg?.id,name:res?.msg?.name,link:res?.msg?.link,callbackUrl:res?.msg?.callbackUrl,legal_tender:res?.msg?.legal_tender})
+      setApiKeys({api_key:res?.msg?.api_key,api_key_created_at:res?.msg?.api_key_created_at})
+      setIpnKeys({ipn_key:res?.msg?.ipn_key,ipn_key_created_at:res?.msg?.ipn_key_created_at})
+      setAppConfig({name:res?.msg?.name,link:res?.msg?.link,callbackUrl:res?.msg?.callbackUrl})
+
+
+    }
+  }
+
+  useEffect(() => {
+    getAppDetail();
+  }, []);
 
   return (
     <div>
