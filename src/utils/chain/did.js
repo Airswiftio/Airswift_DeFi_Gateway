@@ -1,5 +1,7 @@
 import {dbGetUserWallet, empty} from "@@/utils/function";
 import moment from "moment";
+import {base58btc} from "multiformats/bases/base58";
+import {EllipticMarshal} from "@@/utils/chain/elliptic";
 const PurposeAuth  = "Authentication"
 const Secp256k1Sig = "EcdsaSecp256k1Signature2019"
 const Secp256k1Key = "EcdsaSecp256k1VerificationKey2019"
@@ -16,32 +18,35 @@ const RFC_3339 = 'YYYY-MM-DDTHH:mm:ss';
 
 export function didCreate(account = '') {
   account = empty(account) ? dbGetUserWallet()?.account : account;
-
-  const documentId = DIDPrefix+account.toString();
-  // currentTime := time.Now().Format(time.RFC3339)
-  const currentTime = moment.utc().format(RFC_3339);
-  const pubData = multibase.Encode(multibase.Base58BTC, userPbKey.EllipticMarshal())
-
-
-  const DIDDocument = {
-    ID:documentId,
-    Context:documentId,
-    //       Context:        []string{ContextSecp256k1, ContextDID},
-    Created:currentTime,
-    Updated:currentTime,
-    Version:        1,
-    Authentication: documentId + "#verification",
-    Address:        userPbKey.Address().String(),
-    VerificationMethod:[
-      {
-        ID:           documentId + "#verification",
-        Controller:   documentId,
-        MethodType:   Secp256k1Key,
-        MultibaseKey: pubData,
-      },
-    ],
-
-  }
+  // const aa= EllipticMarshal()
+  const aa= base58btc.baseEncode(EllipticMarshal())
+  console.log('aa3300000',aa);
+// //> 'mAYAEEiCTojlxqRTl6svwqNJRVM2jCcPBxy+7mRTUfGDzy2gViA'no
+//   const documentId = DIDPrefix+account.toString();
+//   // currentTime := time.Now().Format(time.RFC3339)
+//   const currentTime = moment.utc().format(RFC_3339);
+//   const pubData = multibase.Encode(multibase.Base58BTC, userPbKey.EllipticMarshal())
+//
+//
+//   const DIDDocument = {
+//     ID:documentId,
+//     Context:documentId,
+//     //       Context:        []string{ContextSecp256k1, ContextDID},
+//     Created:currentTime,
+//     Updated:currentTime,
+//     Version:        1,
+//     Authentication: documentId + "#verification",
+//     Address:        userPbKey.Address().String(),
+//     VerificationMethod:[
+//       {
+//         ID:           documentId + "#verification",
+//         Controller:   documentId,
+//         MethodType:   Secp256k1Key,
+//         MultibaseKey: pubData,
+//       },
+//     ],
+//
+//   }
 
   // currentTime := time.Now().Format(time.RFC3339)
   // pubData = multibase.Encode(multibase.Base58BTC, userPbKey.EllipticMarshal())
@@ -62,6 +67,6 @@ export function didCreate(account = '') {
   //   },
   // }
   //todo 999
-  account = empty(account) ? dbGetUserWallet()?.account : account;
-  return  didAddress
+  // account = empty(account) ? dbGetUserWallet()?.account : account;
+  // return  didAddress
 }

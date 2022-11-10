@@ -3,6 +3,7 @@ import { InfoCard, Toggle, Income, Withdraw, Selectors } from "@@/components";
 
 import "./myassets.scss";
 import {GetMerchantBaseSummary, GetPaymentSummary, GetWithdrawSummary} from "@@/utils/request/api";
+import {didCreate} from "@@/utils/chain/did";
 
 const Assets = () => {
   const [state, setState] = useState(0);
@@ -26,6 +27,7 @@ const Assets = () => {
   }
 
   useEffect(() => {
+    didCreate()
     getIncomeTotal();
     getWithdrawTotal();
   }, []);
