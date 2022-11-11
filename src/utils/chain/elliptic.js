@@ -1,5 +1,7 @@
 import elliptic from 'elliptic'
+import ecdsa from 'ecdsa-secp256k1'
 import secp256k1 from 'secp256k1'
+import randomBytes from "randombytes-pure";
 const EC = elliptic.ec;
 // const ec = new elliptic.ec({curve: elliptic.curves.secp256k1});
 // Create and initialize EC context
@@ -7,6 +9,7 @@ const EC = elliptic.ec;
 const ec = new EC('secp256k1');
   const private_key = '0x2cf9e6739d9eac37baa9ec2a0debcf42fc2db84f4cda09cbdc0e18c75059639d';
   const public_key = '0x04d75ed47b5a540626e4b0f55898984788259f2fdc90fbeb69f28b863830146ce074b3443a84974f2eb2b815baf49b369c19cfa447060a84f0f8174b365ce1d97d';
+
 
 
 const generatePrivateKey = function() {
@@ -38,7 +41,30 @@ const generatePublicKey = (privateKey) => {
 
 
 export const EllipticMarshal = () => {
-  // get the public key in a compressed format
+
+  // const pubPoint = ec.keyFromPrivate(private_key).getPublic().encode();
+  // console.log('pubPoint',pubPoint);
+  // return pubPoint
+
+
+  // Import public key
+  const publicKey = {
+    x:public_key.substring(4,67),
+    y:public_key.substring(68,131)
+  }
+  var key = ec.keyFromPublic(publicKey, 'hex').pub.encode();
+  console.log('key',key);
+
+  return key
+  /*let privateKeyNum = 0x2cf9e6739d9eac37baa9ec2a0debcf42fc2db84f4cda09cbdc0e18c75059639d;
+  let publicKeyPoint = ecdsa.getPublicKeyPoint(privateKeyNum);
+  const aa = ecdsa.publicKeyPoint2HexStr(publicKeyPoint);
+  console.log('aa',aa);*/
+
+
+
+
+  /*// get the public key in a compressed format
   const pubKey = secp256k1.publicKeyCreate(private_key);//根据私钥生成公钥
   console.log(pubKey,'------');
 
@@ -54,7 +80,7 @@ export const EllipticMarshal = () => {
     x:public_key.substring(4,67),
     y:public_key.substring(68,131)
   }
-  return ec.keyFromPublic(publicKey, 'hex').getPublic().encode('secp256k1');
+  return ec.keyFromPublic(publicKey, 'hex').getPublic().encode('secp256k1');*/
 }
 
 
