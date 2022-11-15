@@ -1,19 +1,45 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Dropdown,
   DefaultButton,
   Pagination,
-  AdminHistoryTable,
-  AdminHistoryElement,
   Invite,
 } from "@@/components";
 
 import "./admin.scss";
+import UserListTable from "@@/components/admin/UserListTable";
+import {GetMerchantUserList, GetWithdrawList, ModifyApplicationBase} from "@@/utils/request/api";
 
 const Admin = () => {
   const [page, setPage] = useState(0);
   const [checked, setChecked] = useState([]);
   const [addUser, setAddUser] = useState(false);
+  const [dataList, setDataList] = useState([]);
+
+  const userListColumns = [
+    {key:'did',title:'DID Wallet'},
+    {key:'role',title:'Role'},
+  ];
+
+  const getList = async () => {
+    const res = await GetMerchantUserList({status:'all',page:1,size:100});
+
+    if(res?.code === 1000){
+      let data = res?.msg?.merchant_users ?? []
+      for (const dataKey in data) {
+        data[dataKey].did =  data[dataKey]?.user_detail?.did ?? '';
+      }
+      // console.log('[...data]',[1,23,4]);
+
+      setDataList([...data])
+    }
+  }
+
+  useEffect(() => {
+    getList()
+
+  }, []);
+
   return (
     <div className="adminWrapper">
       {!addUser ? (
@@ -28,18 +54,8 @@ const Admin = () => {
             />
           </div>
           <div className="main">
-            <AdminHistoryTable columns={["DID Wallet", "Role"]} select>
-              <AdminHistoryElement
-                data={[
-                  "7NV25akgsX9ekU1TsrjEN79hEBCdreRc9K2xjbQSnC61",
-                  "Shop Manager",
-                ]}
-                checked={checked}
-                index={0}
-                key={0}
-              />
-            </AdminHistoryTable>
-            <Pagination pages={1} page={page} setPage={setPage} />
+            <UserListTable columns={userListColumns} dada isSelectAll={true} dataList={dataList} isOpenCheck={true}></UserListTable>
+            {/*<Pagination pages={1} page={page} setPage={setPage} />*/}
           </div>
         </>
       ) : (

@@ -46,6 +46,13 @@ export const EllipticMarshal = () => {
   // console.log('pubPoint',pubPoint);
   // return pubPoint
 
+  const aa = '92e8ed592f256a37ecefc0c25282cf76aa7bca0e79919ac8271c8259cad33095'
+  const pubPoint = ec.keyFromPrivate(aa).getPublic();
+  console.log('pubPoint',pubPoint);
+  console.log('pubPointencode',pubPoint.encode());
+  return pubPoint.encode()
+
+
 
   // Import public key
   const publicKey = {
