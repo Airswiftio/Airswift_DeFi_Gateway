@@ -1,4 +1,4 @@
-.dropdownWrapperNew {
+.dropdownWrapper {
   display: flex;
   justify-content: center;
   max-height: 40px;
@@ -13,8 +13,8 @@
     width: 100%;
     color: rgba(255, 255, 255, 0.7);
     font-family: "Poppins";
-    padding: 0.75em 1.5em;
-    //width: 150px;
+    padding: 0.75em;
+    width: 150px;
 
     display: flex;
     flex-direction: row;
@@ -47,7 +47,7 @@
   }
 
   .options li {
-    padding: 10px;
+    padding: 6px 10px;
     display: flex;
     align-items: center;
     justify-content: center;

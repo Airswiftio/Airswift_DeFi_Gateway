@@ -1,39 +1,56 @@
 import React, {useEffect,useState} from "react";
 import { useNavigate } from "react-router";
 
-import { Dropdown, DefaultButton } from "../";
+import { DefaultButton } from "../";
 import "./invite.scss";
 import {GrantUserMerchantRole, ModifyApplicationApiKey} from "@@/utils/request/api";
+import DropdownNew from "../dropdownNew/dropdownNew";
 
 const Invite = ({ setAddUser }) => {
   const navigate = useNavigate();
     const [did, setDid] = useState('');
+    const [selectRole, setSelectRole] = useState();
+
+    const RoleOptions = [
+        // {key:'admin',title:'Admin'},
+        {key:'shop_manager',title:'Shop Manager'},
+        {key:'contributor',title:'Contributor'},
+    ];
+
     const addUser = async () => {
         if(did?.length <= 0){
             alert('Please enter user did!')
             return false;
         }
-        const res = await GrantUserMerchantRole({user_did:did,role:'Shop Manager'})
+        if(typeof selectRole === 'undefined'){
+            alert("Please select the user's role.");
+            return false;
+        }
+        const res = await GrantUserMerchantRole({ user_did:did, role:RoleOptions?.[selectRole]?.key });
         if(res?.code === 1000){
             setAddUser(false)
+            navigate('/admin')
         }
         else{
-            alert('单击事件');
+            alert(res?.msg);
         }
     }
 
-    useEffect(() => {
-
-    }, []);
   return (
     <div className="inviteUserWrapper">
       <div className="title">Invite your colleague</div>
       <div className="addUser">
-        <input  onChange={(event)=>{setDid(event.target.value)}} />
-        <Dropdown
-          options={[ "Shop Manager", "Contributor"]}
-          defaultTitle="Role as"
-        />
+          <div>
+              <input  onChange={(event)=>{setDid(event.target.value)}} />
+          </div>
+          <DropdownNew
+              dropStyle={{maxHeight:'60px',height:'60px'}}
+              buttonStyle={{width:'170px',height:'60px'}}
+              options={RoleOptions}
+              defaultTitle="Role as"
+              selected={selectRole}
+              setSelected={setSelectRole}
+          />
       </div>
       <div className="buttonContainer">
         <DefaultButton
