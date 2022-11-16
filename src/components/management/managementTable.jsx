@@ -4,7 +4,7 @@ import Popup from "reactjs-popup";
 import "./managementTable.scss";
 
 const ManagementTable = ({ data }) => {
-  const [items, setItems] = useState(data.length);
+  const items = data.length;
   const [currPage, setCurrPage] = useState(0);
 
   const renderRows = (num) => {
@@ -22,6 +22,7 @@ const ManagementTable = ({ data }) => {
           did={data[i].did}
           status={data[i].status}
           data={data[i]}
+          key={i}
         />
       );
     }
@@ -35,7 +36,7 @@ const ManagementTable = ({ data }) => {
         <div className="mTableHeader">
           <div>
             {Object.keys(data[0]).map((e, i) =>
-              e !== "status" ? <span>{e}</span> : null
+              e !== "status" ? <span key={i}>{e}</span> : null
             )}
           </div>
           <span className="status">Status</span>
@@ -72,8 +73,10 @@ const TableRow = ({ id, status, data }) => {
         <ConfirmationModal click={closeModal} setValue={setValue} />
       </Popup>
       <div>
-        {Object.values(data).map((e, i) => (
-          <span className="col">{e}</span>
+        {Object.values(data).map((e) => (
+          <span className="col" key={e}>
+            {e}
+          </span>
         ))}
       </div>
 

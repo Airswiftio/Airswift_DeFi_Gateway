@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useEffect } from "react";
+import Cookies from "js-cookie";
 import { SmallCard } from "../../components";
 
 import "./dashboard.scss";

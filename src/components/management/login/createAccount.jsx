@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Field, Form } from "formik";
 import Logo from "../../../assets/management/logo.svg";
 
-const ManagementCreateAccount = ({ setIsLogin }) => {
+const ManagementCreateAccount = ({ setIsLogin, authenticate }) => {
   return (
     <div className="formWrapper">
       <img src={Logo} alt="Logo" />

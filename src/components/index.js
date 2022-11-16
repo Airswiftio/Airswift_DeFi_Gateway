@@ -6,7 +6,7 @@ import RequireAuth from "./RequireAuth";
 import Navbar from "./navigation/header";
 
 // Unauthorized
-import Unauthorized from "./unauthorized";
+import Unauthorized from "./Unauthorized";
 
 // Cards
 import InfoCard from "./cards/InfoCard";

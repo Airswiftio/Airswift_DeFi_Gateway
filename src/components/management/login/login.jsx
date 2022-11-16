@@ -3,7 +3,7 @@ import { Formik, Field, Form } from "formik";
 import { useNavigate } from "react-router";
 import Logo from "../../../assets/management/logo.svg";
 
-const ManagementLogin = ({ setIsLogin }) => {
+const ManagementLogin = ({ setIsLogin, authenticate }) => {
   const navigate = useNavigate();
 
   return (
@@ -13,15 +13,11 @@ const ManagementLogin = ({ setIsLogin }) => {
       <Formik
         initialValues={{
           username: "",
-          email: "",
           password: "",
-          confirmPassword: "",
-          agreeTerms: false,
         }}
-        onSubmit={async (values) => {
-          await new Promise((r) => setTimeout(r, 500));
-          alert(JSON.stringify(values, null, 2));
-        }}
+        onSubmit={async ({ username, password }) =>
+          await authenticate(username, password)
+        }
       >
         <Form className="form">
           <label htmlFor="username">Username</label>
