@@ -35,8 +35,8 @@ const Income = () => {
         }
         const res = await GetPaymentList(params)
         if(res?.code === 1000){
-            setDataList(res?.msg?.payments ?? [])
-            setDataTotal(res?.msg?.total)
+            setDataList(res?.data?.payments ?? [])
+            setDataTotal(res?.data?.total)
         }
     }
 

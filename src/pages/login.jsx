@@ -57,6 +57,7 @@ const Login = () => {
     // setIsOpen(true);
 
     const res = await connectWallet();
+    console.log('res',res);
     if(res?.code !== 1000){
       alert(res?.msg);
       return false;
@@ -66,7 +67,6 @@ const Login = () => {
 
     const user_address = dbGetUserWallet()?.account;
 
-
     //Query the user's nickname. If there is no nickname, set the nickname first
     const res_uu = await GetUserNickname({address:dbGetUserWallet()?.account});
     if(res_uu?.code !== 1000){
@@ -74,7 +74,7 @@ const Login = () => {
       return false;
     }
 
-    if(empty(res_uu?.msg?.nickname)){
+    if(empty(res_uu?.data?.nickname)){
       //set the nickname
       setStep('set_nickname');
       return false;
@@ -83,12 +83,12 @@ const Login = () => {
     // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
     const res_um = await GetUserRelatedMerchant({address:user_address});
     console.log('res_um',res_um);
-    if(res_um?.code !== 1000 || res_um?.msg?.merchant_users?.length <= 0){
+    if(res_um?.code !== 1000 || res_um?.data?.merchant_users?.length <= 0){
       alert('Failed to get store information!')
       return false;
     }
 
-    setStores(res_um?.msg?.merchant_users);
+    setStores(res_um?.data?.merchant_users);
 
 
     // Judge whether the user exists. If it exists, enter the login interface. Otherwise, register the user
@@ -227,7 +227,7 @@ const Login = () => {
     const user = dbGetUserWallet();
     user.roles = storeInfo?.role;
     dbSetUserWallet(user);
-    dbSetJWTToken(res?.msg?.token)
+    // dbSetJWTToken(res?.data?.token)
     navigate("/dashboard")
   };
   return (

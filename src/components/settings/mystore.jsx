@@ -1,16 +1,24 @@
 import React,{useState,useEffect} from "react";
 import { DropdownNew } from "@@/components";
 import "./mystore.scss";
-import {base_currency, dbGetUserWallet} from "@@/utils/function";
+import { dbGetUserWallet} from "@@/utils/function";
 import {ModifyApplicationBase, ModifyApplicationIpnKey} from "@@/utils/request/api";
+import {base_currency, select_role} from "@@/utils/config";
 
 const MyStore = ({myStore,setMyStore}) => {
     const baseCurrency = base_currency();
-    const [storeCurrency, setStoreCurrency] = useState('');
-    const Currency = myStore?.legal_tender;
-    console.log('Currency',Currency);
+    const [selected, setSelected] = useState(null);
+    // const [storeCurrency, setStoreCurrency] = useState(null);
+    // const Currency = myStore?.legal_tender;
+    // const Currency = 'usd';
+    // console.log('Currency',Currency);
     const modifyBaseCurrency = async (value) => {
-        const param = {app_id:0,name:myStore.name,link:myStore.link,callback_url:myStore.callbackUrl,legal_tender:value,}
+        const param = {
+            app_id:0,
+            name:myStore.name,
+            link:myStore.link,
+            callback_url:myStore.callbackUrl,
+            legal_tender:base_currency()?.[value]?.key}
         const res = await ModifyApplicationBase(param)
         if(res?.code !== 1000){
             alert('修改失败');
@@ -20,9 +28,12 @@ const MyStore = ({myStore,setMyStore}) => {
     }
 
     useEffect(() => {
-        // console.log('aa---',myStore);
-        setStoreCurrency(myStore?.legal_tender);
-    }, [Currency]);
+        base_currency()?.map((vv,ind)=>{
+            if(vv.key === myStore?.legal_tender ){
+                setSelected(ind)
+            }
+        })
+    }, []);
 
   return (
       <div className="myStore">
@@ -45,7 +56,19 @@ const MyStore = ({myStore,setMyStore}) => {
 
         <div className="bottomSection">
           <span className="bottomSectionTitle">Base Currency</span>
-          <DropdownNew options={baseCurrency} selectedValue={Currency} setSelectedValue={setStoreCurrency}  doSomething={modifyBaseCurrency}/>
+          <DropdownNew
+              buttonStyle={{width:'100px'}}
+              options={base_currency()}
+              defaultTitle={myStore?.legal_tender?.toUpperCase() ?? ''}
+              // selected={selectRole}
+              // setSelected={setSelectRole}
+              selected={selected}
+              setSelected={setSelected}
+
+              // options={baseCurrency}
+              // selectedValue={Currency}
+              // setSelectedValue={setStoreCurrency}
+              doSomething={modifyBaseCurrency}/>
         </div>
       </div>
   );

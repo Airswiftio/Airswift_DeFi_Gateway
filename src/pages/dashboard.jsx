@@ -37,7 +37,7 @@ const Dashboard = () => {
       //todo 999
       let aa = 'dsfsfsg';
       aa.replaceAll()
-      let data = res?.msg?.payment_amount_stat ?? [];
+      let data = res?.data?.payment_amount_stat ?? [];
       if(data?.length > 0){
         for (const kk in data) {
           if(gap === '24h'){

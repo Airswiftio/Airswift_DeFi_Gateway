@@ -62,7 +62,7 @@ instance.interceptors.response.use(response => {
     // hide()
     if (response.status === 200) {
         response.data.code = 1000;
-        response.data.data = response.data?.msg ??response.data?.data;
+        response.data.data = response.data?.data?.length > 0 ? response.data?.data : response.data?.msg;
         response.data.msg = 'ok';
         return Promise.resolve(response.data)
     } else {

@@ -28,7 +28,7 @@ const DropdownNew = ({
   const selectOptions = (key) => {
     setIsOptionsOpen(false);
     setSelected(key)
-    // doSomething !== null && doSomething(value);
+    doSomething !== null && doSomething(key);
   };
 
   return (

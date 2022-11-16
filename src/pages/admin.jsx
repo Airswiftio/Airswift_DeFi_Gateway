@@ -16,10 +16,12 @@ import {
 } from "@@/utils/request/api";
 import DropdownNew from "../components/dropdownNew/dropdownNew";
 import {useNavigate} from "react-router";
+import {select_role} from "@@/utils/config";
 
 const Admin = () => {
   const navigate = useNavigate();
 
+  const [refreshNum, setRefreshNum] = useState(0);
   const [page, setPage] = useState(0);
   const [checkedUsers, setCheckedUsers] = useState([]);
   const [addUser, setAddUser] = useState(false);
@@ -31,22 +33,14 @@ const Admin = () => {
     {key:'role',width:'30%',title:'Role'},
   ];
 
-  const RoleOptions = [
-    // {key:'admin',title:'Admin'},
-    {key:'shop_manager',title:'Shop Manager'},
-    {key:'contributor',title:'Contributor'},
-  ];
-
   const getList = async () => {
     const res = await GetMerchantUserList({status:'all',page:1,size:100});
     console.log('res',res);
-
     if(res?.code === 1000){
       let data = res?.data?.merchant_users ?? []
       for (const dataKey in data) {
         data[dataKey].did =  data?.[dataKey]?.user_detail?.did ?? '';
       }
-      console.log('data',data);
       setDataList([...data])
     }
   }
@@ -75,23 +69,20 @@ const Admin = () => {
     }
 
     const res = await ChangeUserMerchantRole({
-      relation_id: userIds,
-      role: RoleOptions?.[selectRole]?.key
+      relation_ids: userIds,
+      role: select_role()?.[selectRole]?.key
     });
     if(res?.code !== 1000){
       alert(res?.msg);
       return false;
     }
-
-    navigate('/admin')
-
-
+    setRefreshNum(refreshNum + 1)
   }
 
   useEffect(() => {
     getList()
-
-  }, []);
+    console.log('aa');
+  }, [refreshNum]);
 
   return (
     <div className="adminWrapper">
@@ -101,7 +92,7 @@ const Admin = () => {
             <div className="controlsLeft">
               <DropdownNew
                   buttonStyle={{width:'170px'}}
-                  options={RoleOptions}
+                  options={select_role()}
                   defaultTitle="Change Role to"
                   selected={selectRole}
                   setSelected={setSelectRole}
@@ -130,7 +121,10 @@ const Admin = () => {
           </div>
         </>
       ) : (
-        <Invite setAddUser={setAddUser} />
+        <Invite
+            setAddUser={setAddUser}
+            refreshNum={refreshNum}
+            setRefreshNum={setRefreshNum} />
       )}
     </div>
   );

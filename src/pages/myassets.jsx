@@ -15,14 +15,14 @@ const Assets = () => {
     const res = await GetPaymentSummary()
     //todo 999 根据汇率计算
     if(res?.code === 1000){
-      setIncomeTotal({total:res?.msg?.latest_90_days_total_payment?.toFixed(3) ?? 0,today:res?.msg?.today_total_payment?.toFixed(3) ?? 0})
+      setIncomeTotal({total:res?.data?.latest_90_days_total_payment?.toFixed(3) ?? 0,today:res?.data?.today_total_payment?.toFixed(3) ?? 0})
     }
   }
   const getWithdrawTotal = async () => {
     const res = await GetWithdrawSummary()
     //todo 999 根据汇率计算
     if(res?.code === 1000){
-      setWithdrawTotal({total:res?.msg?.latest_90_days_total_withdraw?.toFixed(3) ?? 0,today:res?.msg?.today_total_withdraw?.toFixed(3) ?? 0})
+      setWithdrawTotal({total:res?.data?.latest_90_days_total_withdraw?.toFixed(3) ?? 0,today:res?.data?.today_total_withdraw?.toFixed(3) ?? 0})
     }
   }
 

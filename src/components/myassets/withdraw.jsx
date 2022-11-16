@@ -42,8 +42,9 @@ const Withdraw = () => {
         }
         const res = await GetWithdrawList(params)
         if(res?.code === 1000){
-            setDataList(res?.msg?.withdraws ?? [])
-            setDataTotal(res?.msg?.total)
+            setDataList(res?.data?.withdraws ?? [])
+            console.log('res?.data?.total',res);
+            setDataTotal(res?.data?.total)
         }
     }
     useEffect(() => {

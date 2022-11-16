@@ -34,7 +34,7 @@ export const GetWithdrawSummary = p => apiGet(`/merchant/application/${app_id}/w
 export const GetPaymentList = p => apiGet(`/merchant/application/${app_id}/payment/list`, p);
 
 //Withdraw list
-export const GetWithdrawList = p => apiGet1(`/merchant/application/${app_id}/withdraw/list`, p);
+export const GetWithdrawList = p => apiGet(`/merchant/application/${app_id}/withdraw/list`, p);
 
 //get app info
 export const GetApplicationDetail = p => apiGet(`/merchant/application/${app_id}/detail`, p);

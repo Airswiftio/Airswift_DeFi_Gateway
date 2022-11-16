@@ -303,13 +303,13 @@ export const connectWallet = async () => {
 
   //Get the signature verification message from the back end
   let res2 = await challengeGenerate({address:account});
-  if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2.msg.content)){
+  if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2?.data?.content)){
     dbClearAccount();
     res2.msg = 'Failed to get sign message! '
     return res2;
   }
 
-  let res3 = await Web3SignData(account,res2.msg.content);
+  let res3 = await Web3SignData(account,res2?.data?.content);
   if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
     dbClearAccount();
     return res3;

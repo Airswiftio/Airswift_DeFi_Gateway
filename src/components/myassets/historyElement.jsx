@@ -14,7 +14,6 @@ const HistoryElement = ({
   vc = null,
   click,
   checked,
-  key,
   indx,
 }) => {
   return (

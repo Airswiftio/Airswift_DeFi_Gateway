@@ -24,10 +24,22 @@ const Settings = () => {
   const getAppDetail = async () => {
     const res = await GetApplicationDetail({app_id:0})
     if(res?.code === 1000){
-      setMyStore({id:res?.msg?.id,name:res?.msg?.name,link:res?.msg?.link,callbackUrl:res?.msg?.callbackUrl,legal_tender:res?.msg?.legal_tender})
-      setApiKeys({api_key:res?.msg?.api_key,api_key_created_at:res?.msg?.api_key_created_at})
-      setIpnKeys({ipn_key:res?.msg?.ipn_key,ipn_key_created_at:res?.msg?.ipn_key_created_at})
-      setAppConfig({name:res?.msg?.name,link:res?.msg?.link,callbackUrl:res?.msg?.callbackUrl})
+      setMyStore({
+        id:res?.data?.id,
+        name:res?.data?.name,
+        link:res?.data?.link,
+        callbackUrl:res?.data?.callbackUrl,
+        legal_tender:res?.data?.legal_tender})
+      setApiKeys({
+        api_key:res?.data?.api_key,
+        api_key_created_at:res?.data?.api_key_created_at})
+      setIpnKeys({
+        ipn_key:res?.data?.ipn_key,
+        ipn_key_created_at:res?.data?.ipn_key_created_at})
+      setAppConfig({
+        name:res?.data?.name,
+        link:res?.data?.link,
+        callbackUrl:res?.data?.callbackUrl})
 
 
     }

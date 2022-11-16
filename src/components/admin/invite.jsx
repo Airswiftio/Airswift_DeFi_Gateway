@@ -5,17 +5,12 @@ import { DefaultButton } from "../";
 import "./invite.scss";
 import {GrantUserMerchantRole, ModifyApplicationApiKey} from "@@/utils/request/api";
 import DropdownNew from "../dropdownNew/dropdownNew";
+import {select_role} from "@@/utils/config";
 
-const Invite = ({ setAddUser }) => {
+const Invite = ({ setAddUser,refreshNum,setRefreshNum }) => {
   const navigate = useNavigate();
     const [did, setDid] = useState('');
     const [selectRole, setSelectRole] = useState();
-
-    const RoleOptions = [
-        // {key:'admin',title:'Admin'},
-        {key:'shop_manager',title:'Shop Manager'},
-        {key:'contributor',title:'Contributor'},
-    ];
 
     const addUser = async () => {
         if(did?.length <= 0){
@@ -26,10 +21,10 @@ const Invite = ({ setAddUser }) => {
             alert("Please select the user's role.");
             return false;
         }
-        const res = await GrantUserMerchantRole({ user_did:did, role:RoleOptions?.[selectRole]?.key });
+        const res = await GrantUserMerchantRole({ user_did:did, role:select_role()?.[selectRole]?.key });
         if(res?.code === 1000){
-            setAddUser(false)
-            navigate('/admin')
+            setAddUser(false);
+            setRefreshNum(refreshNum + 1);
         }
         else{
             alert(res?.msg);
@@ -46,7 +41,7 @@ const Invite = ({ setAddUser }) => {
           <DropdownNew
               dropStyle={{maxHeight:'60px',height:'60px'}}
               buttonStyle={{width:'170px',height:'60px'}}
-              options={RoleOptions}
+              options={select_role()}
               defaultTitle="Role as"
               selected={selectRole}
               setSelected={setSelectRole}
