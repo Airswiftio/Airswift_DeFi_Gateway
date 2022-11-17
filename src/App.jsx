@@ -22,6 +22,7 @@ import {
   Layout,
   Unauthorized,
   RequireAuth,
+  LiquidityLayout,
 } from "@@/components";
 import { Routes, Route } from "react-router-dom";
 import "@@/App.scss";
@@ -52,7 +53,7 @@ function App() {
         </Route>
 
         {/* Liquidity Pools & Farms */}
-        <Route path="/liquidity" element={<ManagementLayout />}>
+        <Route path="/liquidity" element={<LiquidityLayout />}>
           <Route path="farms" element={<Farms />} />
           <Route path="pools" element={<Pools />} />
         </Route>

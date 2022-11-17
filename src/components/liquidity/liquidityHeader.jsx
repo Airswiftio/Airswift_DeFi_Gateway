@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import Popup from "reactjs-popup";
 import Logo from "../../assets/management/logo.svg";
 import { ProfileModal } from "../";
-import "./managementHeader.scss";
+import "./liquidityHeader.scss";
 
 import ProfilePhoto from "../../assets/sample_profile.svg";
 
-const ManagementHeader = () => {
+const LiquidityHeader = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,28 +47,16 @@ const ManagementHeader = () => {
       </Link>
       <div className="navLinks">
         <Link
-          to="/management/dashboard"
-          className={url.includes("/management/dashboard") ? "underline" : ""}
+          to="/liquidity/pools"
+          className={url.includes("/liquidity/pools") ? "underline" : ""}
         >
-          Dashboard
+          Pools
         </Link>
         <Link
-          to="/management/subaccount"
-          className={url.includes("/management/subaccount") ? "underline" : ""}
+          to="/liquidity/farms"
+          className={url.includes("/liquidity/farms") ? "underline" : ""}
         >
-          Subaccount
-        </Link>
-        <Link
-          to="/management/merchant"
-          className={url.includes("/management/merchant") ? "underline" : ""}
-        >
-          Merchant
-        </Link>
-        <Link
-          to="/management/liquidity"
-          className={url.includes("/management/liquidity") ? "underline" : ""}
-        >
-          Liquidity
+          Farms
         </Link>
 
         {loggedIn ? (
@@ -112,36 +100,16 @@ const ManagementHeader = () => {
         <div className="mobileLinksWrapper">
           <div className={mobileMenuOpen ? "mobileMenuLinks" : "hidden"}>
             <Link
-              to="/management/dashboard"
-              className={
-                url.includes("/management/dashboard") ? "underline" : ""
-              }
+              to="/liquidity/pools"
+              className={url.includes("/liquidity/pools") ? "underline" : ""}
             >
-              Dashboard
+              Pools
             </Link>
             <Link
-              to="/management/subaccount"
-              className={
-                url.includes("/management/subaccount") ? "underline" : ""
-              }
+              to="/liquidity/farms"
+              className={url.includes("/liquidity/farms") ? "underline" : ""}
             >
-              Subaccount
-            </Link>
-            <Link
-              to="/management/merchant"
-              className={
-                url.includes("/management/merchant") ? "underline" : ""
-              }
-            >
-              Merchant
-            </Link>
-            <Link
-              to="/management/liquidity"
-              className={
-                url.includes("/management/liquidity") ? "underline" : ""
-              }
-            >
-              Liquidity
+              Farms
             </Link>
           </div>
         </div>
@@ -150,4 +118,4 @@ const ManagementHeader = () => {
   );
 };
 
-export default ManagementHeader;
+export default LiquidityHeader;

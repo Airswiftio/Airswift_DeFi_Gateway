@@ -1,9 +1,11 @@
 // Layout
 import Layout from "./Layout";
 import RequireAuth from "./RequireAuth";
+import LiquidityLayout from "./LiquidityLayout";
 
 // Navigation
 import Navbar from "./navigation/header";
+import LiquidityHeader from "./liquidity/liquidityHeader";
 
 // Unauthorized
 import Unauthorized from "./unauthorized";
@@ -131,4 +133,6 @@ export {
   ManagementPagination,
   ConfirmationModal,
   SettingsModal,
+  LiquidityLayout,
+  LiquidityHeader,
 };
