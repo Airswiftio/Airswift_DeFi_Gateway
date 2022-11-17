@@ -50,13 +50,13 @@ const LiquidityHeader = () => {
           to="/liquidity/pools"
           className={url.includes("/liquidity/pools") ? "underline" : ""}
         >
-          Pools
+          Liquidity Pool
         </Link>
         <Link
           to="/liquidity/farms"
           className={url.includes("/liquidity/farms") ? "underline" : ""}
         >
-          Farms
+          Farm
         </Link>
 
         {loggedIn ? (
@@ -103,13 +103,13 @@ const LiquidityHeader = () => {
               to="/liquidity/pools"
               className={url.includes("/liquidity/pools") ? "underline" : ""}
             >
-              Pools
+              Liquidity Pool
             </Link>
             <Link
               to="/liquidity/farms"
               className={url.includes("/liquidity/farms") ? "underline" : ""}
             >
-              Farms
+              Farm
             </Link>
           </div>
         </div>
