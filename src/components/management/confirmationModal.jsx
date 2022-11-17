@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { DefaultButton } from "..";
 import "./confirmationModal.scss";
 
-const ConfirmationModal = ({ click, setValue }) => {
+const ConfirmationModal = ({ click, setValue, title, type }) => {
   useEffect(() => {
     const modal = document.getElementsByClassName("confirmationModal");
     modal[0].addEventListener("click", (e) => {
@@ -15,17 +15,26 @@ const ConfirmationModal = ({ click, setValue }) => {
   return (
     <div className="confirmationModal">
       <div className="modalContent">
-        <div className="tip">
-          Are you sure <br /> you want to disable this DID?
-        </div>
-        <div className="btn">
+        <div className="tip">{title}</div>
+        <div className="btns">
+          {type === 2 ? (
+            <DefaultButton
+              title="Cancel"
+              click={() => {
+                setValue("Cancel");
+                click();
+              }}
+              type={2}
+            />
+          ) : null}
           <DefaultButton
-            title="Confirm"
+            title={type === 2 ? "Delete" : "Confirm"}
             click={() => {
-              setValue(false);
+              setValue("Confirm");
               click();
             }}
-            type={1}
+            alternateBg={type === 2 ? true : false}
+            type={2}
           />
         </div>
       </div>

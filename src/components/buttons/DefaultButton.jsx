@@ -1,18 +1,22 @@
 import React from "react";
 import "./defaultButton.scss";
 
-const DefaultButton = ({ title, type, align, click }) => {
+const DefaultButton = ({ title, type, align, click, alternateBg }) => {
   const createClass = () => {
     const aligns = ["alignStart", "alignCenter", "alignEnd"];
     switch (type) {
       case 0:
-        return `buttonWrapper fixedWidth ${aligns[align]}`;
+        return `buttonWrapper fixedWidth ${aligns[align]} ${
+          alternateBg ? "altBg" : null
+        }`;
       case 1:
-        return `buttonWrapper ${aligns[align]}`;
+        return `buttonWrapper ${aligns[align]} ${alternateBg ? "altBg" : null}`;
       case 2:
-        return `buttonWrapper fullWidth ${aligns[align]}`;
+        return `buttonWrapper fullWidth ${aligns[align]} ${
+          alternateBg ? "altBg" : null
+        }`;
       default:
-        return `buttonWrapper ${aligns[align]}`;
+        return `buttonWrapper ${aligns[align]} ${alternateBg ? "altBg" : null}`;
     }
   };
   return (

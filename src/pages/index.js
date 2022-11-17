@@ -6,7 +6,6 @@ import MyAssets from "./myassets";
 import Settings from "./settings";
 import Withdraw from "./withdraw";
 
-
 // Liquidity
 import Farms from "./liquidity/farms";
 import Pools from "./liquidity/pools";
@@ -17,6 +16,7 @@ import ManagementForgotPassword from "./management/forgotPassword";
 import ManagementDashboard from "./management/dashboard";
 import MerchantManagement from "./management/merchantManagement";
 import LiquidityManagement from "./management/liquidityManagement";
+import ManagementSubAccount from "./management/subaccount";
 
 export {
   Admin,
@@ -32,4 +32,5 @@ export {
   ManagementDashboard,
   MerchantManagement,
   LiquidityManagement,
+  ManagementSubAccount,
 };

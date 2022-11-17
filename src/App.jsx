@@ -15,6 +15,7 @@ import {
   ManagementDashboard,
   MerchantManagement,
   LiquidityManagement,
+  ManagementSubAccount,
 } from "@@/pages";
 import {
   ManagementLayout,
@@ -27,9 +28,9 @@ import "@@/App.scss";
 
 /* Protected route codes -> user: 2000, merchant: 3000, admin: 5000 */
 const ROLES = {
-  Contributor: 'contributor',
-  ShopManager: 'shop_manager',
-  Admin: 'admin',
+  Contributor: "contributor",
+  ShopManager: "shop_manager",
+  Admin: "admin",
 };
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="dashboard" element={<ManagementDashboard />} />
           <Route path="merchant" element={<MerchantManagement />} />
           <Route path="liquidity" element={<LiquidityManagement />} />
+          <Route path="subaccount" element={<ManagementSubAccount />} />
         </Route>
 
         {/* Liquidity Pools & Farms */}
@@ -56,7 +58,13 @@ function App() {
         </Route>
 
         {/* Protected Routes Codes: */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Contributor,ROLES.ShopManager,ROLES.Admin]} />}>
+        <Route
+          element={
+            <RequireAuth
+              allowedRoles={[ROLES.Contributor, ROLES.ShopManager, ROLES.Admin]}
+            />
+          }
+        >
           <Route path="/" element={<Dashboard />} />
           <Route path="assets" element={<MyAssets />} />
           <Route path="settings" element={<Settings />} />
@@ -68,7 +76,13 @@ function App() {
         </Route>
 
         {/* Catch all Route */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Contributor,ROLES.ShopManager,ROLES.Admin]} />}>
+        <Route
+          element={
+            <RequireAuth
+              allowedRoles={[ROLES.Contributor, ROLES.ShopManager, ROLES.Admin]}
+            />
+          }
+        >
           <Route path="*" element={<Dashboard />} />
         </Route>
       </Route>

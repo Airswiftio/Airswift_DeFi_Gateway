@@ -1,7 +1,7 @@
 @import "../../_breakpoints.scss";
 @import "../../_mixins.scss";
 
-.confirmationModal {
+.settingsModal {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -11,7 +11,7 @@
   backdrop-filter: blur(25px);
 
   .modalContent {
-    width: 350px;
+    width: 500px;
     min-width: 350px;
     height: 350px;
     background: white;
@@ -41,15 +41,41 @@
       text-align: center;
     }
 
-    .btns {
+    .btn {
+      width: 250px;
+    }
+
+    .inputs {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      flex-direction: row;
-      justify-content: center;
       gap: 2em;
-      width: 100%;
-      .btn {
+
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 2em;
         width: 100%;
+
+        .input {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1em;
+
+          span {
+            width: 100%;
+          }
+
+          input {
+            background: rgba(4, 11, 36, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 1em 2em;
+            outline: none;
+            color: white;
+          }
+        }
       }
     }
   }

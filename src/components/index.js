@@ -80,6 +80,7 @@ import ManagementTable from "./management/managementTable";
 import SwitchToggle from "./management/switchToggle";
 import ManagementPagination from "./management/pagination";
 import ConfirmationModal from "./management/confirmationModal";
+import SettingsModal from "./management/settingsModal";
 
 export {
   Navbar,
@@ -129,4 +130,5 @@ export {
   SwitchToggle,
   ManagementPagination,
   ConfirmationModal,
+  SettingsModal,
 };

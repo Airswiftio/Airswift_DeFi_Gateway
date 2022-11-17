@@ -10,7 +10,7 @@
   height: 450px;
   padding: 2em;
   font-family: "Poppins";
-  overflow: scroll;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
@@ -29,15 +29,47 @@
     }
   }
 
+  .checkBox {
+    background: rgba(24, 30, 54, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    width: 15px;
+    height: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
   .mTableHeader {
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 0 1em 1em 1em;
+    padding: 0 16px 16px 16px;
     justify-content: space-between;
 
     @include md {
       min-width: fit-content;
+    }
+
+    div {
+      display: flex;
+      gap: 20px;
+    }
+
+    .col {
+      min-width: 90px;
+      text-align: left;
+
+      @include md {
+        min-width: 30px;
+        margin-right: 1em;
+      }
     }
 
     span {
@@ -52,7 +84,7 @@
 
     .status {
       align-self: flex-end;
-      text-align: center;
+      text-align: right;
     }
   }
 
@@ -61,7 +93,7 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1.5em;
+    padding: 16px;
     font-size: 12px;
     min-width: 500px;
 
@@ -71,21 +103,45 @@
 
     div {
       display: flex;
+      gap: 20px;
     }
 
     .col {
-      min-width: 100px;
+      min-width: 90px;
       text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 2em;
 
       @include md {
         min-width: 30px;
         margin-right: 1em;
+      }
+
+      .privilege {
+        width: 12px;
+        height: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .selectedPrivilege {
+          background: #8dfe59;
+          width: 8px;
+          height: 8px;
+          border-radius: 100%;
+        }
       }
     }
 
     .status {
       align-self: flex-end;
       text-align: right;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
     }
   }
 }

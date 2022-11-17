@@ -1,25 +1,60 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Cookies from "js-cookie";
 import { SmallCard } from "../../components";
 
 import "./dashboard.scss";
 
 const Dashboard = () => {
+  const [overviewData, setOverviewData] = useState();
+
+  const getOverviewData = () => {
+    axios
+      .get("/api/admin/dashboard/overview", {
+        withCredentials: true,
+        credentials: "same-origin",
+      })
+      .then(function (response) {
+        setOverviewData(response.data.msg);
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  useEffect(() => {
+    getOverviewData();
+  }, []);
+
   return (
     <div className="managementDashboardWrapper">
       <div className="row">
         <div className="sectionOverview">
           <div className="sectionTitle">Merchant Overview</div>
           <div className="cards">
-            <SmallCard title="Total Merchants" stat="2729" />
-            <SmallCard title="Today's New Merchants" stat="98" />
+            <SmallCard
+              title="Total Merchants"
+              stat={overviewData?.total_merchant_count}
+            />
+            <SmallCard
+              title="Today's New Merchants"
+              stat={overviewData?.today_new_merchant_count}
+            />
           </div>
         </div>
         <div className="sectionOverview">
           <div className="sectionTitle">Revenue Overview</div>
           <div className="cards">
-            <SmallCard title="Total Revenue" stat="1,5892.98" curr={true} />
-            <SmallCard title="Today's Revenue" stat="520.75" curr={true} />
+            <SmallCard
+              title="Total Revenue"
+              stat={overviewData?.total_revenue_amount}
+              curr={true}
+            />
+            <SmallCard
+              title="Today's Revenue"
+              stat={overviewData?.today_revenue_amount}
+              curr={true}
+            />
             <SmallCard title="Available Balance" stat="520.75" curr={true} />
           </div>
         </div>

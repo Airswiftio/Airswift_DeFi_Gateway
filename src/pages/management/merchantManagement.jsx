@@ -10,25 +10,41 @@ const MerchantManagement = () => {
 
   const getMerchantList = () => {
     axios
-      .get(
-        "/admin/merchant/list?page=1&size=10&status=all",
-        {},
-        { withCredentials: true }
-      )
+      .get("/api/admin/merchant/list?page=1&size=10&status=all", {
+        withCredentials: true,
+        credentials: "same-origin",
+      })
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        //setMerchants(JSON.stringify(response.data));
+        setMerchants(response.data.msg.merchants);
       })
       .catch(function (error) {
         console.log("Error", error);
       });
   };
 
-  const manageMerchantList = () => {};
+  const manageMerchantList = (id, status) => {
+    axios
+      .post(
+        "/api/admin/merchant/status",
+        {
+          merchant_id: id,
+          new_status: status,
+        },
+        {
+          withCredentials: true,
+          credentials: "same-origin",
+        }
+      )
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
 
   useEffect(() => {
     getMerchantList();
-    console.log("Token", Cookies.get("admin-auth-token"));
   }, []);
 
   return (
@@ -37,7 +53,11 @@ const MerchantManagement = () => {
         <div className="managementSearchWrapper">
           <Search title="Search DID" />
         </div>
-        <ManagementTable data={merchants || Data.management} />
+        <ManagementTable
+          data={merchants || {}}
+          modify={manageMerchantList}
+          type={0}
+        />
       </div>
     </div>
   );
