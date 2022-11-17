@@ -20,7 +20,7 @@ export const UserRegister = p => apiPost('/merchant/register', p);
 export const UserLogin = p => apiPost('/merchant/login', p);
 
 // export const GetMerchantBaseSummary = p => apiGet('/merchant/summary/base', p); todo 888
-export const GetMerchantBaseSummary = p => apiGet1('/merchant/summary/base', p);
+export const GetMerchantBaseSummary = p => apiGet('/merchant/summary/base', p);
 
 export const GetMerchantPaymentStatChart = p => apiGet('/merchant/chart/payment', p);
 
@@ -60,5 +60,5 @@ export const GetWithdrawDetail = p => apiGet(`/merchant/application/withdraw/${w
 
 export const GetMerchantUserList = p => apiGet(`/merchant/user/list`, p);
 export const GrantUserMerchantRole = p => apiPost('/merchant/user/role/grant', p);
-export const RevokeUserMerchantRole = p => apiPost('/merchant/user/role/revoke', p);
+// export const RevokeUserMerchantRole = p => apiPost('/merchant/user/role/revoke', p);
 export const ChangeUserMerchantRole = p => apiPost('/merchant/user/role/change', p);

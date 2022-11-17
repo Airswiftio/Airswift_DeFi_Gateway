@@ -24,19 +24,14 @@ const Dashboard = () => {
 
   const getTotal = async () => {
     const res = await GetMerchantBaseSummary()
-    //todo 999 根据汇率计算
-    if(!( res?.code !== 1000 || res.success !== true )){
-      setTotalBalance(res.data.total_balance.toFixed(3))
-      setTodayIncome(res.data.total_withdraw.toFixed(3))
-    }
+    //todo 888 根据汇率计算
+    setTotalBalance(res?.data?.total_balance?.toFixed(2) ?? totalBalance.toFixed(2))
+    setTodayIncome(res?.data?.total_withdraw?.toFixed(2)?? todayIncome.toFixed(2))
   }
 
   const getChartData = async (gap = '24h') => {
     const res = await GetMerchantPaymentStatChart({gap:gap})
     if(res?.code === 1000 ){
-      //todo 999
-      let aa = 'dsfsfsg';
-      aa.replaceAll()
       let data = res?.data?.payment_amount_stat ?? [];
       if(data?.length > 0){
         for (const kk in data) {
@@ -57,7 +52,6 @@ const Dashboard = () => {
           data[kk].lineBal = random2;
         }
         data = arrListSort(data,'time1')
-        console.log('data',data);
         setChartData(data)
       }
 

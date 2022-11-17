@@ -13,17 +13,15 @@ const Assets = () => {
 
   const getIncomeTotal = async () => {
     const res = await GetPaymentSummary()
-    //todo 999 根据汇率计算
-    if(res?.code === 1000){
-      setIncomeTotal({total:res?.data?.latest_90_days_total_payment?.toFixed(3) ?? 0,today:res?.data?.today_total_payment?.toFixed(3) ?? 0})
-    }
+    setIncomeTotal({
+      total:res?.data?.latest_90_days_total_payment?.toFixed(2) ?? incomeTotal?.total?.toFixed(2),
+      today:res?.data?.today_total_payment?.toFixed(2)  ?? incomeTotal?.today?.toFixed(2)})
   }
   const getWithdrawTotal = async () => {
     const res = await GetWithdrawSummary()
-    //todo 999 根据汇率计算
-    if(res?.code === 1000){
-      setWithdrawTotal({total:res?.data?.latest_90_days_total_withdraw?.toFixed(3) ?? 0,today:res?.data?.today_total_withdraw?.toFixed(3) ?? 0})
-    }
+    setWithdrawTotal({
+      total:res?.data?.latest_90_days_total_withdraw?.toFixed(2) ?? withdrawTotal?.total?.toFixed(2),
+      today:res?.data?.today_total_withdraw?.toFixed(2) ?? withdrawTotal?.today?.toFixed(2)})
   }
 
   useEffect(() => {

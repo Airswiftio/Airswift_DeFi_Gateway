@@ -17,10 +17,13 @@ const RFC_3339 = 'YYYY-MM-DDTHH:mm:ss';
 
 
 export function didCreate(account = '') {
-  account = empty(account) ? dbGetUserWallet()?.account : account;
+ /* account = empty(account) ? dbGetUserWallet()?.account : account;
   const didAddress = DIDPrefix+account;
-  return  didAddress
-  account = empty(account) ? dbGetUserWallet()?.account : account;
+  return  didAddress*/
+
+
+
+
   // const aa= EllipticMarshal()
   const aa= base58btc.baseEncode(EllipticMarshal())
   console.log('aa3300000',aa);

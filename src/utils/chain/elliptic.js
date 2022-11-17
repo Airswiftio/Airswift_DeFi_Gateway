@@ -42,6 +42,13 @@ const generatePublicKey = (privateKey) => {
 
 export const EllipticMarshal = () => {
 
+  const pr1 = '0xc000118810';
+  const pr111 = ec.keyFromPrivate(pr1);
+  console.log('pr111',pr111);
+  return ;
+
+
+
   // const pubPoint = ec.keyFromPrivate(private_key).getPublic().encode();
   // console.log('pubPoint',pubPoint);
   // return pubPoint
