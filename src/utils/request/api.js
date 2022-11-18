@@ -62,3 +62,12 @@ export const GetMerchantUserList = p => apiGet(`/merchant/user/list`, p);
 export const GrantUserMerchantRole = p => apiPost('/merchant/user/role/grant', p);
 // export const RevokeUserMerchantRole = p => apiPost('/merchant/user/role/revoke', p);
 export const ChangeUserMerchantRole = p => apiPost('/merchant/user/role/change', p);
+
+
+
+export const CreatePayment = p => apiPost1(`/open_api/payment`, p);
+
+export const GetAvailableVC = p => apiGet(`/merchant/vc`, p);
+export const MarkVCReceived = p => apiPost('/merchant/vc', p);
+export const MarkVCInvalid = p => apiPost('/merchant/vc/invalid', p);
+export const MerchantWithdraw = p => apiPost('/merchant/withdraw', p);

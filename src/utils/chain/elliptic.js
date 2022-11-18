@@ -2,6 +2,9 @@ import elliptic from 'elliptic'
 import ecdsa from 'ecdsa-secp256k1'
 import secp256k1 from 'secp256k1'
 import randomBytes from "randombytes-pure";
+import moment from "moment";
+import {base58btc} from "multiformats/bases/base58";
+
 const EC = elliptic.ec;
 // const ec = new elliptic.ec({curve: elliptic.curves.secp256k1});
 // Create and initialize EC context
@@ -11,6 +14,18 @@ const ec = new EC('secp256k1');
   const public_key = '0x04d75ed47b5a540626e4b0f55898984788259f2fdc90fbeb69f28b863830146ce074b3443a84974f2eb2b815baf49b369c19cfa447060a84f0f8174b365ce1d97d';
 
 
+const PurposeAuth  = "Authentication"
+const Secp256k1Sig = "EcdsaSecp256k1Signature2019"
+const Secp256k1Key = "EcdsaSecp256k1VerificationKey2019"
+
+const ContextDID        = "https://w3id.org/did/v1"
+const ContextCredential = "https://www.w3.org/2018/credentials/v1"
+const ContextSecp256k1  = "https://ns.did.ai/suites/secp256k1-2019/v1/"
+
+const TypeCredential   = "VerifiableCredential"
+const TypeVericDeposit = "VericDeposit"
+const DIDPrefix = "did:veric:"
+const RFC_3339 = 'YYYY-MM-DDTHH:mm:ss';
 
 const generatePrivateKey = function() {
   return ec.genKeyPair().getPrivate().toString();
@@ -40,11 +55,10 @@ const generatePublicKey = (privateKey) => {
 }
 
 
-export const EllipticMarshal = () => {
 
-  const pr1 = '0xc000118810';
-  const pr111 = ec.keyFromPrivate(pr1);
-  console.log('pr111',pr111);
+
+export const EllipticMarshal = () => {
+  console.log('randomUserKey',randomUserKey().getPublic());
   return ;
 
 
@@ -151,3 +165,133 @@ export const EllipticMarshal = () => {
 //   console.log(key.verify(msgHash, signature));
 //
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const randomUserKey = () => {
+  const key = ec.genKeyPair();
+  return EETH().NewPrivateKeyFromECDSA(key)
+}
+
+
+
+function PrivateKey(p) {
+  this.kk = p;
+  this.PublicKey = function() {
+    return p.key.getPublic()
+  };
+}
+
+export function EETH(){
+
+  const NewPrivateKeyFromECDSA = (key) => {
+    // return PrivateKey
+    this.nnnnn = key;
+    console.log('bb');
+    //
+    // this.PublicKey = () => {
+    //
+    //   console.log('aa');
+    //   return key.getPublic();
+    // }
+
+    // this.EllipticMarshal = () => {
+    //   return ec.keyFromPublic(key, 'hex');
+    // }
+    //
+    // this.Address = () => {
+    //   return key.encode('hex');
+    // }
+    //
+    // this.Address.String = () => {
+    //   return this.Address.encode('hex');
+    // }
+    // return {key: key}
+  }
+
+
+  return {
+    NewPrivateKeyFromECDSA,
+  }
+
+}
+
+export const randomUserDID = () => {
+  const key = randomUserKey();
+  console.log('key.PublicKey()11111');
+  // console.log('key.PublicKey()11111',key.PublicKey());
+  // const did = CreateUserDID(key.PublicKey())
+  // return {key,did}
+}
+
+export const CreateUserDID = (userPbKey) => {
+  const documentId = DIDPrefix+userPbKey.Address().String();
+  // currentTime := time.Now().Format(time.RFC3339)
+  const currentTime = moment.utc().format(RFC_3339);
+  const pubData= base58btc.baseEncode(userPbKey.EllipticMarshal())
+
+
+  const DIDDocument = {
+    ID:documentId,
+    Context:        [ContextSecp256k1,ContextDID],
+    Created:currentTime,
+    Updated:currentTime,
+    Version:        1,
+    Authentication: documentId + "#verification",
+    Address:        userPbKey.Address().String(),
+    VerificationMethod:[
+      {
+        ID:           documentId + "#verification",
+        Controller:   documentId,
+        MethodType:   Secp256k1Key,
+        MultibaseKey: pubData,
+      },
+    ],
+
+  }
+
+  return DIDDocument;
+}
+
+
+
+
+export const TestCreateUserDID = () => {
+  const a1  = new PrivateKey('dd');
+  const aa = a1.PublicKey('mm')
+  console.log('aa999',aa);
+  // const {_,oriDid} = randomUserDID();
+  //
+  //
+  // return oriDid;
+}

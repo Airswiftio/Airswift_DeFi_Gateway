@@ -156,3 +156,14 @@ export function dbDelSignData() {
   return  dbStore.delete(SignDataKey)
 }
 
+
+const VCKey = 'myVC';
+export function dbSetVC(value) {
+  return  dbStore.set(VCKey,value)
+}
+export function dbGetVC() {
+  return  dbStore.get(VCKey)
+}
+export function dbDelVC() {
+  return  dbStore.delete(VCKey)
+}
