@@ -9,7 +9,7 @@ import ProfilePhoto from "../../assets/sample_profile.svg";
 
 const ManagementHeader = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(true);
+  const loggedIn = true;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [url, setUrl] = useState(window.location.pathname);
 
@@ -23,10 +23,6 @@ const ManagementHeader = () => {
 
   const openMobileModal = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const closeMobileModal = () => {
-    setMobileMenuOpen(false);
   };
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { Formik, Field, Form } from "formik";
 import { useNavigate } from "react-router";
 import Logo from "../../../assets/management/logo.svg";
 
-const ManagementLogin = ({ setIsLogin, authenticate }) => {
+const ManagementLogin = ({ authenticate }) => {
   const navigate = useNavigate();
 
   return (
@@ -15,9 +15,18 @@ const ManagementLogin = ({ setIsLogin, authenticate }) => {
           username: "",
           password: "",
         }}
-        onSubmit={async ({ username, password }) =>
-          await authenticate(username, password)
-        }
+        onSubmit={async ({ username, password }) => {
+          await authenticate(
+            {
+              username: username,
+              password: password,
+              captcha_id: "HRzGVk4MJJq0eYD4xSUk",
+              captcha_code: "n4hkm6",
+            },
+            "/api/admin/login"
+          );
+          navigate("/management/dashboard");
+        }}
       >
         <Form className="form">
           <label htmlFor="username">Username</label>
@@ -41,9 +50,6 @@ const ManagementLogin = ({ setIsLogin, authenticate }) => {
           </button>
         </Form>
       </Formik>
-      <div className="login" onClick={() => setIsLogin(false)}>
-        Not a member yet? <span>Create new account</span>
-      </div>
     </div>
   );
 };

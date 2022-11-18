@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
+import { get } from "./requests";
 import { SmallCard } from "../../components";
 
 import "./dashboard.scss";
@@ -8,22 +7,8 @@ import "./dashboard.scss";
 const Dashboard = () => {
   const [overviewData, setOverviewData] = useState();
 
-  const getOverviewData = () => {
-    axios
-      .get("/api/admin/dashboard/overview", {
-        withCredentials: true,
-        credentials: "same-origin",
-      })
-      .then(function (response) {
-        setOverviewData(response.data.msg);
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
-
   useEffect(() => {
-    getOverviewData();
+    get(setOverviewData, "/api/admin/dashboard/overview");
   }, []);
 
   return (

@@ -79,6 +79,7 @@ import ManagementLayout from "./ManagementLayout";
 import ManagementHeader from "./management/managementHeader";
 import SmallCard from "./management/dashboard/smallCard";
 import ManagementTable from "./management/managementTable";
+import TableRow from "./management/tableRow";
 import SwitchToggle from "./management/switchToggle";
 import ManagementPagination from "./management/pagination";
 import ConfirmationModal from "./management/confirmationModal";
@@ -135,4 +136,5 @@ export {
   SettingsModal,
   LiquidityLayout,
   LiquidityHeader,
+  TableRow,
 };
