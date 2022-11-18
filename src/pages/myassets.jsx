@@ -32,8 +32,7 @@ const Assets = () => {
       today:res?.data?.today_total_withdraw?.toFixed(2) ?? withdrawTotal?.today?.toFixed(2)})
   }
 
-  const aa = async () => {
-
+  const bb = async () => {
     const res0 = await CreatePayment({
       "access_key": "PcBcKtuSzUKdjIVWuDYskfohyntPoxRb",
       "desc": "test",
@@ -43,6 +42,10 @@ const Assets = () => {
       "currency": "USDT"
     })
     console.log('res0',res0);
+  }
+  const aa = async () => {
+
+
 
     const res1 = await MarkVCInvalid({vc_ids:['vc4444'],all:true})
     console.log('res1',res1);
@@ -58,7 +61,7 @@ const Assets = () => {
   }
 
   useEffect(() => {
-    aa();
+    // aa();
     // didCreate()
     getIncomeTotal();
     getWithdrawTotal();
@@ -81,7 +84,7 @@ const Assets = () => {
           />
         </div>
         <div className="history">
-          <span className="title">
+          <span className="title" onClick={bb}>
             {state === 0 ? "Income" : "Withdraw"} History
           </span>
           <Selectors setFilters={setFilters} filters={filters} />
