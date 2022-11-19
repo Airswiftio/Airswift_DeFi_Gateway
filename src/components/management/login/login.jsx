@@ -15,8 +15,8 @@ const ManagementLogin = ({ authenticate }) => {
           username: "",
           password: "",
         }}
-        onSubmit={async ({ username, password }) => {
-          await authenticate(
+        onSubmit={({ username, password }) => {
+          authenticate(
             {
               username: username,
               password: password,
@@ -24,8 +24,7 @@ const ManagementLogin = ({ authenticate }) => {
               captcha_code: "n4hkm6",
             },
             "/api/admin/login"
-          );
-          navigate("/management/dashboard");
+          ).then(() => navigate("/management/dashboard"));
         }}
       >
         <Form className="form">

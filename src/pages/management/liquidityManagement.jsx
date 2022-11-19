@@ -18,11 +18,7 @@ const LiquidityManagement = () => {
         <div className="managementSearchWrapper">
           <Search title="Search Pools or Token" />
         </div>
-        <ManagementTable
-          data={pools?.pools || {}}
-          type={TABLETYPE.LIQUIDITY}
-          modify={post}
-        />
+        <ManagementTable data={pools?.pools || {}} type={TABLETYPE.LIQUIDITY} modify={post} />
       </div>
     </div>
   );
