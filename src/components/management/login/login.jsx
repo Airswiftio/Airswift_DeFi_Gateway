@@ -24,7 +24,8 @@ const ManagementLogin = ({ authenticate }) => {
               captcha_code: "n4hkm6",
             },
             "/api/admin/login"
-          ).then(() => navigate("/management/dashboard"));
+          );
+          navigate("/management/dashboard");
         }}
       >
         <Form className="form">
