@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import LocalStore from "@@/utils/db/localStorage";
 import db from "@@/utils/db/browserDb";
+import {dexieDB} from "@@/utils/db/indexDB";
 const dbStore = db;
 dayjs.extend(utc);
 
@@ -117,6 +118,33 @@ export function conversionUtcDate(date, type) {
   }
 }
 
+//取得[n,m]范围随机数
+export function fullClose(n,m) {
+  let result = Math.random()*(m+1-n)+n;
+  while(result>m) {
+    result = Math.random()*(m+1-n)+n;
+  }
+  return Math.ceil(result);
+}
+
+//取得(n,m)范围随机数
+function fullOpen(n,m) {
+  let result = Math.random()*(m-n)+n;
+  while(result == n) {
+    result = Math.random()*(m-n)+n;
+  }
+  return result;
+}
+
+//取得(n,m]范围随机数
+function leftOpen(n,m) {
+  let result = Math.random()*(m-n+1)+n-1;
+  while(result<n) {
+    result = Math.random()*(m-n+1)+n-1;
+  }
+  return result;
+}
+
 export function dbClearAccount() {
   return  dbStore.clear()
 }
@@ -156,14 +184,25 @@ export function dbDelSignData() {
   return  dbStore.delete(SignDataKey)
 }
 
+export function addAllVCs(list) {
+  return (new dexieDB('as_vc')).addAll(list);
+}
+export function getAllVCs() {
+  return (new dexieDB('as_vc')).getAll();
+}
 
-const VCKey = 'myVC';
-export function dbSetVC(value) {
-  return  dbStore.set(VCKey,value)
+export function getVCsByIDS(IDs = []) {
+  return (new dexieDB('as_vc')).getAllByKey('vc_id',IDs);
 }
-export function dbGetVC() {
-  return  dbStore.get(VCKey)
+
+export function addOneLocal(item) {
+  return (new dexieDB('as_local')).add(item);
 }
-export function dbDelVC() {
-  return  dbStore.delete(VCKey)
+
+export function getAllLocal() {
+  return (new dexieDB('as_local')).getAll();
 }
+
+
+
+

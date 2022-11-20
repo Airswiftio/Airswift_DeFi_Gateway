@@ -12,14 +12,19 @@ import "./withdraw.scss";
 import dummyData from "../../sample_data.json";
 import { useNavigate } from "react-router-dom";
 import {GetPaymentList, GetWithdrawList} from "@@/utils/request/api";
+import Doc from "@@/assets/document.svg";
+import Verified from "@@/assets/verified.svg";
 
-const Withdraw = () => {
+const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
     const [page, setPage] = useState(0);
     const [modalIsOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
-
+    const WithdrawStatus = [
+        {key:'complete',title:'Complete'},
+        {key:'pending',title:'Pending'},
+    ];
 
     const openModal = () => {
         setIsOpen(true);
@@ -35,7 +40,7 @@ const Withdraw = () => {
             // app_id:0,
             page:1,
             size:10,
-            status:'pending',
+            status:WithdrawStatus?.[selectStatus]?.key??'complete',
             // payment_num:0,
             // currency_id:0,
             // date:0,
@@ -47,6 +52,10 @@ const Withdraw = () => {
             setDataTotal(res?.data?.total)
         }
     }
+
+    useEffect(() => {
+        getList();
+    }, [search,selectStatus,selectCurrency,date]);
     useEffect(() => {
         getList();
         // getWithdrawTotal();
@@ -59,20 +68,15 @@ const Withdraw = () => {
             </Popup>
             <HistoryTable vc={false}>
                 {dataList.map(
-                    (
-                        { transId, status, currency, amount, time, viewMore, vc },
-                        index
-                    ) => (
-                        <HistoryElement
-                            transId={transId}
-                            status={status}
-                            currency={currency}
-                            amount={amount}
-                            time={time}
-                            viewMore={viewMore}
-                            key={index}
-                            click={openModal}
-                        />
+                    (item, index) => (
+                        <div className="historyElementWrapper" onClick={openModal}>
+                            <span>{item?.withdraw_num}</span>
+                            <span>{item?.status}</span>
+                            <span>{item?.currency_symbol}</span>
+                            <span>{item?.amount}</span>
+                            <span>{item?.created_at}</span>
+                            <span><img src={Doc} alt="View more" /></span>
+                        </div>
                     )
                 )}
             </HistoryTable>

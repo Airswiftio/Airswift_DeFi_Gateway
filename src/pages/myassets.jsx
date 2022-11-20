@@ -1,5 +1,5 @@
 import React, { useState ,useEffect} from "react";
-import { InfoCard, Toggle, Income, Withdraw, Selectors } from "@@/components";
+import {InfoCard, Toggle, Income, Withdraw, Selectors, Dropdown, Datepicker, Search, DropdownNew} from "@@/components";
 
 import "./myassets.scss";
 import {
@@ -10,8 +10,12 @@ import {
   GetWithdrawSummary,
   MarkVCInvalid, MarkVCReceived, MerchantWithdraw
 } from "@@/utils/request/api";
-import {didCreate} from "@@/utils/chain/did";
-import {dbSetVC} from "@@/utils/function";
+import {createVP, didCreate, getVCs, SimonCreateDID} from "@@/utils/chain/did";
+import {addOneLocal} from "@@/utils/function";
+import {base_currency, select_currency} from "@@/utils/config";
+import moment from "moment";
+import {dbSet} from "@@/utils/db/browserDb";
+import {base58Encode1} from "@@/utils/chain/wallet";
 
 const Assets = () => {
   const [state, setState] = useState(0);
@@ -19,6 +23,18 @@ const Assets = () => {
   const [incomeTotal, setIncomeTotal] = useState({total:0,today:0});
   const [withdrawTotal, setWithdrawTotal] = useState({total:0,today:0});
 
+  const [selectStatus, setSelectStatus] = useState();
+  const [selectCurrency, setSelectCurrency] = useState();
+  const [date, setDate] = useState();
+  const [search, setSearch] = useState('');
+  const statusOptions = [
+    {key:'success',title:'Finished'},
+    {key:'pending',title:'Pending'},
+  ];
+  const WithdrawStatus = [
+    {key:'complete',title:'Complete'},
+    {key:'pending',title:'Pending'},
+  ];
   const getIncomeTotal = async () => {
     const res = await GetPaymentSummary()
     setIncomeTotal({
@@ -32,39 +48,19 @@ const Assets = () => {
       today:res?.data?.today_total_withdraw?.toFixed(2) ?? withdrawTotal?.today?.toFixed(2)})
   }
 
-  const bb = async () => {
-    const res0 = await CreatePayment({
-      "access_key": "PcBcKtuSzUKdjIVWuDYskfohyntPoxRb",
-      "desc": "test",
-      "title": "test",
-      "amount_in_cent": 1,
-      "chain_id": 1,
-      "currency": "USDT"
-    })
-    console.log('res0',res0);
-  }
-  const aa = async () => {
-
-
-
-    const res1 = await MarkVCInvalid({vc_ids:['vc4444'],all:true})
-    console.log('res1',res1);
-
-    const res2 = await MarkVCReceived({vc_ids:['cZfJRVEeGfAuKBNaokSguxFPYdWpdxes']})
-    console.log('res2',res2);
-    // const res23 = await MerchantWithdraw({vp: JSON.stringify({aa:'bb'}),to_address:'0x08830907F2e2D20A5CB37eE9E0A8BDf8c06e3508'})
-    // console.log('res23',res23);
-
-    const res = await GetAvailableVC()
-    dbSetVC(res?.data);
-    console.log('res',res);
-  }
 
   useEffect(() => {
-    // aa();
-    // didCreate()
+    setSelectStatus(null)
+    setSelectCurrency(null)
+    setDate(null)
+    setSearch('')
+  }, [state]);
+  useEffect( () => {
+    // const did = SimonCreateDID()
+    // console.log('did',did);
     getIncomeTotal();
     getWithdrawTotal();
+    getVCs()
   }, []);
 
   return (
@@ -84,11 +80,49 @@ const Assets = () => {
           />
         </div>
         <div className="history">
-          <span className="title" onClick={bb}>
+          <span className="title">
             {state === 0 ? "Income" : "Withdraw"} History
           </span>
-          <Selectors setFilters={setFilters} filters={filters} />
-          {state === 0 ? <Income /> : <Withdraw />}
+
+
+          <div className="selectorsWrapper">
+            <DropdownNew
+                buttonStyle={{width:'150px'}}
+                options={state === 0 ? statusOptions : WithdrawStatus}
+                defaultTitle="Status"
+                selected={selectStatus}
+                setSelected={setSelectStatus}
+             />
+            <DropdownNew
+                buttonStyle={{width:'150px'}}
+                options={select_currency()}
+                defaultTitle="Currency"
+                selected={selectCurrency}
+                setSelected={setSelectCurrency}
+            />
+            <Datepicker
+                date={date}
+                setDate={setDate}
+            />
+            <Search
+                search={search}
+                setSearch={setSearch}
+            />
+          </div>
+          {/*<Selectors setFilters={setFilters} filters={filters} />*/}
+          {state === 0
+              ? <Income
+                  selectStatus={selectStatus}
+                  selectCurrency={selectCurrency}
+                  date={date}
+                  search={search}
+              />
+              : <Withdraw
+                  selectStatus={selectStatus}
+                  selectCurrency={selectCurrency}
+                  date={date}
+                  search={search}
+              />}
         </div>
       </div>
     </div>

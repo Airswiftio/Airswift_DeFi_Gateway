@@ -27,5 +27,16 @@
       align-self: flex-start;
       font-size: 22px;
     }
+
+    .selectorsWrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5em;
+      margin: 1em 0;
+      font-family: "Poppins";
+      position: absolute;
+      z-index: 5;
+      top: 4em;
+    }
   }
 }

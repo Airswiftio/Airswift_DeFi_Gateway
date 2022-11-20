@@ -1,5 +1,5 @@
 import axios from "axios";
-import {dbGetJWTToken} from "@@/utils/function";
+import {dbClearAccount, dbGetJWTToken} from "@@/utils/function";
 
 //Call apiURL of back-end interface
 const ApiUrl = process.env.REACT_APP_API_URL
@@ -84,7 +84,9 @@ instance.interceptors.response.use(response => {
         if (error.response.status === 401) {
             // If the token or login fails, you can jump to the login page. According to the actual situation, you can do the corresponding things here according to different response error results. Take 401 judgment as an example
             // Jump to the login page for the framework
-            this.props.history.push(LOGIN);
+            // this.props.history.push(LOGIN);
+            dbClearAccount()
+            window.location.href = LOGIN
         }
         if (error.response.status === 500) {
             error.response.data.msg = 'Internal Server Error';

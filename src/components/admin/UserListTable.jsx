@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import "@@/components/admin/userListTable.scss";
 import {array_column} from "@@/utils/function";
+import {svg_icon} from "@@/utils/config";
 
 const UserListTable = ({
                            columns = [],
@@ -29,14 +30,6 @@ const UserListTable = ({
     const selectAll = () => {
         setIsAll(checkedList?.length === 0 ? true :false);
         setCheckedList(checkedList?.length === 0 ? dataList.map((ee,kk)=>kk) :[]);
-        //
-        // if (checkedList?.length === 0) {
-        //     setIsAll(true);
-        //     setCheckedList(dataList.map((ee,kk)=>kk));
-        // } else {
-        //     setIsAll(false);
-        //     setCheckedList([]);
-        // }
     };
 
     return (
@@ -46,15 +39,13 @@ const UserListTable = ({
                     ? (
                         <span style={{width:'10%'}} className={isSelectAll ? null:'select'}>
                             {isSelectAll
-                                // ? (<div className="checkBox"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div>)
                                 ? (
                                     <div className="checkBox" onClick={()=>selectAll()}>
-                                        {isAll && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>}
+                                        {isAll && svg_icon('selected')}
                                     </div>
                                 )
                                 :'Selected'}
                         </span>
-                        // {isSelectAll ? (<span className="select">Selected</span>) : (<span className="select">Selected</span>)}
                     )
                     : null}
                 {columns?.map((vv1, kk1) => (
@@ -69,9 +60,7 @@ const UserListTable = ({
                                 ? (
                                     <span style={{width:'10%'}}>
                                         <div className="checkBox">
-                                            {checkedList?.includes(kk)
-                                                ? (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>)
-                                                : null}
+                                            {checkedList?.includes(kk) && (svg_icon('selected'))}
                                         </div>
                                     </span>
                                 )

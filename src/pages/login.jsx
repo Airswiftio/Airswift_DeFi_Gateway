@@ -57,7 +57,6 @@ const Login = () => {
     // setIsOpen(true);
 
     const res = await connectWallet();
-    console.log('res',res);
     if(res?.code !== 1000){
       alert(res?.msg);
       return false;

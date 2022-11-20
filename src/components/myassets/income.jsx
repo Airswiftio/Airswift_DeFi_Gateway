@@ -6,17 +6,22 @@ import { HistoryTable, HistoryElement, Modal, Pagination } from "../";
 
 import "./income.scss";
 import {GetPaymentList} from "@@/utils/request/api";
+import Doc from "@@/assets/document.svg";
+import Verified from "@@/assets/verified.svg";
 
-const Income = () => {
+const Income = ({search,selectStatus,selectCurrency,date}) => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
-    const { filters } = useFilters();
-
-    const openModal = () => {
+    const [itemData, setItemData] = useState({});
+    const statusOptions = [
+        {key:'success',title:'Finished'},
+        {key:'pending',title:'Pending'},
+    ];
+    const openViewMore = (item) => {
         setIsOpen(true);
-        console.log("Clicked");
+        setItemData(item)
     };
 
     const closeModal = () => {
@@ -28,10 +33,10 @@ const Income = () => {
             // app_id:0,
             page:1,
             size:10,
-            status:'success',
+            status:statusOptions?.[selectStatus]?.key??'success',
             // payment_num:0,
             // currency_id:0,
-            // date:0,
+            date:date??'',
         }
         const res = await GetPaymentList(params)
         if(res?.code === 1000){
@@ -42,44 +47,32 @@ const Income = () => {
 
     useEffect(() => {
         getList();
+    }, [search,selectStatus,selectCurrency,date]);
+
+    useEffect(() => {
+        getList();
         // getWithdrawTotal();
     }, []);
 
     return (
         <div className="incomeWrapper">
             <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
-                <Modal click={closeModal} />
+                <Modal click={closeModal} data={itemData} />
             </Popup>
             <HistoryTable>
                 {dataList.map(
-                    ({ payment_num, status, currency_symbol, amount, created_at, viewMore, vc }, index) =>
-                        filters?.status ? (
-                            status === filters?.status && (
-                                <HistoryElement
-                                    transId={payment_num}
-                                    status={status}
-                                    currency={currency_symbol}
-                                    amount={amount}
-                                    time={created_at}
-                                    viewMore={viewMore}
-                                    vc={vc}
-                                    key={index}
-                                    click={openModal}
-                                />
-                            )
-                        ) : (
-                            <HistoryElement
-                                transId={payment_num}
-                                status={status}
-                                currency={currency_symbol}
-                                amount={amount}
-                                time={created_at}
-                                viewMore={viewMore}
-                                vc={vc}
-                                key={index}
-                                click={openModal}
-                            />
-                        )
+                    (item, index) => (
+                        <div key={index} className="historyElementWrapper" onClick={()=>openViewMore(item)}>
+                            <span>{item.payment_num}</span>
+                            <span>{item.status}</span>
+                            <span>{item.currency_symbol}</span>
+                            <span>{item.amount}</span>
+                            <span>{item.created_at}</span>
+                            <span><img src={Doc} alt="View more"/></span>
+                            {item?.vc_exist === false && ['Created', 'Active'].includes(item?.vc_status) ? (<span>Restore VC</span>) : <span><img src={Verified} alt="Verified"/></span>}
+                        </div>
+
+                    )
                 )}
             </HistoryTable>
             <Pagination

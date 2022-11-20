@@ -1,6 +1,7 @@
 import {ethers, WEthereum, Web3Provider, signer, isEth} from '@@/utils/chain/chainBase';
 import md5 from 'js-md5';
 import {
+  Array2Byte,
   dbClearAccount,
   dbGetUserWallet, dbSetJWTToken, dbSetSignData, dbSetUserWallet,
   empty,
@@ -187,7 +188,10 @@ export const checkNetwork = (chainId) => {
   if(!chainId){
     return false;
   }
-  if(process.env.REACT_APP_MODE === 'production'){
+  if (chainId === 1) {
+    return true;
+  }
+  /*if(process.env.REACT_APP_MODE === 'production'){
     if (chainId === 1) {
       return true;
     }
@@ -203,7 +207,7 @@ export const checkNetwork = (chainId) => {
     if(chainId  === 97){
       return true;
     }
-  }
+  }*/
   return false;
 }
 
@@ -297,6 +301,7 @@ export const connectWallet = async () => {
 
   //Get account balance and connect to the network
   let balance = await getBalance(account);//Get the account balance and format it
+
   let network = await getNetwork();
   let networkName = network.chainId === 1 ? 'Mainnet':network.name;
   let chainId = network.chainId.toString();
@@ -310,10 +315,12 @@ export const connectWallet = async () => {
   }
 
   let res3 = await Web3SignData(account,res2?.data?.content);
+  // let res3 = await Web3SignData(account,'Generate VP through VC');
   if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
     dbClearAccount();
     return res3;
   }
+  console.log('res3?.data',res3?.data);
 
   dbSetSignData(res3?.data)
   let userWallet = {
@@ -378,6 +385,22 @@ export const beforeSend = (checkUser = true)=>{
 //   return  didAddress
 // }
 
+export const base58Encode = (hex = '') => {
+  return ethers.utils.base58.encode(hex);
+}
 
+export const base58Encode1 = (hex = '') => {
+  let jsonData = `{"@context":["https://ns.did.ai/suites/secp256k1-2019/v1/","https://www.w3.org/2018/credentials/v1"],"type":["VerifiablePresentation"],"verifiableCredential":[{"@context":["https://ns.did.ai/suites/secp256k1-2019/v1/","https://www.w3.org/2018/credentials/v1"],"id":"0","type":["VericDeposit","VerifiableCredential"],"issuer":"did:veric:0xC5BCf228F28a1827Da6C7e576b6d0Dfa5A5168Be","issuanceDate":"2022-06-07T09:43:27Z","expirationDate":"2032-06-07T09:43:27Z","description":"Veric Deposit","credentialSubject":{"tokenAddress":"0xc4860463c59d59a9afac9fde35dff9da363e8425","amount":1000000000000000000,"vault":"0xd3446851deb19bcf700dadef258ba90834c8472a"},"proof":{"type":"EcdsaSecp256k1Signature2019","created":"2022-06-07T09:43:27Z","verificationMethod":"did:veric:0xC5BCf228F28a1827Da6C7e576b6d0Dfa5A5168Be#verification","proofPurpose":"Authentication","jws":"eyJhbGciOiJFUzI1NiJ9..sUOiidTUHzNJ_L93k25EETrzfGcpeqXkDOFxBs2Q4sEtsxRri-Ah5JtCEvQKGNLQYFK2WqIbrmmhbYDggcREGQ"}}],"holder":"did:veric:0x77CBcc0e29E10F1EeA24e0D109aaB26C5b2Abd88","proof":{"type":"EcdsaSecp256k1Signature2019","created":"2022-06-07T18:23:41+08:00","verificationMethod":"did:veric:0x77CBcc0e29E10F1EeA24e0D109aaB26C5b2Abd88#verification","proofPurpose":"Authentication","jws":"eyJhbGciOiJFUzI1NiJ9..Oge0fus9C__fsEk8eUVYZgu47co5aFI8mvVjcjcvc8cUjjor8yEpuWhVjjtO-l0cLxUKTQRWwx0TwCDzulfk2A","nonce":"6666"}}`
+  let obj = json_to_obj(jsonData)
+  console.log('obj',obj.verifiableCredential);
+  let bb = ethers.utils.toUtf8Bytes(jsonData)
+  console.log('aa',bb);
+
+  // todo 888
+  // ethers.utils.parseBytes32String()
+  // ethers.utils.toUtf8String()
+  // ethers.utils.toUtf8Bytes()
+  // return ethers.utils.getAddress(hex);
+}
 
 export {Web3Provider,signer}

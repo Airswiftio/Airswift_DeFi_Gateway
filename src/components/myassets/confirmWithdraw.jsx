@@ -2,49 +2,81 @@ import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
 import {
-  HistoryTable,
-  HistoryElement,
-  DefaultButton,
-  ConfirmWithdrawModal,
+    HistoryTable,
+    HistoryElement,
+    DefaultButton,
+    ConfirmWithdrawModal,
 } from "../";
 import dummyData from "../../sample_data.json";
 import "./confirmWithdraw.scss";
-import {GetWithdrawList} from "@@/utils/request/api";
+import {GetPaymentList, GetWithdrawList} from "@@/utils/request/api";
+import Doc from "@@/assets/document.svg";
+import {svg_icon} from "@@/utils/config";
+import Verified from "@@/assets/verified.svg";
 
-const ConfirmWithdraw = () => {
-  const [checked, setChecked] = useState([]);
-  const [modalIsOpen, setIsOpen] = useState(false);
+const ConfirmWithdraw = ({Currency}) => {
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [isAll, setIsAll] = useState(false);
+    const [checkedList, setCheckedList] = useState([]);
+    const [selectData, setSelectData] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const openModal = () => {
-    setIsOpen(true);
-    console.log("Clicked");
-  };
+    const confirmWithdraw = () => {
+        if(checkedList?.length <= 0){
+            alert('Please select vc!')
+            return false;
+        }
+        let data = [];
+        let total = 0;
+        checkedList.map((item,index)=>{
+            total = total + dataList?.[item]?.amount;
+            data = [...data,dataList?.[item]]
+        })
+        setSelectData(data);
+        setTotalAmount(total);
+        setIsOpen(true);
+    };
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+    const closeModal = () => {
+        setIsOpen(false);
+    };
 
-  const selectRow = (key) => {
-    if (checked.includes(key)) {
-      setChecked(checked.filter((e) => e !== key));
-    } else {
-      setChecked([...checked, key]);
-    }
+    const selectAll = () => {
+        setIsAll(checkedList?.length === 0 ? true :false);
+        setCheckedList(checkedList?.length === 0 ? dataList.map((ee,kk)=>kk) :[]);
+    };
 
-    console.log(checked);
-  };
+    const selectRow = (key) => {
+        if (checkedList?.includes(key)) {
+            setCheckedList(checkedList.filter((e) => e !== key));
+            if(checkedList?.length === dataList?.length){
+                setIsAll(false);
+            }
+        } else {
+            setCheckedList([...checkedList, key]);
+            setIsAll(checkedList?.length +1 === dataList?.length ? true : false);
+        }
+    };
 
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
 
-
     const getList = async () => {
-        const res = await GetWithdrawList()
+        let params = {
+            // app_id:0,
+            page:1,
+            size:10,
+            status:'success',
+            // payment_num:0,
+            currency_id:Currency?.id,
+            // date:date??'',
+        }
+        const res = await GetPaymentList(params)
         if(res?.code === 1000){
-            setDataList(res?.msg?.withdraws ?? [])
-            setDataTotal(res?.msg?.total)
+            setDataList(res?.data?.payments ?? [])
+            setDataTotal(res?.data?.total)
         }
     }
     useEffect(() => {
@@ -52,38 +84,50 @@ const ConfirmWithdraw = () => {
         // getWithdrawTotal();
     }, []);
 
-  return (
-    <div className="confWithdrawWrapper">
-      <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
-        <ConfirmWithdrawModal click={closeModal} />
-      </Popup>
-      <div className="title">Select available transactions</div>
-      <HistoryTable vc={false} select>
-        {dataList.map(
-          ({ transId, status, currency, amount, time, viewMore }, index) => (
-            <HistoryElement
-              checked={checked}
-              click={() => selectRow(index)}
-              transId={transId}
-              status={status}
-              currency={currency}
-              amount={amount}
-              time={time}
-              viewMore={viewMore}
-              key={index}
-              indx={index}
+    return (
+        <div className="confWithdrawWrapper">
+            <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
+                <ConfirmWithdrawModal
+                    total={totalAmount}
+                    data={selectData}
+                    currency={Currency}
+                    click={closeModal}
+                />
+            </Popup>
+            <div className="title">Select available transactions</div>
+            <div className="historyTableWrapper">
+                <div className="columnLabels">
+                    <span style={{width:'10%'}}><div className="checkBox" onClick={()=>selectAll()}>{isAll && svg_icon('selected')}</div></span>
+                    <span>Trans ID</span>
+                    <span>Currency</span>
+                    <span>Amount(USD)</span>
+                    <span>Time</span>
+                    <span>VCs</span>
+                </div>
+                <div className="historyTableContent">
+                    {dataList.map(
+                        (item, index) => (
+                            <div key={index} className="historyElementWrapper" onClick={()=>selectRow(index)}>
+                                <span style={{width:'10%'}}><div className="checkBox">{checkedList?.includes(index) ? svg_icon('selected'):null}</div></span>
+                                <span>{item?.payment_num}</span>
+                                <span>{item?.currency_symbol}</span>
+                                <span>{item?.amount}</span>
+                                <span>{item?.created_at}</span>
+                                <span><img src={Verified} alt="Verified" /></span>
+                            </div>
+                        )
+                    )}
+                </div>
+            </div>
+
+            <DefaultButton
+                title="Confirm Withdraw"
+                align={1}
+                click={() => confirmWithdraw()}
             />
-          )
-        )}
-      </HistoryTable>
-      <DefaultButton
-        title="Confirm Withdraw"
-        align={1}
-        click={() => setIsOpen(true)}
-      />
-      <div className="help">How can I use VP?</div>
-    </div>
-  );
+            <div className="help">How can I use VP?</div>
+        </div>
+    );
 };
 
 export default ConfirmWithdraw;

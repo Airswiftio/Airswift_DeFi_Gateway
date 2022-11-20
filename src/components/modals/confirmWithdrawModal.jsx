@@ -4,8 +4,33 @@ import { DefaultButton } from "..";
 import "./confirmWithdrawModal.scss";
 
 import USDC from "../../assets/usdc_icon.svg";
+import {MerchantWithdraw} from "@@/utils/request/api";
+import {createVP} from "@@/utils/chain/did";
+import {array_column, dbGetUserWallet} from "@@/utils/function";
 
-const ConfirmWithdrawModal = ({ click, total = 444, currency = "USDC" }) => {
+const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
+  const withdraw = async () => {
+    const VCids = array_column(data,'vc_id')
+
+    const res = await createVP(VCids);
+    if(res?.code !== 1000){
+      alert(res?.msg);
+      return false;
+    }
+
+
+    const res1 = await MerchantWithdraw({
+      vp: res?.data,
+      to_address:dbGetUserWallet()?.account})
+    if(res1?.code !== 1000){
+      alert(res?.msg);
+      return false;
+    }
+
+    //todo 888可能要删除vc
+    navigate("/dashboard")
+  }
+
   useEffect(() => {
     const modal = document.getElementsByClassName("withdrawModal");
     modal[0].addEventListener("click", (e) => {
@@ -24,7 +49,7 @@ const ConfirmWithdrawModal = ({ click, total = 444, currency = "USDC" }) => {
           <div className="total">{`$ ${total}`}</div>
           <div className="currency">
             <img src={USDC} alt="currency" />
-            {` ${currency}`}
+            {` ${currency?.title}`}
           </div>
         </div>
         <div className="gas">
@@ -33,7 +58,7 @@ const ConfirmWithdrawModal = ({ click, total = 444, currency = "USDC" }) => {
         </div>
         <DefaultButton
           title="Confirm Withdraw"
-          click={() => navigate("/dashboard")}
+          click={withdraw}
         />
       </div>
     </div>

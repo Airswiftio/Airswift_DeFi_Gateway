@@ -60,14 +60,8 @@ const MyStore = ({myStore,setMyStore}) => {
               buttonStyle={{width:'100px'}}
               options={base_currency()}
               defaultTitle={myStore?.legal_tender?.toUpperCase() ?? ''}
-              // selected={selectRole}
-              // setSelected={setSelectRole}
               selected={selected}
               setSelected={setSelected}
-
-              // options={baseCurrency}
-              // selectedValue={Currency}
-              // setSelectedValue={setStoreCurrency}
               doSomething={modifyBaseCurrency}/>
         </div>
       </div>

@@ -10,8 +10,8 @@ const EC = elliptic.ec;
 // Create and initialize EC context
 // (better do it once and reuse it)
 const ec = new EC('secp256k1');
-  const private_key = '0x2cf9e6739d9eac37baa9ec2a0debcf42fc2db84f4cda09cbdc0e18c75059639d';
-  const public_key = '0x04d75ed47b5a540626e4b0f55898984788259f2fdc90fbeb69f28b863830146ce074b3443a84974f2eb2b815baf49b369c19cfa447060a84f0f8174b365ce1d97d';
+const private_key = '0x2cf9e6739d9eac37baa9ec2a0debcf42fc2db84f4cda09cbdc0e18c75059639d';
+const public_key = '0x04d75ed47b5a540626e4b0f55898984788259f2fdc90fbeb69f28b863830146ce074b3443a84974f2eb2b815baf49b369c19cfa447060a84f0f8174b365ce1d97d';
 
 
 const PurposeAuth  = "Authentication"
