@@ -8,14 +8,13 @@ import {
   GetMerchantBaseSummary,
   GetPaymentSummary,
   GetWithdrawSummary,
-  MarkVCInvalid, MarkVCReceived, MerchantWithdraw
 } from "@@/utils/request/api";
-import {createVP, didCreate, getVCs, SimonCreateDID} from "@@/utils/chain/did";
+import {CreateDID, createVP, getVCs} from "@@/utils/chain/did";
 import {addOneLocal} from "@@/utils/function";
 import {base_currency, select_currency} from "@@/utils/config";
 import moment from "moment";
 import {dbSet} from "@@/utils/db/browserDb";
-import {base58Encode1} from "@@/utils/chain/wallet";
+import {ethers} from "@@/utils/chain/chainBase";
 
 const Assets = () => {
   const [state, setState] = useState(0);
@@ -56,7 +55,7 @@ const Assets = () => {
     setSearch('')
   }, [state]);
   useEffect( () => {
-    // const did = SimonCreateDID()
+    const did = createVP(['DXFpPDhNsEWZVJPepxiiXwShURvBriwH'])
     // console.log('did',did);
     getIncomeTotal();
     getWithdrawTotal();

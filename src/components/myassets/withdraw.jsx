@@ -69,7 +69,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
             <HistoryTable vc={false}>
                 {dataList.map(
                     (item, index) => (
-                        <div className="historyElementWrapper" onClick={openModal}>
+                        <div key={index} className="historyElementWrapper" onClick={openModal}>
                             <span>{item?.withdraw_num}</span>
                             <span>{item?.status}</span>
                             <span>{item?.currency_symbol}</span>

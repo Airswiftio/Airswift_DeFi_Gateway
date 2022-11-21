@@ -77,6 +77,9 @@ export function array_column(array, field) {
 export function explode(str,separator){
   return str.split(separator)
 }
+export function implode(array,separator){
+  return array.join(separator)
+}
 
 
 /* The seconds are optimized and displayed as days,hours,minutes */
@@ -203,6 +206,10 @@ export function getAllLocal() {
   return (new dexieDB('as_local')).getAll();
 }
 
-
+export function addDIDWhenEmpty(item) {
+  const did = item?.id ?? '';
+  const data = {did:did,did_document:item}
+  return (new dexieDB('as_did')).addOnce(data,{did:did});
+}
 
 

@@ -1,11 +1,11 @@
 import {
-  addAllVCs,
+  addAllVCs, addDIDWhenEmpty,
   array_column,
   dbClearAccount,
   dbGetUserWallet,
   empty,
   fullClose,
-  getVCsByIDS,
+  getVCsByIDS, implode,
   json_to_obj
 } from "@@/utils/function";
 import elliptic from 'elliptic'
@@ -13,7 +13,7 @@ import secp256k1 from 'secp256k1'
 
 import moment from "moment";
 import {base58btc} from "multiformats/bases/base58";
-import {base58Encode, base58Encode1, Web3SignData} from "@@/utils/chain/wallet";
+import {base58Encode, Web3SignData} from "@@/utils/chain/wallet";
 import {GetAvailableVC, MarkVCReceived} from "@@/utils/request/api";
 import {ethers} from "@@/utils/chain/chainBase";
 
@@ -38,90 +38,105 @@ const DIDPrefix = "did:veric:"
 const RFC_3339 = 'YYYY-MM-DDTHH:mm:ssZ07:00';
 
 
-export function didCreate(account = '') {
-  // const aa= TestCreateUserDID();
+export function didIDCreate(account = '') {
   account = empty(account) ? dbGetUserWallet()?.account : account;
-  const didAddress = DIDPrefix+account;
-  return  didAddress
-
-
-  // const aa= EllipticMarshal()
-  // const aa= base58btc.baseEncode(EllipticMarshal())
-// //> 'mAYAEEiCTojlxqRTl6svwqNJRVM2jCcPBxy+7mRTUfGDzy2gViA'no
-  // currentTime := time.Now().Format(time.RFC3339)
-//   const currentTime = moment.utc().format(RFC_3339);
-//   const pubData = multibase.Encode(multibase.Base58BTC, userPbKey.EllipticMarshal())
-//
-//
-//   const DIDDocument = {
-//     ID:documentId,
-//     Context:documentId,
-//     //       Context:        []string{ContextSecp256k1, ContextDID},
-//     Created:currentTime,
-//     Updated:currentTime,
-//     Version:        1,
-//     Authentication: documentId + "#verification",
-//     Address:        userPbKey.Address().String(),
-//     VerificationMethod:[
-//       {
-//         ID:           documentId + "#verification",
-//         Controller:   documentId,
-//         MethodType:   Secp256k1Key,
-//         MultibaseKey: pubData,
-//       },
-//     ],
-//
-//   }
-
-  // currentTime := time.Now().Format(time.RFC3339)
-  // pubData = multibase.Encode(multibase.Base58BTC, userPbKey.EllipticMarshal())
-  // return &DIDDocument{
-  //   ID:             documentId,
-  //   Created:        currentTime,
-  //       Updated:        currentTime,
-  //       Version:        1,
-  //       Authentication: documentId + "#verification",
-  //       Address:        userPbKey.Address().String(),
-  //       VerificationMethod: []VerificationMethod{
-  //     {
-  //       ID:           documentId + "#verification",
-  //           Controller:   documentId,
-  //         MethodType:   Secp256k1Key,
-  //         MultibaseKey: pubData,
-  //     },
-  //   },
-  // }
-  //todo 999
-  // account = empty(account) ? dbGetUserWallet()?.account : account;
-  // return  didAddress
+  return  DIDPrefix + account;
 }
 
-function PublicKey(ppp) {
-  this.key = new ec.keyFromPublic();
+export const recoverPublicKeyFromSign = (signMsg,Signature) => {
+  const msgHash = ethers.utils.hashMessage(signMsg);
+  const msgHashBytes = ethers.utils.arrayify(msgHash);
 
+  // Now you have the digest,
+  return ethers.utils.recoverPublicKey(msgHashBytes, Signature);
 }
-PublicKey.prototype.Address = function (){
-  // this.key.
 
+export const recoverAddressFromSign = (signMsg,Signature) => {
+  const msgHash = ethers.utils.hashMessage(signMsg);
+  const msgHashBytes = ethers.utils.arrayify(msgHash);
+
+  // Now you have the digest,
+  return  ethers.utils.recoverAddress(msgHashBytes, Signature);
 }
 
-function signPubData() {
-  const public_key = '04ae0270fa5d50d1910a1d87dcccde4ceceb9beaf5e6aa83cf5feea8f1cbe4bd94e042c71688837aa0282e943fbe0e2611e9918c09529a5c49e363ba8ccb97f9d3';
-  const public_key_bytes =   ec.keyFromPublic(public_key,'hex').getPublic().encode()
+function signPubData(publicKey = '') {
+  publicKey = empty(publicKey) ? dbGetUserWallet()?.publicKey :publicKey;
+  const public_key_bytes =   ec.keyFromPublic(publicKey.slice(2),'hex').getPublic().encode()
   return 'z'+base58Encode(public_key_bytes)
-
- /* const private_key = '5c913b25ad68a82be4db5b05b3123390105c6e8742b7b3ed0f628d392d2e006e';
-  const public_key = '04ae0270fa5d50d1910a1d87dcccde4ceceb9beaf5e6aa83cf5feea8f1cbe4bd94e042c71688837aa0282e943fbe0e2611e9918c09529a5c49e363ba8ccb97f9d3';
-  // const public_key_bytes = ec.keyFromPrivate(private_key).getPublic().encode();
-  const public_key_bytes =   ec.keyFromPublic(public_key,'hex').getPublic().encode()
-  // return 'z'+base58Encode(ec.keyFromPrivate('5c913b25ad68a82be4db5b05b3123390105c6e8742b7b3ed0f628d392d2e006e').getPublic().encode())
-  return 'z'+base58Encode(public_key_bytes)*/
-
-  //zQxDgxC3FpGcazoQ2NguXkbm1KQzGBDXuc6bjmd67AUuzZFxcABiReNZS1CZXqkggwN5MuDpvwaPLqek9yA4W6SMG
 }
 
 
-export function SimonCreateDID( userPbKey1 ){
+
+const VPSignature = (vp = {}) => {
+  vp.proof.jws = '';
+  let signatureData = VPToByte(vp)
+  vp.proof.jws = signatureData
+  // console.log('vpToType',ethers.utils.base58.encode(signatureData));
+
+  // console.log('CreateDID()',JSON.stringify(CreateDID()));
+  return vp;
+}
+
+const BytesWriteString = (str) => {
+  return ethers.utils.toUtf8Bytes(str);
+
+}
+
+const CSToByte = (cs) => {
+  let Bytes = BytesWriteString(cs.chain + '')
+  Bytes = [...Bytes,...BytesWriteString(cs.currency + '')]
+  Bytes = [...Bytes,...BytesWriteString(cs.amount + '')]
+  Bytes = [...Bytes,...BytesWriteString(cs.platform_fee_amount + '')]
+  Bytes = [...Bytes,...BytesWriteString(cs.pool_fee_amount + '')]
+  Bytes = [...Bytes,...BytesWriteString(cs.merchant_amount + '')]
+  return Bytes
+}
+
+const VCToByte = (vc) => {
+  vc['@context'].sort()
+  vc.type.sort()
+
+  let Bytes = BytesWriteString(implode(vc['@context'], ","))
+  Bytes = [...Bytes,...BytesWriteString(vc.id)]
+  Bytes = [...Bytes,...BytesWriteString(implode(vc.type, ","))]
+  Bytes = [...Bytes,...BytesWriteString(vc.issuer)]
+  Bytes = [...Bytes,...BytesWriteString(vc.issuanceDate)]
+  Bytes = [...Bytes,...BytesWriteString(vc.expirationDate)]
+  Bytes = [...Bytes,...BytesWriteString(vc.description)]
+  Bytes = [...Bytes,...CSToByte(vc.credentialSubject)]
+  Bytes = [...Bytes,...ProofToByte(vc.proof)]
+  return Bytes
+}
+
+const ProofToByte = (vp_proof) => {
+  let Bytes = BytesWriteString(vp_proof.type)
+  Bytes = [...Bytes,...BytesWriteString(vp_proof.created)]
+  Bytes = [...Bytes,...BytesWriteString(vp_proof.verificationMethod)]
+  Bytes = [...Bytes,...BytesWriteString(vp_proof.proofPurpose)]
+  Bytes = [...Bytes,...BytesWriteString(vp_proof.jws)]
+  Bytes = [...Bytes,...BytesWriteString(vp_proof.nonce + '')]
+  return Bytes;
+
+}
+
+const VPToByte = (vp) => {
+  vp['@context'].sort()
+  vp.type.sort()
+  vp.verifiableCredential.sort()
+  // sortSort(vp.verifiableCredential)
+
+  let Bytes = BytesWriteString(implode(vp['@context'], ","))
+  Bytes = [...Bytes,...BytesWriteString(implode(vp.type, ","))]
+
+  vp.verifiableCredential.map((item,index)=>{
+    Bytes = [...Bytes,...VCToByte(item)]
+  })
+  Bytes = [...Bytes,...BytesWriteString(vp.holder)]
+  Bytes = [...Bytes,...ProofToByte(vp.proof)]
+  return Bytes;
+}
+
+export function CreateDID( ){
   const pubData = signPubData()
   const userPbKeyHexAddress =  dbGetUserWallet()?.account ?? '';
   const documentId = DIDPrefix + userPbKeyHexAddress;
@@ -145,82 +160,11 @@ export function SimonCreateDID( userPbKey1 ){
     "address":        userPbKeyHexAddress,
 
   }
-
+  addDIDWhenEmpty(DIDDocument)
   return DIDDocument;
 }
 
-function publicKeyToAddress(publicKey) {
-  //todo 888
-  return publicKey
-}
-
-//可行方案
-export function SimonCreateDID2( userPbKey1 ){
-  // const userPbKey = new PublicKey();
-  const key =  ec.genKeyPair();
-  const userPbKey = key.getPublic();//PublicKey Point
-  const pub = userPbKey.encode();//PublicKey hex address
-  const pubData = base58Encode(pub)
-  // console.log('pub',pub);
-  // console.log('pub1',userPbKey.encode('hex'));
-  // //046259bbb688f6a486b5b8c4c34761f2839cb94835a74044807da180f60569033fdab6ac9aeee020602efa78437d7ee88357b9ebc07cb53779872ceda5e7815fc9
-  // console.log('pub2', userPbKey.encodeCompressed('hex'));//PublicKey hex address(Compressed)
-  // //02d2fbea17dce1372852543878114841dbe4460fb92b909d9a774b82795fe27f92
-
-  const userPbKeyHexAddress =  publicKeyToAddress(userPbKey.encodeCompressed('hex'));
-  const documentId = DIDPrefix + userPbKeyHexAddress;
-  const currentTime = moment.utc().format(RFC_3339);
-  const DIDDocument = {
-    ID:documentId,
-    Context:        [ContextSecp256k1,ContextDID],
-    Created:currentTime,
-    Updated:currentTime,
-    Version:        1,
-    Authentication: documentId + "#verification",
-    Address:        userPbKeyHexAddress,
-    VerificationMethod:[
-      {
-        ID:           documentId + "#verification",
-        Controller:   documentId,
-        MethodType:   Secp256k1Key,
-        MultibaseKey: pubData,
-      },
-    ],
-
-  }
-
-  return DIDDocument;
-}
-
-
-export function SimonCreateDID1( userPbKey ){
-  const userPbKeyHexAddress =  userPbKey.Address().String();
-  const documentId = DIDPrefix + userPbKeyHexAddress;
-  const currentTime = moment.utc().format(RFC_3339);
-  const pubData = base58btc.baseEncode(userPbKey.EllipticMarshal())
-  const DIDDocument = {
-    ID:documentId,
-    Context:        [ContextSecp256k1,ContextDID],
-    Created:currentTime,
-    Updated:currentTime,
-    Version:        1,
-    Authentication: documentId + "#verification",
-    Address:        userPbKeyHexAddress,
-    VerificationMethod:[
-      {
-        ID:           documentId + "#verification",
-        Controller:   documentId,
-        MethodType:   Secp256k1Key,
-        MultibaseKey: pubData,
-      },
-    ],
-
-  }
-  // const didAddress = DIDPrefix+account;
-}
-
-
-export  async function createVP(VCids = []){
+export async function createVP(VCids = []){
   let VCs = await getVCsByIDS(VCids);
   let verifiableCredential = [];
   if(VCs?.length <= 0){
@@ -234,7 +178,7 @@ export  async function createVP(VCids = []){
 
   const uAccount = dbGetUserWallet()?.account;
   const holder = DIDPrefix + uAccount;
-  const vp = {
+  const VP = {
     "@context":[ContextSecp256k1,ContextDID],
     "type":[VerifiablePresentation],
     "verifiableCredential":verifiableCredential,
@@ -249,12 +193,14 @@ export  async function createVP(VCids = []){
     },
   }
 
-  let res3 = await Web3SignData(uAccount,'Generate VP through VC');
-  if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
-    return res3;
-  }
-  vp.proof.jws = res3?.data;
-  return {code:1000,data:vp,msg:'ok'}
+  const vp_ = VPSignature(VP)
+
+  // let res3 = await Web3SignData(uAccount,'Generate VP through VC');
+  // if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
+  //   return res3;
+  // }
+  // vp.proof.jws = res3?.data;
+  return {code:1000,data:VP,msg:'ok'}
 }
 
 //1.进入资产页面，调用GetAvailableVC,直到没数据了，才结束，获取后存入本地，然后调用MarkVCReceived，标记已接收
@@ -268,6 +214,7 @@ export  async function createVP(VCids = []){
 export const getVCs = async (page = 1)=>{
   const size = 100;
   const res = await GetAvailableVC({page:page,size:size});
+  console.log('GetAvailableVC',res);
   if(res?.code === 1000){
     if(res?.data?.length > 0){
       const aa = await addAllVCs(res?.data)
