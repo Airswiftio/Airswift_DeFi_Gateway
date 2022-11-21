@@ -1,20 +1,26 @@
 import React, {useEffect,useState} from "react";
 import { useNavigate } from "react-router";
 
-import { DefaultButton } from "../";
+import {DefaultButton, ProgressModal} from "../";
 import "./invite.scss";
 import {GrantUserMerchantRole, ModifyApplicationApiKey} from "@@/utils/request/api";
 import DropdownNew from "../dropdownNew/dropdownNew";
 import {select_role} from "@@/utils/config";
+import Alert from "@@/components/PopUp/Alert";
+import Popup from "reactjs-popup";
 
 const Invite = ({ setAddUser,refreshNum,setRefreshNum }) => {
   const navigate = useNavigate();
     const [did, setDid] = useState('');
     const [selectRole, setSelectRole] = useState();
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertData, setAlertData] = useState({});
 
     const addUser = async () => {
         if(did?.length <= 0){
-            alert('Please enter user did!')
+            setOpenAlert(true)
+            setAlertData({msg:'Please enter user did!'})
+            // alert('Please enter user did!')
             return false;
         }
         if(typeof selectRole === 'undefined'){
@@ -33,6 +39,9 @@ const Invite = ({ setAddUser,refreshNum,setRefreshNum }) => {
 
   return (
     <div className="inviteUserWrapper">
+        <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+            <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
+        </Popup>
       <div className="title">Invite your colleague</div>
       <div className="addUser">
           <div>
