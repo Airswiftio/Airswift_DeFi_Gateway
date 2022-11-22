@@ -4,7 +4,7 @@ import { TABLETYPE } from "../types";
 
 import "./managementTable.scss";
 
-const ManagementTable = ({ data, type, modify }) => {
+const ManagementTable = ({ data, type, modify, selected, setSelected }) => {
   const items = data.length;
   const [currPage, setCurrPage] = useState(0);
 
@@ -17,7 +17,16 @@ const ManagementTable = ({ data, type, modify }) => {
         temp = [];
       }
 
-      temp.push(<TableRow data={data[i]} key={i} type={type} modify={modify} />);
+      temp.push(
+        <TableRow
+          data={data[i]}
+          key={i}
+          type={type}
+          modify={modify}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      );
     }
     rows.push(temp);
     return rows;

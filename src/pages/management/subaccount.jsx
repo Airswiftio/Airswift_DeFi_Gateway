@@ -10,10 +10,15 @@ const SubAccount = () => {
   const [subAccounts, setSubAccounts] = useState();
   const [deleteIsOpen, setDeleteOpen] = useState(false);
   const [createIsOpen, setCreateOpen] = useState(false);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     get(setSubAccounts, "/api/admin/manager/list?page=1&size=10&status=all");
   }, []);
+
+  useEffect(() => {
+    console.log(selected);
+  });
 
   return (
     <div className="subAccountWrapper">
@@ -24,6 +29,7 @@ const SubAccount = () => {
           title="Are you sure 
 you want to delete these accounts?"
           type={2}
+          selected={selected[0]}
         />
       </Popup>
       <Popup open={createIsOpen} closeOnDocumentClick onClose={() => setCreateOpen(false)}>
@@ -39,7 +45,12 @@ you want to delete these accounts?"
           <DefaultButton title="Create Subaccount" type={1} click={() => setCreateOpen(true)} />
           <DefaultButton title="Delete Subaccount" type={1} click={() => setDeleteOpen(true)} />
         </div>
-        <ManagementTable data={subAccounts?.managers || {}} type={TABLETYPE.SUBACCOUNT} />
+        <ManagementTable
+          data={subAccounts?.managers || {}}
+          type={TABLETYPE.SUBACCOUNT}
+          selected={selected}
+          setSelected={setSelected}
+        />
       </div>
     </div>
   );

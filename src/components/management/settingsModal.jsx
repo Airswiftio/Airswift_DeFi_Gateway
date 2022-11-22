@@ -3,11 +3,11 @@ import axios from "axios";
 import { DefaultButton } from "..";
 import "./settingsModal.scss";
 
-const SettingsModal = ({ click, setValue, title, type }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [privileges, setPrivileges] = useState([92, 64]);
+const SettingsModal = ({ click, setValue, title, type, data }) => {
+  const [name, setName] = useState(data.username);
+  const [email, setEmail] = useState(data.email);
+  const [password, setPassword] = useState(data.password);
+  const [privileges, setPrivileges] = useState(data.privileges);
 
   const createSubaccount = (name, email, password, privileges) => {
     axios
@@ -18,6 +18,30 @@ const SettingsModal = ({ click, setValue, title, type }) => {
           email: email,
           password: password,
           privileges: privileges,
+        },
+        {
+          withCredentials: true,
+          credentials: "same-origin",
+        }
+      )
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  const editSubaccount = () => {
+    axios
+      .post(
+        "/api/admin/manager/change",
+        {
+          manager_id: data.id,
+          name: name,
+          privileges: privileges,
+          password: password,
+          email: email,
         },
         {
           withCredentials: true,
@@ -60,10 +84,7 @@ const SettingsModal = ({ click, setValue, title, type }) => {
           <div className="row">
             <div className="input">
               <span>Password</span>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <input value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div className="input">
               <span>Confirm Password</span>
@@ -77,8 +98,14 @@ const SettingsModal = ({ click, setValue, title, type }) => {
             type={1}
             click={
               type === 2
-                ? () => createSubaccount(name, email, password, privileges)
-                : () => console.log("click")
+                ? () => {
+                    createSubaccount(name, email, password, privileges);
+                    click();
+                  }
+                : () => {
+                    editSubaccount();
+                    click();
+                  }
             }
           />
         </div>

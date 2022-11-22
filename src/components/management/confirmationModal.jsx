@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
+import axios from "axios";
 import { DefaultButton } from "..";
 import "./confirmationModal.scss";
 
-const ConfirmationModal = ({ click, setValue, title, type }) => {
+const ConfirmationModal = ({ click, setValue, title, type, selected }) => {
   useEffect(() => {
     const modal = document.getElementsByClassName("confirmationModal");
     modal[0].addEventListener("click", (e) => {
@@ -11,6 +12,26 @@ const ConfirmationModal = ({ click, setValue, title, type }) => {
       }
     });
   }, []);
+
+  const deleteAccount = (id) => {
+    axios
+      .post(
+        "/api/admin/manager/delete",
+        {
+          manager_id: id,
+        },
+        {
+          withCredentials: true,
+          credentials: "same-origin",
+        }
+      )
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
 
   return (
     <div className="confirmationModal">
@@ -31,6 +52,7 @@ const ConfirmationModal = ({ click, setValue, title, type }) => {
             title={type === 2 ? "Delete" : "Confirm"}
             click={() => {
               setValue("Confirm");
+              deleteAccount(selected);
               click();
             }}
             alternateBg={type === 2 ? true : false}

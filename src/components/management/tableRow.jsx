@@ -6,10 +6,9 @@ import Popup from "reactjs-popup";
 import { TABLETYPE } from "../types";
 import "./managementTable.scss";
 
-const TableRow = ({ data, type, modify }) => {
+const TableRow = ({ data, type, modify, selected, setSelected }) => {
   const [toggleState, setToggleState] = useState(data.status);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
 
   const openModal = () => {
     setIsOpen(true);
@@ -49,8 +48,15 @@ const TableRow = ({ data, type, modify }) => {
         return (
           <>
             <span className="col">
-              <div className="checkBox" onClick={() => setIsSelected(!isSelected)}>
-                {isSelected ? <img src={Check} alt="Check" /> : null}
+              <div
+                className="checkBox"
+                onClick={() =>
+                  selected.includes(data.id)
+                    ? setSelected(selected.filter((e) => e !== data.id))
+                    : setSelected([...selected, data.id])
+                }
+              >
+                {selected.includes(data.id) ? <img src={Check} alt="Check" /> : null}
               </div>
             </span>
             <span className="col">{data.username}</span>
@@ -75,7 +81,13 @@ const TableRow = ({ data, type, modify }) => {
     <div className="mTableRow">
       <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
         {type === TABLETYPE.SUBACCOUNT ? (
-          <SettingsModal click={closeModal} setValue={setToggleState} title="Settings" type={1} />
+          <SettingsModal
+            click={closeModal}
+            setValue={setToggleState}
+            title="Settings"
+            type={1}
+            data={data}
+          />
         ) : (
           <ConfirmationModal
             click={closeModal}
