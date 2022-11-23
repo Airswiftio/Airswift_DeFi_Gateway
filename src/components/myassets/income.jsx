@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
-import useFilters from "../../hooks/useFilters";
 
-import { HistoryTable, HistoryElement, Modal, Pagination } from "../";
+import { HistoryTable, Modal, Pagination } from "../";
 
 import "./income.scss";
 import {GetPaymentList, MarkVCInvalid} from "@@/utils/request/api";
@@ -10,6 +9,7 @@ import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
 import {array_column, getVCsByIDS} from "@@/utils/function";
 import {getVCs} from "@@/utils/chain/did";
+import Alert from "@@/components/PopUp/Alert";
 
 const Income = ({search,selectStatus,selectCurrency,date}) => {
     const [refreshNum, setRefreshNum] = useState(0);
@@ -18,6 +18,8 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
     const [itemData, setItemData] = useState({});
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertData, setAlertData] = useState({});
     const statusOptions = [
         {key:'success',title:'Finished'},
         {key:'pending',title:'Pending'},
@@ -37,7 +39,8 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
             all:true
         })
         if(res?.code !== 1000){
-            alert('Failed to reset vc!')
+            setOpenAlert(true)
+            setAlertData({msg:'Failed to reset vc!'})
             return false;
         }
         setTimeout(function (){
@@ -92,6 +95,9 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
         <div className="incomeWrapper">
             <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
                 <Modal click={closeModal} data={itemData} />
+            </Popup>
+            <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+                <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
             </Popup>
             <HistoryTable>
                 {dataList.map(

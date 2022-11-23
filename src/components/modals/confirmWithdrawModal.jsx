@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { useNavigate } from "react-router";
 import { DefaultButton } from "..";
 import "./confirmWithdrawModal.scss";
@@ -7,14 +7,20 @@ import USDC from "../../assets/usdc_icon.svg";
 import {MerchantWithdraw} from "@@/utils/request/api";
 import {createVP} from "@@/utils/chain/did";
 import {array_column, dbGetUserWallet} from "@@/utils/function";
+import Popup from "reactjs-popup";
+import Alert from "@@/components/PopUp/Alert";
 
 const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
+
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertData, setAlertData] = useState({});
   const withdraw = async () => {
     const VCids = array_column(data,'vc_id')
 
     const res = await createVP(VCids);
     if(res?.code !== 1000){
-      alert(res?.msg);
+      setOpenAlert(true)
+      setAlertData({msg:res?.msg})
       return false;
     }
 
@@ -23,11 +29,10 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
       vp: res?.data,
       to_address:dbGetUserWallet()?.account})
     if(res1?.code !== 1000){
-      alert(res?.msg);
+      setOpenAlert(true)
+      setAlertData({msg:res1?.msg})
       return false;
     }
-
-    //todo 888可能要删除vc
     navigate("/dashboard")
   }
 
@@ -43,6 +48,9 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
   const navigate = useNavigate();
   return (
     <div className="withdrawModal">
+      <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+        <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
+      </Popup>
       <div className="modalContent">
         <div className="title">Withdraw Confirmation</div>
         <div className="withdrawTotal">

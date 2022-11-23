@@ -2,16 +2,15 @@ import React,{useState,useEffect} from "react";
 import { DropdownNew } from "@@/components";
 import "./mystore.scss";
 import { dbGetUserWallet} from "@@/utils/function";
-import {ModifyApplicationBase, ModifyApplicationIpnKey} from "@@/utils/request/api";
-import {base_currency, select_role} from "@@/utils/config";
+import {ModifyApplicationBase} from "@@/utils/request/api";
+import {base_currency} from "@@/utils/config";
+import Popup from "reactjs-popup";
+import Alert from "@@/components/PopUp/Alert";
 
 const MyStore = ({myStore,setMyStore}) => {
-    const baseCurrency = base_currency();
     const [selected, setSelected] = useState(null);
-    // const [storeCurrency, setStoreCurrency] = useState(null);
-    // const Currency = myStore?.legal_tender;
-    // const Currency = 'usd';
-    // console.log('Currency',Currency);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertData, setAlertData] = useState({});
     const modifyBaseCurrency = async (value) => {
         const param = {
             app_id:0,
@@ -21,7 +20,8 @@ const MyStore = ({myStore,setMyStore}) => {
             legal_tender:base_currency()?.[value]?.key}
         const res = await ModifyApplicationBase(param)
         if(res?.code !== 1000){
-            alert('修改失败');
+            setOpenAlert(true)
+            setAlertData({msg:res?.msg})
             return false;
         }
 
@@ -32,12 +32,16 @@ const MyStore = ({myStore,setMyStore}) => {
             if(vv.key === myStore?.legal_tender ){
                 setSelected(ind)
             }
+            return vv;
         })
     }, []);
 
   return (
       <div className="myStore">
-        <div className="main">
+          <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+              <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
+          </Popup>
+          <div className="main">
           <div className="row">
             <span className="label">Store Name</span>
             <span>{myStore.name}</span>

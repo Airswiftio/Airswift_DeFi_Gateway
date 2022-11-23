@@ -1,20 +1,22 @@
 import React, { useState } from "react";
-import useAuth from "@@/hooks/useAuth";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router";
+
 import Popup from "reactjs-popup";
 import {DefaultButton, ProgressModal} from "@@/components";
 
 import "./login.scss";
 import AirSwift from "@@/assets/airswift_payment_logo.svg";
-import {beforeSend, connectWallet, didCreate} from "@@/utils/chain/wallet";
+import {beforeSend, connectWallet} from "@@/utils/chain/wallet";
 import {
   GetUserNickname,
   GetUserRelatedMerchant,
   SetNicknameUseEthSignature,
   UserLogin, UserRegister
 } from "@@/utils/request/api";
-import {array_column, dbGetSignData, dbGetUserWallet, dbSetJWTToken, dbSetUserWallet, empty} from "@@/utils/function";
+import { dbGetSignData, dbGetUserWallet, dbSetUserWallet, empty} from "@@/utils/function";
 import LoginSvg from "@@/assets/login.svg";
+import Alert from "@@/components/PopUp/Alert";
 
 const Login = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -22,21 +24,12 @@ const Login = () => {
   const [stores, setStores] = useState([]);
   const [nickname, setNickname] = useState('');
   const [storeInfo, setStoreInfo] = useState({});
-
-  const { setAuth } = useAuth();
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertData, setAlertData] = useState({});
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
-
-  let nickname_type = '';
-  let role = '';
-  // let user = {};
-  // let sign_data = '';
-  const openModal = () => {
-    setIsOpen(true);
-    console.log("Clicked");
-  };
 
   const closeModal = () => {
     setIsOpen(false);
@@ -58,7 +51,8 @@ const Login = () => {
 
     const res = await connectWallet();
     if(res?.code !== 1000){
-      alert(res?.msg);
+      setOpenAlert(true)
+      setAlertData({msg:res?.msg})
       return false;
     }
     // user = res?.data?.user;
@@ -69,7 +63,8 @@ const Login = () => {
     //Query the user's nickname. If there is no nickname, set the nickname first
     const res_uu = await GetUserNickname({address:dbGetUserWallet()?.account});
     if(res_uu?.code !== 1000){
-      alert('Failed to get User Nickname!')
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to get User Nickname!'})
       return false;
     }
 
@@ -81,9 +76,9 @@ const Login = () => {
 
     // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
     const res_um = await GetUserRelatedMerchant({address:user_address});
-    console.log('res_um',res_um);
     if(res_um?.code !== 1000 || res_um?.data?.merchant_users?.length <= 0){
-      alert('Failed to get store information!')
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to get store information!'})
       return false;
     }
 
@@ -98,7 +93,6 @@ const Login = () => {
       return false;
     }
     else{
-      nickname_type = 'dashboard'
       setStep('set_store');
       return false;
     }
@@ -106,13 +100,15 @@ const Login = () => {
 
   const enterNickname = async () => {
     if(nickname?.length <= 0){
-      alert('Please enter your nickname!')
+      setOpenAlert(true)
+      setAlertData({msg:'Please enter your nickname!'})
       return false;
     }
 
     let res = beforeSend();
     if(res.code !== 1000){
-      alert(res.msg)
+      setOpenAlert(true)
+      setAlertData({msg:res.msg})
       return false;
     }
 
@@ -123,42 +119,35 @@ const Login = () => {
     }
     const res_su = await SetNicknameUseEthSignature(data);
     if(res_su?.code !== 1000 || res_su.success !== true){
-      alert('Failed to set user nickname')
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to set user nickname!'})
       return false;
     }
 
     setStep('choose_store');
-    //
-    // if(nickname_type === 'dashboard'){
-    //   user.roles = role;
-    //   console.log('user',user,role);
-    //   dbSetUserWallet(user);
-    //   navigate("/dashboard")
-    // }
-    // else{
-    //   setStep('choose_store');
-    // }
-
-
   };
 
   const SignUp = async () => {
     if(storeInfo?.store_name?.length <= 0){
-      alert('Please enter your store name!')
+      setOpenAlert(true)
+      setAlertData({msg:'Please enter your store name!'})
       return false;
     }
     if(storeInfo?.store_link?.length <= 0){
-      alert('Please enter your store link!')
+      setOpenAlert(true)
+      setAlertData({msg:'Please enter your store link!'})
       return false;
     }
     if(storeInfo?.callback_url?.length <= 0){
-      alert('Please enter your callback url!')
+      setOpenAlert(true)
+      setAlertData({msg:'Please enter your callback url!'})
       return false;
     }
 
     let res1 = beforeSend();
     if(res1.code !== 1000){
-      alert(res1.msg)
+      setOpenAlert(true)
+      setAlertData({msg:res1.msg})
       return false;
     }
 
@@ -172,10 +161,9 @@ const Login = () => {
     }
 
     const res = await UserRegister(data);
-    console.log('aa',res);
-
     if(res?.code !== 1000 || res.success !== true){
-      alert('Failed to register user!')
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to register user!'})
       return false;
     }
 
@@ -189,22 +177,26 @@ const Login = () => {
 
   const SignIn = async (storeInfo) => {
     if(storeInfo?.merchant_id?.length <= 0){
-      alert('The merchant id cannot be empty!')
+      setOpenAlert(true)
+      setAlertData({msg:'The merchant id cannot be empty!'})
       return false;
     }
     if(storeInfo?.merchant_name?.length <= 0){
-      alert('The store name cannot be empty!')
+      setOpenAlert(true)
+      setAlertData({msg:'The store name cannot be empty!'})
       return false;
     }
     if(storeInfo?.role?.length <= 0){
-      alert('The role cannot be empty!')
+      setOpenAlert(true)
+      setAlertData({msg:'The role cannot be empty!'})
       return false;
     }
 
 
     let res1 = beforeSend();
     if(res1.code !== 1000){
-      alert(res1.msg)
+      setOpenAlert(true)
+      setAlertData({msg:res1.msg})
       return false;
     }
 
@@ -216,11 +208,10 @@ const Login = () => {
 
     const res = await UserLogin(data);
     if(res?.code !== 1000 || res.success !== true){
-      alert('Failed to Login!')
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to Login!'})
       return false;
     }
-    let allCookies = document.cookie
-    console.log('allCookies11111',allCookies);
 
     //store user info
     const user = dbGetUserWallet();
@@ -239,6 +230,9 @@ const Login = () => {
                     setIsOpen={setIsOpen}
                     handleSuccess={handleSuccess}
                 />
+              </Popup>
+              <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+                <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
               </Popup>
               <div className="loginForm">
                 <div className="formHeader">

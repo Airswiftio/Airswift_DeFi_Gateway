@@ -2,17 +2,14 @@ import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
 import {
-    HistoryTable,
-    HistoryElement,
     DefaultButton,
     ConfirmWithdrawModal,
 } from "../";
-import dummyData from "../../sample_data.json";
 import "./confirmWithdraw.scss";
-import {GetPaymentList, GetWithdrawList} from "@@/utils/request/api";
-import Doc from "@@/assets/document.svg";
+import {GetPaymentList} from "@@/utils/request/api";
 import {svg_icon} from "@@/utils/config";
 import Verified from "@@/assets/verified.svg";
+import Alert from "@@/components/PopUp/Alert";
 
 const ConfirmWithdraw = ({Currency}) => {
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -20,12 +17,13 @@ const ConfirmWithdraw = ({Currency}) => {
     const [checkedList, setCheckedList] = useState([]);
     const [selectData, setSelectData] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
-
-    const navigate = useNavigate();
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertData, setAlertData] = useState({});
 
     const confirmWithdraw = () => {
         if(checkedList?.length <= 0){
-            alert('Please select vc!')
+            setOpenAlert(true)
+            setAlertData({msg:'Please select vc! '})
             return false;
         }
         let data = [];
@@ -33,6 +31,7 @@ const ConfirmWithdraw = ({Currency}) => {
         checkedList.map((item,index)=>{
             total = total + dataList?.[item]?.amount;
             data = [...data,dataList?.[item]]
+            return item;
         })
         setSelectData(data);
         setTotalAmount(total);
@@ -44,7 +43,7 @@ const ConfirmWithdraw = ({Currency}) => {
     };
 
     const selectAll = () => {
-        setIsAll(checkedList?.length === 0 ? true :false);
+        setIsAll(checkedList?.length === 0 ? true : false);
         setCheckedList(checkedList?.length === 0 ? dataList.map((ee,kk)=>kk) :[]);
     };
 
@@ -93,6 +92,9 @@ const ConfirmWithdraw = ({Currency}) => {
                     currency={Currency}
                     click={closeModal}
                 />
+            </Popup>
+            <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+                <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
             </Popup>
             <div className="title">Select available transactions</div>
             <div className="historyTableWrapper">

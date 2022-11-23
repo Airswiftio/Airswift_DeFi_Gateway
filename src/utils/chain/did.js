@@ -1,7 +1,6 @@
 import {
   addAllVCs, addDIDWhenEmpty,
   array_column,
-  dbClearAccount,
   dbGetUserWallet,
   empty,
   fullClose,
@@ -9,10 +8,8 @@ import {
   json_to_obj
 } from "@@/utils/function";
 import elliptic from 'elliptic'
-import secp256k1 from 'secp256k1'
 
 import moment from "moment";
-import {base58btc} from "multiformats/bases/base58";
 import {base58Encode, Web3SignData} from "@@/utils/chain/wallet";
 import {GetAvailableVC, MarkVCReceived} from "@@/utils/request/api";
 import {ethers} from "@@/utils/chain/chainBase";
@@ -26,16 +23,14 @@ const Secp256k1Sig = "EcdsaSecp256k1Signature2019"
 const Secp256k1Key = "EcdsaSecp256k1VerificationKey2019"
 
 const ContextDID        = "https://w3id.org/did/v1"
-const ContextCredential = "https://www.w3.org/2018/credentials/v1"
+// const ContextCredential = "https://www.w3.org/2018/credentials/v1"
 const ContextSecp256k1  = "https://ns.did.ai/suites/secp256k1-2019/v1/"
 
-const TypeCredential   = "VerifiableCredential"
-const TypeVericDeposit = "VericDeposit"
+// const TypeCredential   = "VerifiableCredential"
+// const TypeVericDeposit = "VericDeposit"
 const VerifiablePresentation = "VerifiablePresentation"
 
 const DIDPrefix = "did:veric:"
-// const RFC_3339 = 'YYYY-MM-DDTHH:mm:ss';
-const RFC_3339 = 'YYYY-MM-DDTHH:mm:ssZ07:00';
 
 
 export function didIDCreate(account = '') {
@@ -130,6 +125,7 @@ const VPToByte = (vp) => {
 
   vp.verifiableCredential.map((item,index)=>{
     Bytes = [...Bytes,...VCToByte(item)]
+    return item;
   })
   Bytes = [...Bytes,...BytesWriteString(vp.holder)]
   Bytes = [...Bytes,...ProofToByte(vp.proof)]
@@ -174,6 +170,7 @@ export async function createVP(VCids = []){
   VCs.map((item,index)=>{
     const objVc = json_to_obj(ethers.utils.toUtf8String(ethers.utils.base64.decode(item.vc_content)));
     verifiableCredential = [objVc,...verifiableCredential];
+    return item;
   })
 
   const uAccount = dbGetUserWallet()?.account;
@@ -192,6 +189,8 @@ export async function createVP(VCids = []){
       "nonce": fullClose(10000,99999)
     },
   }
+
+  //todo 888 vp base58加密然后小狐狸签名
 
   const vp_ = VPSignature(VP)
 
@@ -214,12 +213,12 @@ export async function createVP(VCids = []){
 export const getVCs = async (page = 1)=>{
   const size = 100;
   const res = await GetAvailableVC({page:page,size:size});
-  console.log('GetAvailableVC',res);
   if(res?.code === 1000){
     if(res?.data?.length > 0){
-      const aa = await addAllVCs(res?.data)
-      console.log('addAllVCs',aa);
-      const res2 = await MarkVCReceived({vc_ids:array_column(res?.data,'vc_id')})
+      const res1 = await addAllVCs(res?.data)
+      if(res1 !== false){
+        await MarkVCReceived({vc_ids:array_column(res?.data,'vc_id')})
+      }
       await getVCs(page + 1)
     }
   }

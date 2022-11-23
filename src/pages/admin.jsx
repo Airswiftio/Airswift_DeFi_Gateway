@@ -1,8 +1,6 @@
 import React, { useState,useEffect } from "react";
 import {
-  Dropdown,
   DefaultButton,
-  Pagination,
   Invite,
 } from "@@/components";
 
@@ -11,22 +9,20 @@ import UserListTable from "@@/components/admin/UserListTable";
 import {
   ChangeUserMerchantRole,
   GetMerchantUserList,
-  GetWithdrawList,
-  ModifyApplicationBase
 } from "@@/utils/request/api";
 import DropdownNew from "../components/dropdownNew/dropdownNew";
-import {useNavigate} from "react-router";
 import {select_role} from "@@/utils/config";
+import Popup from "reactjs-popup";
+import Alert from "@@/components/PopUp/Alert";
 
 const Admin = () => {
-  const navigate = useNavigate();
-
   const [refreshNum, setRefreshNum] = useState(0);
-  const [page, setPage] = useState(0);
   const [checkedUsers, setCheckedUsers] = useState([]);
   const [addUser, setAddUser] = useState(false);
   const [dataList, setDataList] = useState([]);
   const [selectRole, setSelectRole] = useState();
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertData, setAlertData] = useState({});
 
   const userColumns = [
     {key:'did',width:'60%',title:'DID Wallet'},
@@ -46,26 +42,28 @@ const Admin = () => {
   }
 
   const changeUsersToRole = async () => {
-
     if(!checkedUsers?.length){
-      alert('Please select the users.');
-      return false;
-    }
-    if(typeof selectRole === 'undefined'){
-      alert('Please select the role you want to change the users.');
+      setOpenAlert(true)
+      setAlertData({msg:'Please select the users!'})
       return false;
     }
 
-    // todo 888 批量修改用户角色
+    if(typeof selectRole === 'undefined'){
+      setOpenAlert(true)
+      setAlertData({msg:'Please select the role you want to change the users! '})
+      return false;
+    }
+
     let userIds = [];
     for (const kk in checkedUsers) {
       const value = checkedUsers[kk];
       const user = dataList?.[value];
       userIds = [...userIds,user?.id]
-      // if(user.role === 'admin'){
-      //   alert('The admin user cannot be modified !');
-      //   return false;
-      // }
+      if(user.role === 'admin'){
+        setOpenAlert(true)
+        setAlertData({msg:'The admin user cannot be modified!'})
+        return false;
+      }
     }
 
     const res = await ChangeUserMerchantRole({
@@ -73,7 +71,8 @@ const Admin = () => {
       role: select_role()?.[selectRole]?.key
     });
     if(res?.code !== 1000){
-      alert(res?.msg);
+      setOpenAlert(true)
+      setAlertData({msg:res?.msg})
       return false;
     }
     setRefreshNum(refreshNum + 1)
@@ -81,11 +80,13 @@ const Admin = () => {
 
   useEffect(() => {
     getList()
-    console.log('aa');
   }, [refreshNum]);
 
   return (
     <div className="adminWrapper">
+      <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+        <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
+      </Popup>
       {!addUser ? (
         <>
           <div className="controls">
@@ -117,7 +118,6 @@ const Admin = () => {
                 setCheckedList={setCheckedUsers}
                 isOpenCheck={true}>
             </UserListTable>
-            {/*<Pagination pages={1} page={page} setPage={setPage} />*/}
           </div>
         </>
       ) : (
