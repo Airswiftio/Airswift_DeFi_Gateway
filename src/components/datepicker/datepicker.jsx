@@ -3,10 +3,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import "./datepicker.scss";
+import moment from "moment";
 
-const Datepicker = () => {
-  const [pickedDate, setPickedDate] = useState(new Date());
+const Datepicker = ({date,setDate}) => {
   const [initial, setInitial] = useState(true);
+  const [pickedDate, setPickedDate] = useState(new Date());
 
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <div className="datepickerInput" onClick={onClick} ref={ref}>
@@ -42,6 +43,7 @@ const Datepicker = () => {
         onChange={(date) => {
           setInitial(false);
           setPickedDate(date);
+          setDate(moment(date).format('YYYY-MM-DD'))
         }}
         popperPlacement="bottom"
         popperModifiers={[

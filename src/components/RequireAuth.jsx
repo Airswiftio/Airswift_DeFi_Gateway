@@ -7,7 +7,7 @@ const RequireAuth = ({ allowedRoles }) => {
   const user = dbGetUserWallet();
   const location = useLocation();
 
-  return user?.roles?.find((role) => allowedRoles?.includes(role)) ? (
+  return allowedRoles?.includes(user?.roles) ? (
     <>
       <Navbar />
       <Outlet />

@@ -9,4 +9,37 @@
   .title {
     align-self: flex-start;
   }
+  .historyTableWrapper {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    width: 100%;
+
+    .columnLabels {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-evenly;
+      color: rgba(255, 255, 255, 0.5);
+      background: rgba(4, 11, 36, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.75em;
+      font-size: 14px;
+      font-family: "Poppins";
+
+      span {
+        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .checkBox {
+          width: 15px;
+          height: 15px;
+          border-radius: 4px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
+  }
 }

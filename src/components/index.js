@@ -36,6 +36,7 @@ import MyStore from "./settings/mystore";
 
 // Dropdown
 import Dropdown from "./dropdown/dropdown";
+import DropdownNew from "./dropdownNew/dropdownNew";
 
 // Search
 import Search from "./search/search";
@@ -95,6 +96,7 @@ export {
   IpnKeys,
   MyStore,
   Dropdown,
+  DropdownNew,
   Income,
   Withdraw,
   Selectors,

@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import LocalStore from "@@/utils/db/localStorage";
 import db from "@@/utils/db/browserDb";
+import {dexieDB} from "@@/utils/db/indexDB";
 const dbStore = db;
 dayjs.extend(utc);
 
@@ -73,6 +74,13 @@ export function array_column(array, field) {
   return array.map(v => v[field]);
 }
 
+export function explode(str,separator){
+  return str.split(separator)
+}
+export function implode(array,separator){
+  return array.join(separator)
+}
+
 
 /* The seconds are optimized and displayed as days,hours,minutes */
 export function timeToFriendly(time = 0) {
@@ -113,6 +121,33 @@ export function conversionUtcDate(date, type) {
   }
 }
 
+//取得[n,m]范围随机数
+export function fullClose(n,m) {
+  let result = Math.random()*(m+1-n)+n;
+  while(result>m) {
+    result = Math.random()*(m+1-n)+n;
+  }
+  return Math.ceil(result);
+}
+
+//取得(n,m)范围随机数
+function fullOpen(n,m) {
+  let result = Math.random()*(m-n)+n;
+  while(result == n) {
+    result = Math.random()*(m-n)+n;
+  }
+  return result;
+}
+
+//取得(n,m]范围随机数
+function leftOpen(n,m) {
+  let result = Math.random()*(m-n+1)+n-1;
+  while(result<n) {
+    result = Math.random()*(m-n+1)+n-1;
+  }
+  return result;
+}
+
 export function dbClearAccount() {
   return  dbStore.clear()
 }
@@ -141,8 +176,6 @@ export function dbDelJWTToken() {
 }
 
 
-
-
 const SignDataKey = 'SignData';
 export function dbSetSignData(value) {
   return  dbStore.set(SignDataKey,value)
@@ -154,5 +187,29 @@ export function dbDelSignData() {
   return  dbStore.delete(SignDataKey)
 }
 
+export function addAllVCs(list) {
+  return (new dexieDB('as_vc')).addAll(list);
+}
+export function getAllVCs() {
+  return (new dexieDB('as_vc')).getAll();
+}
+
+export function getVCsByIDS(IDs = []) {
+  return (new dexieDB('as_vc')).getAllByKey('vc_id',IDs);
+}
+
+export function addOneLocal(item) {
+  return (new dexieDB('as_local')).add(item);
+}
+
+export function getAllLocal() {
+  return (new dexieDB('as_local')).getAll();
+}
+
+export function addDIDWhenEmpty(item) {
+  const did = item?.id ?? '';
+  const data = {did:did,did_document:item}
+  return (new dexieDB('as_did')).addOnce(data,{did:did});
+}
 
 

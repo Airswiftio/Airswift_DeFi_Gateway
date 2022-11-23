@@ -1,49 +1,43 @@
-import React,{useEffect,useState} from "react";
-
-import Copy from "../../assets/copy.svg";
-import Refresh from "../../assets/refresh.svg";
-
+import React from "react";
+import Copy from "@@/assets/copy.svg";
+import Refresh from "@@/assets/refresh.svg";
 import "./apiKeys.scss";
-import {GetApplicationDetail} from "@@/utils/request/api";
+import {ModifyApplicationApiKey} from "@@/utils/request/api";
 
-const ApiKeys = () => {
-    const [storeInfo, setStoreInfo] = useState({});
+const ApiKeys = ({apiKeys,setApiKeys}) => {
 
-    const getAppDetail = async () => {
-        const res = await GetApplicationDetail({app_id:0})
+    const renewApiKeys = async () => {
+        const res = await ModifyApplicationApiKey({app_id:0})
+        console.log('res',res);
         if(res?.code === 1000){
-            setStoreInfo(res?.msg)
+            setApiKeys({api_key:res?.data?.key,api_key_created_at:res?.data?.created_at})
         }
     }
 
-    useEffect(() => {
-        getAppDetail();
-    }, []);
+    return (
+        <div className="apiKeysWrapper">
+            <div className="row">
+                <span>{apiKeys.api_key}</span>
+                <div className="img">
+                    <img src={Copy} alt="copy" />
+                </div>
+            </div>
 
-  return (
-    <div className="apiKeysWrapper">
-      <div className="row">
-        <span>{storeInfo.api_key}</span>
-        <div className="img">
-          <img src={Copy} alt="copy" />
+            <div className="row">
+                <span>Created Time</span>
+                <span className="time">
+                    {apiKeys.api_key_created_at}
+                </span>
+            </div>
+
+            <div className="row">
+                <span>Renew</span>
+                <div className="img" onClick={()=>renewApiKeys()}>
+                    <img src={Refresh} alt="refresh" />
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div className="row">
-        <span>Created Time</span>
-        <span className="time">
-          {storeInfo.created_at}
-        </span>
-      </div>
-
-      <div className="row">
-        <span>Renew</span>
-        <div className="img">
-          <img src={Refresh} alt="refresh" />
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ApiKeys;

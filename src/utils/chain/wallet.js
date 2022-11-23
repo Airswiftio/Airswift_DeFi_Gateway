@@ -1,13 +1,15 @@
 import {ethers, WEthereum, Web3Provider, signer, isEth} from '@@/utils/chain/chainBase';
 import md5 from 'js-md5';
 import {
+  Array2Byte,
   dbClearAccount,
   dbGetUserWallet, dbSetJWTToken, dbSetSignData, dbSetUserWallet,
   empty,
   hideStr,
   json_to_obj
 } from "@@/utils/function";
-import {challengeGenerate, challengeVerify} from "@@/utils/request/api";
+import {challengeGenerate} from "@@/utils/request/api";
+import {CreateDID, didCreate, didIDCreate, recoverPublicKeyFromSign} from "@@/utils/chain/did";
 // import BaseConfig from "@@/config.json";
 // import {popupAlert} from "@@/components/PopAlert/Index";
 
@@ -55,11 +57,10 @@ const analysisErrorMsg =  (error) => {
   }
 }
 
-export const Web3SignData = async (account, data) => {
+export const Web3SignData = async (address, data) => {
   if(!isEth){
     return {code:-1,msg:'Ethereum Provider not exist!'};
   }
-
   return await signer.signMessage(data)
       .then((res)=>{
         return {code:1000,data:res};
@@ -67,7 +68,7 @@ export const Web3SignData = async (account, data) => {
       .catch((ee)=>{
         return analysisErrorMsg(ee);
       });
-  /*return await Web3Provider.send('eth_signTypedData_v4',[account, JSON.stringify(data)])
+  /*return await Web3Provider.send('eth_signTypedData_v4',[address, JSON.stringify(data)])
       .then((res)=>{
         return {code:1000,data:res};
       })
@@ -186,7 +187,10 @@ export const checkNetwork = (chainId) => {
   if(!chainId){
     return false;
   }
-  if(process.env.REACT_APP_MODE === 'production'){
+  if (chainId === 1) {
+    return true;
+  }
+  /*if(process.env.REACT_APP_MODE === 'production'){
     if (chainId === 1) {
       return true;
     }
@@ -202,7 +206,7 @@ export const checkNetwork = (chainId) => {
     if(chainId  === 97){
       return true;
     }
-  }
+  }*/
   return false;
 }
 
@@ -276,84 +280,60 @@ export const connectWallet = async () => {
     return res;
   }
 
-  if(!dbGetUserWallet()?.account) {
-    let res1 = await detectionEnvironment();
-    if(res1.code === 100){
-      // popupAlert({type:'wentWrong',data:{msg:res.msg}}); //todo 999
-      window.open(res1.url);
-      return res1;
-    }
-    else if(res1.code === 101){
-      // popupAlert({type:'switchingNetwork',data:{msg:res.msg}});//todo 999
-      return res1;
-    }
-
-    //Get account address
-    let accounts = await requestAccounts();
-    if(empty(accounts) || empty(accounts[0])){
-      return {code:-1,msg:'Account not exist!'};
-    }
-    let account =  accounts[0];
-
-    //Get account balance and connect to the network
-    let balance = await getBalance(account);//Get the account balance and format it
-    let network = await getNetwork();
-    let networkName = network.chainId === 1 ? 'Mainnet':network.name;
-    let chainId = network.chainId.toString();
-
-    //Get the signature verification message from the back end
-    let res2 = await challengeGenerate({address:account,chainId: chainId});
-    if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2.msg.content)){
-      dbClearAccount();
-      res2.msg = 'Failed to get sign message! '
-      return res2;
-    }
-
-    let res3 = await Web3SignData(account,res2.msg.content);
-    if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
-      dbClearAccount();
-      return res3;
-    }
-
-    dbSetSignData(res3?.data)
-    let userWallet = {
-      balance:balance,
-      chainId:network.chainId,
-      network:networkName,
-      account:account,
-      simple_account:hideStr(account,5,4,'.',3),
-      did:didCreate(account),
-    };
-    dbSetUserWallet(userWallet)
+  let res1 = await detectionEnvironment();
+  if(res1.code === 100){
+    // popupAlert({type:'wentWrong',data:{msg:res.msg}}); //todo 999
+    window.open(res1.url);
+    return res1;
+  }
+  else if(res1.code === 101){
+    // popupAlert({type:'switchingNetwork',data:{msg:res.msg}});//todo 999
+    return res1;
   }
 
-  return {code:1000,msg:'ok'};
-}
-export const connectWallet1 = async () => {
-  // //First, check whether the environment supports and whether metamask plug-ins are installed
-  // let res = beforeSend(false);
-  // if(res.code !== 1000){
-  //   return res;
-  // }
-  //
-  // if(!dbGetUserWallet()?.account) {
-  //   let signature = await Web3SignData(account,res_challenge.data.content);
-  //   if(typeof signature?.code === 'undefined' || signature.code !== 1000 || empty(signature.data)){
-  //     dbClearAccount();
-  //     return signature;
-  //   }
-  //
-  //   //Verify signature
-  //   let res_verity = await challengeVerify({eth_address:account,chainId: chainId,signature: signature.data.slice(2)});
-  //   if(typeof res_verity?.code === 'undefined' || res_verity.code !== 1000 || empty(res_verity.data) || empty(res_verity.data.token)){
-  //     dbClearAccount();
-  //     return res_verity;
-  //   }
-  //
-  //   dbSetJWTToken(res_verity.data.token);
-  //   return {code:1000,msg:'ok',data:userWallet};
-}
+  //Get account address
+  let accounts = await requestAccounts();
+  if(empty(accounts) || empty(accounts[0])){
+    return {code:-1,msg:'Account not exist!'};
+  }
+  let account =  accounts[0];
 
+  //Get account balance and connect to the network
+  let balance = await getBalance(account);//Get the account balance and format it
+
+  let network = await getNetwork();
+  let networkName = network.chainId === 1 ? 'Mainnet':network.name;
+  let chainId = network.chainId.toString();
+
+  //Get the signature verification message from the back end
+  let res2 = await challengeGenerate({address:account});
+  if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2?.data?.content)){
+    dbClearAccount();
+    res2.msg = 'Failed to get sign message! '
+    return res2;
+  }
+
+  let res3 = await Web3SignData(account,res2?.data?.content);
+  // let res3 = await Web3SignData(account,'Generate VP through VC');
+  if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
+    dbClearAccount();
+    return res3;
+  }
+  dbSetSignData(res3?.data)
+  const publicKey = recoverPublicKeyFromSign(res2?.data?.content,res3?.data)
+  let userWallet = {
+    balance:balance,
+    chainId:network.chainId,
+    network:networkName,
+    account:account,
+    publicKey:publicKey,
+    simple_account:hideStr(account,5,4,'.',3),
+    did:didIDCreate(account),
+  };
+  dbSetUserWallet(userWallet)
+  CreateDID();
+  return {code:1000,msg:'ok',data:{user:userWallet,sign_data:res3?.data}};
+}
 
 export const beforeSend = (checkUser = true)=>{
   if (!isEth) {
@@ -371,14 +351,22 @@ export const beforeSend = (checkUser = true)=>{
   return {code:1000,msg:'ok'};
 }
 
-
-export function didCreate(account = '') {
-  //todo 999
-  account = empty(account) ? dbGetUserWallet()?.account : account;
-  const didAddress =`did:veric:${account}`;
-  return  didAddress
+export const base58Encode = (hex = '') => {
+  return ethers.utils.base58.encode(hex);
 }
-
-
+//
+// export const base58Encode1 = (hex = '') => {
+//   let jsonData = `{"@context":["https://ns.did.ai/suites/secp256k1-2019/v1/","https://www.w3.org/2018/credentials/v1"],"type":["VerifiablePresentation"],"verifiableCredential":[{"@context":["https://ns.did.ai/suites/secp256k1-2019/v1/","https://www.w3.org/2018/credentials/v1"],"id":"0","type":["VericDeposit","VerifiableCredential"],"issuer":"did:veric:0xC5BCf228F28a1827Da6C7e576b6d0Dfa5A5168Be","issuanceDate":"2022-06-07T09:43:27Z","expirationDate":"2032-06-07T09:43:27Z","description":"Veric Deposit","credentialSubject":{"tokenAddress":"0xc4860463c59d59a9afac9fde35dff9da363e8425","amount":1000000000000000000,"vault":"0xd3446851deb19bcf700dadef258ba90834c8472a"},"proof":{"type":"EcdsaSecp256k1Signature2019","created":"2022-06-07T09:43:27Z","verificationMethod":"did:veric:0xC5BCf228F28a1827Da6C7e576b6d0Dfa5A5168Be#verification","proofPurpose":"Authentication","jws":"eyJhbGciOiJFUzI1NiJ9..sUOiidTUHzNJ_L93k25EETrzfGcpeqXkDOFxBs2Q4sEtsxRri-Ah5JtCEvQKGNLQYFK2WqIbrmmhbYDggcREGQ"}}],"holder":"did:veric:0x77CBcc0e29E10F1EeA24e0D109aaB26C5b2Abd88","proof":{"type":"EcdsaSecp256k1Signature2019","created":"2022-06-07T18:23:41+08:00","verificationMethod":"did:veric:0x77CBcc0e29E10F1EeA24e0D109aaB26C5b2Abd88#verification","proofPurpose":"Authentication","jws":"eyJhbGciOiJFUzI1NiJ9..Oge0fus9C__fsEk8eUVYZgu47co5aFI8mvVjcjcvc8cUjjor8yEpuWhVjjtO-l0cLxUKTQRWwx0TwCDzulfk2A","nonce":"6666"}}`
+//   let obj = json_to_obj(jsonData)
+//   console.log('obj',obj.verifiableCredential);
+//   let bb = ethers.utils.toUtf8Bytes(jsonData)
+//   console.log('aa',bb);
+//
+//   // todo 888
+//   // ethers.utils.parseBytes32String()
+//   // ethers.utils.toUtf8String()
+//   // ethers.utils.toUtf8Bytes()
+//   // return ethers.utils.getAddress(hex);
+// }
 
 export {Web3Provider,signer}

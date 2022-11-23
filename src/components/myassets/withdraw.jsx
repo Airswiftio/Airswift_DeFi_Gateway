@@ -12,14 +12,19 @@ import "./withdraw.scss";
 import dummyData from "../../sample_data.json";
 import { useNavigate } from "react-router-dom";
 import {GetPaymentList, GetWithdrawList} from "@@/utils/request/api";
+import Doc from "@@/assets/document.svg";
+import Verified from "@@/assets/verified.svg";
 
-const Withdraw = () => {
+const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
     const [page, setPage] = useState(0);
     const [modalIsOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
-
+    const WithdrawStatus = [
+        {key:'complete',title:'Complete'},
+        {key:'pending',title:'Pending'},
+    ];
 
     const openModal = () => {
         setIsOpen(true);
@@ -30,20 +35,31 @@ const Withdraw = () => {
         setIsOpen(false);
     };
 
+    const getList = async () => {
+        let params = {
+            // app_id:0,
+            page:1,
+            size:10,
+            status:WithdrawStatus?.[selectStatus]?.key??'complete',
+            // payment_num:0,
+            // currency_id:0,
+            // date:0,
+        }
+        const res = await GetWithdrawList(params)
+        if(res?.code === 1000){
+            setDataList(res?.data?.withdraws ?? [])
+            console.log('res?.data?.total',res);
+            setDataTotal(res?.data?.total)
+        }
+    }
 
+    useEffect(() => {
+        getList();
+    }, [search,selectStatus,selectCurrency,date]);
     useEffect(() => {
         getList();
         // getWithdrawTotal();
     }, []);
-
-
-    const getList = async () => {
-        const res = await GetWithdrawList()
-        if(res?.code === 1000){
-            setDataList(res?.msg?.withdraws ?? [])
-            setDataTotal(res?.msg?.total)
-        }
-    }
 
     return (
         <div className="withdrawWrapper">
@@ -52,25 +68,20 @@ const Withdraw = () => {
             </Popup>
             <HistoryTable vc={false}>
                 {dataList.map(
-                    (
-                        { transId, status, currency, amount, time, viewMore, vc },
-                        index
-                    ) => (
-                        <HistoryElement
-                            transId={transId}
-                            status={status}
-                            currency={currency}
-                            amount={amount}
-                            time={time}
-                            viewMore={viewMore}
-                            key={index}
-                            click={openModal}
-                        />
+                    (item, index) => (
+                        <div key={index} className="historyElementWrapper" onClick={openModal}>
+                            <span>{item?.withdraw_num}</span>
+                            <span>{item?.status}</span>
+                            <span>{item?.currency_symbol}</span>
+                            <span>{item?.amount}</span>
+                            <span>{item?.created_at}</span>
+                            <span><img src={Doc} alt="View more" /></span>
+                        </div>
                     )
                 )}
             </HistoryTable>
             <Pagination
-                pages={parseInt(dataTotal/ 2)}
+                pages={parseInt(dataTotal/ 10)}
                 page={page}
                 setPage={setPage}
             />

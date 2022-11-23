@@ -1,7 +1,7 @@
 import React from "react";
 import "./defaultButton.scss";
 
-const DefaultButton = ({ title, type, align, click, alternateBg }) => {
+const DefaultButton = ({ title, type, align, click,alternateBg,btnStyle = null }) => {
   const createClass = () => {
     const aligns = ["alignStart", "alignCenter", "alignEnd"];
     switch (type) {
@@ -20,7 +20,7 @@ const DefaultButton = ({ title, type, align, click, alternateBg }) => {
     }
   };
   return (
-    <div className={createClass()} onClick={click}>
+    <div className={createClass()} style={btnStyle} onClick={click}>
       {title}
     </div>
   );

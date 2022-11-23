@@ -13,6 +13,7 @@ import { InfoCard, DefaultButton } from "@@/components";
 import "./dashboard.scss";
 import {GetMerchantBaseSummary, GetMerchantPaymentStatChart} from "@@/utils/request/api";
 import {useNavigate} from "react-router-dom";
+import {arrListSort, explode} from "@@/utils/function";
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState(0);
@@ -23,27 +24,34 @@ const Dashboard = () => {
 
   const getTotal = async () => {
     const res = await GetMerchantBaseSummary()
-    //todo 999 根据汇率计算
-    if(!( res?.code !== 1000 || res.success !== true )){
-      setTotalBalance(res.data.total_balance.toFixed(3))
-      setTodayIncome(res.data.total_withdraw.toFixed(3))
-    }
+    //todo 888 根据汇率计算
+    setTotalBalance(res?.data?.total_balance?.toFixed(2) ?? totalBalance.toFixed(2))
+    setTodayIncome(res?.data?.total_withdraw?.toFixed(2)?? todayIncome.toFixed(2))
   }
 
   const getChartData = async (gap = '24h') => {
-    const res = await GetMerchantPaymentStatChart(gap)
+    const res = await GetMerchantPaymentStatChart({gap:gap})
     if(res?.code === 1000 ){
-      //todo 999
-      const data = res?.msg?.payment_amount_stat ?? [];
+      let data = res?.data?.payment_amount_stat ?? [];
       if(data?.length > 0){
         for (const kk in data) {
-          data[kk].time = data[kk].title;
+          if(gap === '24h'){
+            data[kk].time1 = data[kk].title.replaceAll('-','').replaceAll(' ','')
+            data[kk].time = explode(data[kk].title,' ')[1]
+          }
+          else if(gap === '7d' || gap === '1m'){
+            data[kk].time1 = data[kk].title.replaceAll('-','')
+            data[kk].time = explode(data[kk].title,'-')[1]+'.'+explode(data[kk].title,'-')[2]
+          }
+
+          //todo 999
           const random1 = Math.random()*100
           const random2 = Math.random()*100
 
           data[kk].balance = random1;
           data[kk].lineBal = random2;
         }
+        data = arrListSort(data,'time1')
         setChartData(data)
       }
 

@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Dropdown, ConfirmWithdraw, TipsModal } from "@@/components";
+import {Dropdown, ConfirmWithdraw, TipsModal, DefaultButton, DropdownNew} from "@@/components";
 
 import "./withdraw.scss";
 import ETH from "@@/assets/eth_icon.svg";
+import {GetWithdrawList} from "@@/utils/request/api";
+import {select_currency} from "@@/utils/config";
 
 const Withdraw = () => {
   const [confirm, setConfirm] = useState(false);
+  const [step, setStep] = useState(0);
   const navigate = useNavigate();
+  const [selectNetwork, setSelectNetwork] = useState(0);
+  const [selectCurrency, setSelectCurrency] = useState(0);
+  const Options = select_currency('tree');
+  const [Options1, setOptions1] = useState(Options?.[0]?._child ??[]);
 
-  return (
+  const [Currency, setCurrency] = useState(Options?.[0]?._child?.[0]?.key);
+
+
+  useEffect(() => {
+    setOptions1(Options?.[selectNetwork]?._child)
+  }, [selectNetwork]);
+
+    return (
     <div className="withdrawPageWrapper">
-      {confirm && (
+      {step === 0 && (
         <div className="controls">
           <button className="backButton" onClick={() => navigate("/assets")}>
             <svg
@@ -34,7 +48,7 @@ const Withdraw = () => {
         </div>
       )}
       <div className="main">
-        {confirm ? (
+        {step === 0 && (
           <>
             <div className="title">Select Network and Cryptocurrency</div>
             <div className="tip">
@@ -47,25 +61,46 @@ const Withdraw = () => {
             <div className="selectors">
               <div className="select">
                 <span>Network</span>
-                <Dropdown
-                  options={["Ethereum"]}
-                  defaultTitle="Network"
-                  images={[ETH]}
+                <DropdownNew
+                    buttonStyle={{width:'180px'}}
+                    options={Options}
+                    defaultTitle="Network"
+                    selected={selectNetwork}
+                    setSelected={setSelectNetwork}
                 />
+
               </div>
               <div className="select">
                 <span>Currency</span>
-                <Dropdown
-                  options={["Ethereum"]}
-                  defaultTitle="Currency"
-                  images={[ETH]}
+                <DropdownNew
+                    buttonStyle={{width:'180px'}}
+                    options={Options1}
+                    defaultTitle="Currency"
+                    selected={selectCurrency}
+                    setSelected={setSelectCurrency}
                 />
+
               </div>
             </div>
+
+            <div className="buttonRow">
+              <DefaultButton
+                  title="Next"
+                  type={2}
+                  click={() => {
+                    setCurrency(Options?.[selectNetwork]?._child?.[selectCurrency]);
+                    setStep(1)
+                  }
+              }
+              />
+            </div>
           </>
-        ) : (
-          <ConfirmWithdraw />
-        )}
+        ) }
+
+        {step === 1 &&  (
+          <ConfirmWithdraw Currency={Currency} />
+          )
+        }
       </div>
     </div>
   );

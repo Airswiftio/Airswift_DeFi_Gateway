@@ -1,0 +1,21 @@
+{
+  "@context": [
+    "https://ns.did.ai/suites/secp256k1-2019/v1/",
+    "https://w3id.org/did/v1"
+  ],
+  "id": "did:veric:0xE25FcCeBa449950bc992759C6d9BE2993339d8fc",
+  "created": "2022-11-20T23:27:35+08:00",
+  "updated": "2022-11-20T23:27:35+08:00",
+  "version": 1,
+  "verificationMethod": [
+    {
+      "id": "did:veric:0xE25FcCeBa449950bc992759C6d9BE2993339d8fc#verification",
+      "type": "EcdsaSecp256k1VerificationKey2019",
+      "controller": "did:veric:0xE25FcCeBa449950bc992759C6d9BE2993339d8fc",
+      "publicKeyMultibase": "zMfzpYWb1RCac6N7E17LPU6aaS7aYfCF56MBNmnw6xcysiSyLCZCeQ1d2xG7bCuDYpF6tqz2kc5qM7aNUKappq8R6"
+    }
+  ],
+  "authentication": "did:veric:0xE25FcCeBa449950bc992759C6d9BE2993339d8fc#verification",
+  "service": null,
+  "address": "0xE25FcCeBa449950bc992759C6d9BE2993339d8fc"
+}

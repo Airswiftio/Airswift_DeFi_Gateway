@@ -1,8 +1,20 @@
 import React, { useState ,useEffect} from "react";
-import { InfoCard, Toggle, Income, Withdraw, Selectors } from "@@/components";
+import {InfoCard, Toggle, Income, Withdraw, Selectors, Dropdown, Datepicker, Search, DropdownNew} from "@@/components";
 
 import "./myassets.scss";
-import {GetMerchantBaseSummary, GetPaymentSummary, GetWithdrawSummary} from "@@/utils/request/api";
+import {
+  CreatePayment,
+  GetAvailableVC,
+  GetMerchantBaseSummary,
+  GetPaymentSummary,
+  GetWithdrawSummary,
+} from "@@/utils/request/api";
+import {CreateDID, createVP, getVCs} from "@@/utils/chain/did";
+import {addOneLocal} from "@@/utils/function";
+import {base_currency, select_currency} from "@@/utils/config";
+import moment from "moment";
+import {dbSet} from "@@/utils/db/browserDb";
+import {ethers} from "@@/utils/chain/chainBase";
 
 const Assets = () => {
   const [state, setState] = useState(0);
@@ -10,24 +22,44 @@ const Assets = () => {
   const [incomeTotal, setIncomeTotal] = useState({total:0,today:0});
   const [withdrawTotal, setWithdrawTotal] = useState({total:0,today:0});
 
+  const [selectStatus, setSelectStatus] = useState();
+  const [selectCurrency, setSelectCurrency] = useState();
+  const [date, setDate] = useState();
+  const [search, setSearch] = useState('');
+  const statusOptions = [
+    {key:'success',title:'Finished'},
+    {key:'pending',title:'Pending'},
+  ];
+  const WithdrawStatus = [
+    {key:'complete',title:'Complete'},
+    {key:'pending',title:'Pending'},
+  ];
   const getIncomeTotal = async () => {
     const res = await GetPaymentSummary()
-    //todo 999 根据汇率计算
-    if(res?.code === 1000){
-      setIncomeTotal({total:res?.msg?.latest_90_days_total_payment ?? 0,today:res?.msg?.today_total_payment ?? 0})
-    }
+    setIncomeTotal({
+      total:res?.data?.latest_90_days_total_payment?.toFixed(2) ?? incomeTotal?.total?.toFixed(2),
+      today:res?.data?.today_total_payment?.toFixed(2)  ?? incomeTotal?.today?.toFixed(2)})
   }
   const getWithdrawTotal = async () => {
     const res = await GetWithdrawSummary()
-    //todo 999 根据汇率计算
-    if(res?.code === 1000){
-      setWithdrawTotal({total:res?.msg?.latest_90_days_total_withdraw ?? 0,today:res?.msg?.today_total_withdraw ?? 0})
-    }
+    setWithdrawTotal({
+      total:res?.data?.latest_90_days_total_withdraw?.toFixed(2) ?? withdrawTotal?.total?.toFixed(2),
+      today:res?.data?.today_total_withdraw?.toFixed(2) ?? withdrawTotal?.today?.toFixed(2)})
   }
 
+
   useEffect(() => {
+    setSelectStatus(null)
+    setSelectCurrency(null)
+    setDate(null)
+    setSearch('')
+  }, [state]);
+  useEffect( () => {
+    const did = createVP(['DXFpPDhNsEWZVJPepxiiXwShURvBriwH'])
+    // console.log('did',did);
     getIncomeTotal();
     getWithdrawTotal();
+    getVCs()
   }, []);
 
   return (
@@ -50,8 +82,46 @@ const Assets = () => {
           <span className="title">
             {state === 0 ? "Income" : "Withdraw"} History
           </span>
-          <Selectors setFilters={setFilters} filters={filters} />
-          {state === 0 ? <Income /> : <Withdraw />}
+
+
+          <div className="selectorsWrapper">
+            <DropdownNew
+                buttonStyle={{width:'150px'}}
+                options={state === 0 ? statusOptions : WithdrawStatus}
+                defaultTitle="Status"
+                selected={selectStatus}
+                setSelected={setSelectStatus}
+             />
+            <DropdownNew
+                buttonStyle={{width:'150px'}}
+                options={select_currency()}
+                defaultTitle="Currency"
+                selected={selectCurrency}
+                setSelected={setSelectCurrency}
+            />
+            <Datepicker
+                date={date}
+                setDate={setDate}
+            />
+            <Search
+                search={search}
+                setSearch={setSearch}
+            />
+          </div>
+          {/*<Selectors setFilters={setFilters} filters={filters} />*/}
+          {state === 0
+              ? <Income
+                  selectStatus={selectStatus}
+                  selectCurrency={selectCurrency}
+                  date={date}
+                  search={search}
+              />
+              : <Withdraw
+                  selectStatus={selectStatus}
+                  selectCurrency={selectCurrency}
+                  date={date}
+                  search={search}
+              />}
         </div>
       </div>
     </div>

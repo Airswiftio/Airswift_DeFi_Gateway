@@ -11,10 +11,10 @@ const HistoryElement = ({
   amount,
   time,
   viewMore,
-  vc = null,
+                            vc_status = '',
+                            vc_exist = null,
   click,
   checked,
-  key,
   indx,
 }) => {
   return (
@@ -53,11 +53,14 @@ const HistoryElement = ({
       <span>
         <img src={Doc} alt="View more" />
       </span>
-      {vc !== null ? (
+      {vc_exist === false && ['Created','Active'].includes(vc_status) ? (
         <span>
-          <img src={Verified} alt="Verified" />
+          no
         </span>
-      ) : null}
+      ) :
+          <span>
+          <img src={Verified} alt="Verified" />
+        </span>}
     </div>
   );
 };
