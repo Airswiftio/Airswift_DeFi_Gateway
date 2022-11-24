@@ -24,7 +24,6 @@ const Dashboard = () => {
 
   const getTotal = async () => {
     const res = await GetMerchantBaseSummary()
-    //todo 888 根据汇率计算
     setTotalBalance(res?.data?.total_balance?.toFixed(2) ?? totalBalance.toFixed(2))
     setTodayIncome(res?.data?.total_withdraw?.toFixed(2)?? todayIncome.toFixed(2))
   }
@@ -44,12 +43,10 @@ const Dashboard = () => {
             data[kk].time = explode(data[kk].title,'-')[1]+'.'+explode(data[kk].title,'-')[2]
           }
 
-          //todo 999
-          const random1 = Math.random()*100
-          const random2 = Math.random()*100
-
-          data[kk].balance = random1;
-          data[kk].lineBal = random2;
+          //todo 888 Wait for obtaining the real data before deleting random data
+          const random = Math.random()*100
+          data[kk].balance = data[kk]?.amount + random;
+          data[kk].lineBal = data[kk]?.amount + random;
         }
         data = arrListSort(data,'time1')
         setChartData(data)

@@ -1,27 +1,18 @@
 import React, { useState ,useEffect} from "react";
-import {InfoCard, Toggle, Income, Withdraw, Selectors, Dropdown, Datepicker, Search, DropdownNew} from "@@/components";
+import {InfoCard, Toggle, Income, Withdraw,  Datepicker, Search, DropdownNew} from "@@/components";
 
 import "./myassets.scss";
 import {
-  CreatePayment,
-  GetAvailableVC,
-  GetMerchantBaseSummary,
   GetPaymentSummary,
   GetWithdrawSummary,
 } from "@@/utils/request/api";
-import {CreateDID, createVP, getVCs} from "@@/utils/chain/did";
-import {addOneLocal} from "@@/utils/function";
-import {base_currency, select_currency} from "@@/utils/config";
-import moment from "moment";
-import {dbSet} from "@@/utils/db/browserDb";
-import {ethers} from "@@/utils/chain/chainBase";
+import {getVCs} from "@@/utils/chain/did";
+import {select_currency} from "@@/utils/config";
 
 const Assets = () => {
   const [state, setState] = useState(0);
-  const [filters, setFilters] = useState([]);
   const [incomeTotal, setIncomeTotal] = useState({total:0,today:0});
   const [withdrawTotal, setWithdrawTotal] = useState({total:0,today:0});
-
   const [selectStatus, setSelectStatus] = useState();
   const [selectCurrency, setSelectCurrency] = useState();
   const [date, setDate] = useState();
@@ -55,7 +46,6 @@ const Assets = () => {
     setSearch('')
   }, [state]);
   useEffect( () => {
-    const did = createVP(['DXFpPDhNsEWZVJPepxiiXwShURvBriwH'])
     // console.log('did',did);
     getIncomeTotal();
     getWithdrawTotal();

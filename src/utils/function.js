@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import LocalStore from "@@/utils/db/localStorage";
 import db from "@@/utils/db/browserDb";
 import {dexieDB} from "@@/utils/db/indexDB";
 const dbStore = db;
@@ -130,24 +129,6 @@ export function fullClose(n,m) {
   return Math.ceil(result);
 }
 
-//取得(n,m)范围随机数
-function fullOpen(n,m) {
-  let result = Math.random()*(m-n)+n;
-  while(result == n) {
-    result = Math.random()*(m-n)+n;
-  }
-  return result;
-}
-
-//取得(n,m]范围随机数
-function leftOpen(n,m) {
-  let result = Math.random()*(m-n+1)+n-1;
-  while(result<n) {
-    result = Math.random()*(m-n+1)+n-1;
-  }
-  return result;
-}
-
 export function dbClearAccount() {
   return  dbStore.clear()
 }
@@ -210,6 +191,10 @@ export function addDIDWhenEmpty(item) {
   const did = item?.id ?? '';
   const data = {did:did,did_document:item}
   return (new dexieDB('as_did')).addOnce(data,{did:did});
+}
+
+export function getOneDIDById(did = '') {
+  return (new dexieDB('as_did')).get({did:did});
 }
 
 

@@ -3,8 +3,7 @@ import { useNavigate } from "react-router";
 import { ProgressCircle } from "..";
 import "./progressModal.scss";
 
-const ProgressModal = ({ click, setIsOpen, handleSuccess }) => {
-  const [percentage, setPercentage] = useState(0);
+const ProgressModal = ({ click, percentage,setPercentage }) => {
 
   const navigate = useNavigate();
 
@@ -20,11 +19,7 @@ const ProgressModal = ({ click, setIsOpen, handleSuccess }) => {
   useEffect(() => {
     const load = setInterval(() => {
       if (percentage < 99) {
-        setPercentage(percentage + 33);
-      } else {
-        setIsOpen(false);
-        handleSuccess();
-        navigate("/dashboard");
+        setPercentage(percentage + 11);
       }
     }, 500);
 

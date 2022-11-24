@@ -55,7 +55,6 @@ export const recoverAddressFromSign = (signMsg,Signature) => {
 }
 
 function signPubData(publicKey = '') {
-  publicKey = empty(publicKey) ? dbGetUserWallet()?.publicKey :publicKey;
   const public_key_bytes =   ec.keyFromPublic(publicKey.slice(2),'hex').getPublic().encode()
   return 'z'+base58Encode(public_key_bytes)
 }
@@ -65,11 +64,12 @@ function signPubData(publicKey = '') {
 const VPSignature = (vp = {}) => {
   vp.proof.jws = '';
   let signatureData = VPToByte(vp)
-  vp.proof.jws = signatureData
+  // console.log('signatureData',signatureData);
+  // vp.proof.jws = signatureData
   // console.log('vpToType',ethers.utils.base58.encode(signatureData));
 
   // console.log('CreateDID()',JSON.stringify(CreateDID()));
-  return vp;
+  return ethers.utils.hashMessage(signatureData);
 }
 
 const BytesWriteString = (str) => {
@@ -132,9 +132,9 @@ const VPToByte = (vp) => {
   return Bytes;
 }
 
-export function CreateDID( ){
-  const pubData = signPubData()
-  const userPbKeyHexAddress =  dbGetUserWallet()?.account ?? '';
+export function CreateDIDDocument(account = '',publicKey  = '' ){
+  const pubData = signPubData(publicKey)
+  const userPbKeyHexAddress =  account;
   const documentId = DIDPrefix + userPbKeyHexAddress;
   const currentTime = moment().format();
   const DIDDocument = {
@@ -190,16 +190,15 @@ export async function createVP(VCids = []){
     },
   }
 
-  //todo 888 vp base58加密然后小狐狸签名
+  VP.proof.jws = VPSignature(VP);
+  const msg1 = ethers.utils.hashMessage(JSON.stringify(VP))
 
-  const vp_ = VPSignature(VP)
-
-  // let res3 = await Web3SignData(uAccount,'Generate VP through VC');
-  // if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
-  //   return res3;
-  // }
+  let res3 = await Web3SignData(uAccount,msg1);
+  if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
+    return res3;
+  }
   // vp.proof.jws = res3?.data;
-  return {code:1000,data:VP,msg:'ok'}
+  return {code:1000,data:res3?.data,msg:'ok'}
 }
 
 //1.进入资产页面，调用GetAvailableVC,直到没数据了，才结束，获取后存入本地，然后调用MarkVCReceived，标记已接收

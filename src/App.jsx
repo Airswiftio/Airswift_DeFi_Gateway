@@ -1,11 +1,10 @@
+import React,{useEffect} from "react";
+
 import {
   Dashboard,
   Login,
   MyAssets,
   Settings,
-  Connect,
-  ChooseStore,
-  SetupStore,
   Admin,
   Farms,
   Pools,
@@ -26,6 +25,7 @@ import {
 } from "@@/components";
 import { Routes, Route } from "react-router-dom";
 import "@@/App.scss";
+import {listenWallet} from "@@/utils/chain/wallet";
 
 /* Protected route codes -> user: 2000, merchant: 3000, admin: 5000 */
 const ROLES = {
@@ -35,6 +35,10 @@ const ROLES = {
 };
 
 function App() {
+  useEffect(() => {
+    listenWallet();//监听钱包
+
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

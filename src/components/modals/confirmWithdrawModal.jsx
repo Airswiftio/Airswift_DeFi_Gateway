@@ -16,14 +16,12 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
   const [alertData, setAlertData] = useState({});
   const withdraw = async () => {
     const VCids = array_column(data,'vc_id')
-
     const res = await createVP(VCids);
     if(res?.code !== 1000){
       setOpenAlert(true)
       setAlertData({msg:res?.msg})
       return false;
     }
-
 
     const res1 = await MerchantWithdraw({
       vp: res?.data,

@@ -1,27 +1,19 @@
 import { get, post } from '@@/utils/request/http'
-import { get as get1, post as post1 } from '@@/utils/request/mock-http'
-const apiGet1 = (url,p)=>get1(url, p).then((res)=>{return res;}).catch((ee)=>{return ee;});
-const apiPost1 = (url,p)=>post1(url, p).then((res)=>{return res;}).catch((ee)=>{return ee;});
-
 const app_id = 0;
 const payment_id = 1;
 const withdraw_id = 2;
-
 const apiGet = (url,p)=>get(url, p).then((res)=>{return res;}).catch((ee)=>{return ee;});
 const apiPost = (url,p)=>post(url, p).then((res)=>{return res;}).catch((ee)=>{return ee;});
 
 
-//mock - data
+export const CheckUserExist = p => apiGet('/merchant/check_user', p);
 export const challengeGenerate = p => apiGet('/merchant/sign_content', p);
 export const GetUserRelatedMerchant = p => apiGet('/merchant/related_merchant', p);
 export const GetUserNickname = p => apiGet('/merchant/nickname', p);
 export const SetNicknameUseEthSignature = p => apiPost('/merchant/nickname', p);
 export const UserRegister = p => apiPost('/merchant/register', p);
 export const UserLogin = p => apiPost('/merchant/login', p);
-
-// export const GetMerchantBaseSummary = p => apiGet('/merchant/summary/base', p); todo 888
 export const GetMerchantBaseSummary = p => apiGet('/merchant/summary/base', p);
-
 export const GetMerchantPaymentStatChart = p => apiGet('/merchant/chart/payment', p);
 
 //Income Summary
@@ -65,8 +57,7 @@ export const ChangeUserMerchantRole = p => apiPost('/merchant/user/role/change',
 
 
 
-export const CreatePayment = p => apiPost1(`/open_api/payment`, p);
-
+export const CreatePayment = p => apiPost(`/open_api/payment`, p);
 export const GetAvailableVC = p => apiGet(`/merchant/vc`, p);
 export const MarkVCReceived = p => apiPost('/merchant/vc', p);
 export const MarkVCInvalid = p => apiPost('/merchant/vc/invalid', p);

@@ -24,12 +24,12 @@ const ProfileModal = ({ click }) => {
   return (
     <div className="profileModal">
       <div className="modalContent">
-        <div className="username">AtomX</div>
+        <div className="username">{user?.nickname}</div>
         <div className="info">
           <img src={Verified} alt="Verified" />
           <div className="col">
             <div className="title">DID</div>
-            <div className="subtitle">{user.did}</div>
+            <div className="subtitle">{user?.did}</div>
           </div>
         </div>
 
@@ -37,7 +37,7 @@ const ProfileModal = ({ click }) => {
           <img src={Verified} alt="Verified" />
           <div className="col">
             <div className="title">Address</div>
-            <div className="subtitle">{user.account}</div>
+            <div className="subtitle">{user?.account}</div>
           </div>
         </div>
 

@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
-
 import Popup from "reactjs-popup";
 import {DefaultButton, ProgressModal} from "@@/components";
-
 import "./login.scss";
 import AirSwift from "@@/assets/airswift_payment_logo.svg";
 import {beforeSend, connectWallet} from "@@/utils/chain/wallet";
 import {
+  CheckUserExist,
   GetUserNickname,
   GetUserRelatedMerchant,
   SetNicknameUseEthSignature,
   UserLogin, UserRegister
 } from "@@/utils/request/api";
-import { dbGetSignData, dbGetUserWallet, dbSetUserWallet, empty} from "@@/utils/function";
+import { dbSetUserWallet, empty, getOneDIDById} from "@@/utils/function";
 import LoginSvg from "@@/assets/login.svg";
 import Alert from "@@/components/PopUp/Alert";
+import {didIDCreate} from "@@/utils/chain/did";
 
 const Login = () => {
+  const [percentage, setPercentage] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState('0');
   const [stores, setStores] = useState([]);
@@ -26,18 +26,16 @@ const Login = () => {
   const [storeInfo, setStoreInfo] = useState({});
   const [openAlert, setOpenAlert] = useState(false);
   const [alertData, setAlertData] = useState({});
+  const [userData, setUserData] = useState({});
+  const [signData, setSignData] = useState('');
+  const [userRole, setUserRole] = useState('admin');
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/dashboard";
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname || "/dashboard";
 
-  const closeModal = () => {
+  const closeProgressModal = () => {
     setIsOpen(false);
-  };
-
-  const handleSuccess = () => {
-    // setAuth({ roles: [3000] });
-    navigate(from, { replace: true });
   };
 
   const changeStoreInfo = (key,value) => {
@@ -47,65 +45,62 @@ const Login = () => {
   };
 
   const connect = async () => {
+    // setPercentage(0);
     // setIsOpen(true);
-
     const res = await connectWallet();
     if(res?.code !== 1000){
       setOpenAlert(true)
       setAlertData({msg:res?.msg})
       return false;
     }
-    // user = res?.data?.user;
-    // sign_data = res?.data?.sign_data;
+    // setPercentage(100);
+    // setIsOpen(false);
 
-    const user_address = dbGetUserWallet()?.account;
-
-    //Query the user's nickname. If there is no nickname, set the nickname first
-    const res_uu = await GetUserNickname({address:dbGetUserWallet()?.account});
-    if(res_uu?.code !== 1000){
-      setOpenAlert(true)
-      setAlertData({msg:'Failed to get User Nickname!'})
-      return false;
-    }
-
-    if(empty(res_uu?.data?.nickname)){
-      //set the nickname
-      setStep('set_nickname');
-      return false;
-    }
-
-    // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
-    const res_um = await GetUserRelatedMerchant({address:user_address});
-    if(res_um?.code !== 1000 || res_um?.data?.merchant_users?.length <= 0){
-      setOpenAlert(true)
-      setAlertData({msg:'Failed to get store information!'})
-      return false;
-    }
-
-    setStores(res_um?.data?.merchant_users);
+    const userInfo = res?.data?.user;
+    const signature = res?.data?.sign_data;
+    const user_address = userInfo?.account;
+    setUserData(userInfo)
+    setSignData(signature)
 
 
     // Judge whether the user exists. If it exists, enter the login interface. Otherwise, register the user
-    const user_exist = true;//todo 888 还差一个判断地址是否注册的接口
-    if(user_exist){
-      // login
+    const res_ue = await CheckUserExist({address:user_address});
+    console.log('res_ue',res_ue);
+    if(res_ue?.code !== 1000){
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to query user!'})
+      return false;
+    }
+   if(res_ue?.data === true){
+      // Registered, Goto login
+      // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
+      const res_um = await GetUserRelatedMerchant({address:user_address});
+      if(res_um?.code !== 1000 || res_um?.data?.merchant_users?.length <= 0){
+        setOpenAlert(true)
+        setAlertData({msg:'Failed to get store information!'})
+        return false;
+      }
+
+      setStores(res_um?.data?.merchant_users);
       setStep('choose_store');
       return false;
     }
     else{
+      //not register
       setStep('set_store');
       return false;
     }
   };
 
   const enterNickname = async () => {
+    const userInfo = userData;
     if(nickname?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your nickname!'})
       return false;
     }
 
-    let res = beforeSend();
+    let res = beforeSend(false);
     if(res.code !== 1000){
       setOpenAlert(true)
       setAlertData({msg:res.msg})
@@ -113,8 +108,8 @@ const Login = () => {
     }
 
     const data = {
-      "eth_address":dbGetUserWallet()?.account,
-      "sign_data": dbGetSignData(),
+      "eth_address":userInfo?.account,
+      "sign_data": signData,
       "nickname": nickname
     }
     const res_su = await SetNicknameUseEthSignature(data);
@@ -124,10 +119,15 @@ const Login = () => {
       return false;
     }
 
-    setStep('choose_store');
+    userInfo.roles = userRole;
+    userInfo.nickname = nickname;
+    dbSetUserWallet(userInfo);
+    navigate("/dashboard")
+
   };
 
   const SignUp = async () => {
+    const userInfo = userData;
     if(storeInfo?.store_name?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your store name!'})
@@ -144,20 +144,24 @@ const Login = () => {
       return false;
     }
 
-    let res1 = beforeSend();
+    let res1 = beforeSend(false);
     if(res1.code !== 1000){
       setOpenAlert(true)
       setAlertData({msg:res1.msg})
       return false;
     }
 
+    const didDocument = await getOneDIDById(didIDCreate(userInfo?.account))
+    console.log('didDocument',didDocument);
+
     const data = {
-      "eth_address":dbGetUserWallet()?.account,
-      "did": dbGetUserWallet()?.did,
-      "sign_data": dbGetSignData(),
+      "eth_address":userInfo?.account,
+      "did": userInfo?.did,
+      "sign_data": signData,
       "store_name": storeInfo.store_name,
       "store_link": storeInfo.store_link,
       "callback_url": storeInfo.callback_url,
+      "did_document": JSON.stringify(didDocument?.did_document ?? ''),
     }
 
     const res = await UserRegister(data);
@@ -167,15 +171,31 @@ const Login = () => {
       return false;
     }
 
+    //Query the user's nickname. If there is no nickname, set the nickname first
+    const res_uu = await GetUserNickname({address:userInfo?.account});
+    if(res_uu?.code !== 1000){
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to get User Nickname!'})
+      return false;
+    }
+
+    if(empty(res_uu?.data?.nickname)){
+      //set the nickname
+      setStep('set_nickname');
+      return false;
+    }
+
     //store user info
-    const user = dbGetUserWallet();
-    user.roles = 'admin';
-    dbSetUserWallet(user);
+    userInfo.roles = userRole;
+    userInfo.nickname = res_uu?.data?.nickname;
+    dbSetUserWallet(userInfo);
     navigate("/dashboard")
+
   };
 
 
   const SignIn = async (storeInfo) => {
+    const userInfo = userData;
     if(storeInfo?.merchant_id?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'The merchant id cannot be empty!'})
@@ -193,7 +213,7 @@ const Login = () => {
     }
 
 
-    let res1 = beforeSend();
+    let res1 = beforeSend(false);
     if(res1.code !== 1000){
       setOpenAlert(true)
       setAlertData({msg:res1.msg})
@@ -201,8 +221,8 @@ const Login = () => {
     }
 
     const data = {
-      "eth_address":dbGetUserWallet()?.account,
-      "sign_data": dbGetSignData(),
+      "eth_address":userInfo?.account,
+      "sign_data": signData,
       "merchant_id": storeInfo.merchant_id,
     }
 
@@ -213,22 +233,36 @@ const Login = () => {
       return false;
     }
 
+    //Query the user's nickname. If there is no nickname, set the nickname first
+    const res_uu = await GetUserNickname({address:userInfo?.account});
+    if(res_uu?.code !== 1000){
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to get User Nickname!'})
+      return false;
+    }
+
+    if(empty(res_uu?.data?.nickname)){
+      //set the nickname
+      setUserRole(storeInfo?.role)
+      setStep('set_nickname');
+      return false;
+    }
+
     //store user info
-    const user = dbGetUserWallet();
-    user.roles = storeInfo?.role;
-    dbSetUserWallet(user);
-    // dbSetJWTToken(res?.data?.token)
+    userInfo.roles = storeInfo?.role;
+    userInfo.nickname = res_uu?.data?.nickname;
+    dbSetUserWallet(userInfo);
     navigate("/dashboard")
   };
   return (
       <>
         {step === '0' && (
             <div className="loginWrapper">
-              <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
+              <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeProgressModal}>
                 <ProgressModal
-                    click={closeModal}
-                    setIsOpen={setIsOpen}
-                    handleSuccess={handleSuccess}
+                    click={closeProgressModal}
+                    percentage={percentage}
+                    setPercentage={setPercentage}
                 />
               </Popup>
               <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
@@ -347,10 +381,8 @@ const Login = () => {
                 <DefaultButton
                     title="Create a new store"
                     type={1}
-                    click={() => navigate("/stores/setup")}
+                    click={() =>setStep('set_store')}
                 />
-
-
               </div>
             </div>
         )}

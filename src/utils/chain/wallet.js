@@ -1,27 +1,17 @@
 import {ethers, WEthereum, Web3Provider, signer, isEth} from '@@/utils/chain/chainBase';
-import md5 from 'js-md5';
 import {
-  Array2Byte,
   dbClearAccount,
-  dbGetUserWallet, dbSetJWTToken, dbSetSignData, dbSetUserWallet,
+  dbGetUserWallet,
   empty,
   hideStr,
   json_to_obj
 } from "@@/utils/function";
 import {challengeGenerate} from "@@/utils/request/api";
-import {CreateDID, didCreate, didIDCreate, recoverPublicKeyFromSign} from "@@/utils/chain/did";
+import {CreateDIDDocument, didIDCreate, recoverPublicKeyFromSign} from "@@/utils/chain/did";
 // import BaseConfig from "@@/config.json";
 // import {popupAlert} from "@@/components/PopAlert/Index";
 
 const metamaskUrl = "https://metamask.app.link/dapp/m.metablox.rome9.com/";
-
-let WalletRequest = class  {
-  constructor(name, url) {
-    this.name = name;
-    this.url = url;
-  }
-}
-
 
 const analysisErrorMsg =  (error) => {
   // console.log('error1',error);
@@ -95,14 +85,15 @@ export const detectionEnvironment = async () => {
 //Monitor wallet
 export const listenWallet = () => {
   if(!isEth) return false;
-  const userWallet = dbGetUserWallet();
-
   WEthereum.on("accountsChanged", function(accounts) {
-    if(userWallet){
-      //Once the account is switched, it will be executed here
-      dbClearAccount();
-      window.location.reload();
-    }
+    dbClearAccount();
+    window.location.reload();
+
+    // if(dbGetUserWallet()){
+    //   //Once the account is switched, it will be executed here
+    //   dbClearAccount();
+    //   window.location.reload();
+    // }
   });
 
   Web3Provider.on("disconnect", function(accounts) {
@@ -116,7 +107,7 @@ export const listenWallet = () => {
     // oldNetwork exists, it represents a changing network
 
     //Detect the user's network, which is not a supported network, and send the user a request to switch networks
-    if (oldNetwork && userWallet) {
+    if (oldNetwork) {
       //Once the network is switched, log out of the login information and log in again
       dbClearAccount();
       window.location.reload();
@@ -282,12 +273,10 @@ export const connectWallet = async () => {
 
   let res1 = await detectionEnvironment();
   if(res1.code === 100){
-    // popupAlert({type:'wentWrong',data:{msg:res.msg}}); //todo 999
     window.open(res1.url);
     return res1;
   }
   else if(res1.code === 101){
-    // popupAlert({type:'switchingNetwork',data:{msg:res.msg}});//todo 999
     return res1;
   }
 
@@ -300,26 +289,24 @@ export const connectWallet = async () => {
 
   //Get account balance and connect to the network
   let balance = await getBalance(account);//Get the account balance and format it
-
   let network = await getNetwork();
   let networkName = network.chainId === 1 ? 'Mainnet':network.name;
-  let chainId = network.chainId.toString();
+  // let chainId = network.chainId.toString();
 
   //Get the signature verification message from the back end
   let res2 = await challengeGenerate({address:account});
   if(typeof res2?.code === 'undefined' || res2.code !== 1000 || empty(res2?.data?.content)){
-    dbClearAccount();
+    // dbClearAccount();
     res2.msg = 'Failed to get sign message! '
     return res2;
   }
 
   let res3 = await Web3SignData(account,res2?.data?.content);
-  // let res3 = await Web3SignData(account,'Generate VP through VC');
   if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
-    dbClearAccount();
+    // dbClearAccount();
     return res3;
   }
-  dbSetSignData(res3?.data)
+  // dbSetSignData(res3?.data)
   const publicKey = recoverPublicKeyFromSign(res2?.data?.content,res3?.data)
   let userWallet = {
     balance:balance,
@@ -330,8 +317,8 @@ export const connectWallet = async () => {
     simple_account:hideStr(account,5,4,'.',3),
     did:didIDCreate(account),
   };
-  dbSetUserWallet(userWallet)
-  CreateDID();
+  // dbSetUserWallet(userWallet)
+  CreateDIDDocument(account,publicKey);
   return {code:1000,msg:'ok',data:{user:userWallet,sign_data:res3?.data}};
 }
 
@@ -354,19 +341,5 @@ export const beforeSend = (checkUser = true)=>{
 export const base58Encode = (hex = '') => {
   return ethers.utils.base58.encode(hex);
 }
-//
-// export const base58Encode1 = (hex = '') => {
-//   let jsonData = `{"@context":["https://ns.did.ai/suites/secp256k1-2019/v1/","https://www.w3.org/2018/credentials/v1"],"type":["VerifiablePresentation"],"verifiableCredential":[{"@context":["https://ns.did.ai/suites/secp256k1-2019/v1/","https://www.w3.org/2018/credentials/v1"],"id":"0","type":["VericDeposit","VerifiableCredential"],"issuer":"did:veric:0xC5BCf228F28a1827Da6C7e576b6d0Dfa5A5168Be","issuanceDate":"2022-06-07T09:43:27Z","expirationDate":"2032-06-07T09:43:27Z","description":"Veric Deposit","credentialSubject":{"tokenAddress":"0xc4860463c59d59a9afac9fde35dff9da363e8425","amount":1000000000000000000,"vault":"0xd3446851deb19bcf700dadef258ba90834c8472a"},"proof":{"type":"EcdsaSecp256k1Signature2019","created":"2022-06-07T09:43:27Z","verificationMethod":"did:veric:0xC5BCf228F28a1827Da6C7e576b6d0Dfa5A5168Be#verification","proofPurpose":"Authentication","jws":"eyJhbGciOiJFUzI1NiJ9..sUOiidTUHzNJ_L93k25EETrzfGcpeqXkDOFxBs2Q4sEtsxRri-Ah5JtCEvQKGNLQYFK2WqIbrmmhbYDggcREGQ"}}],"holder":"did:veric:0x77CBcc0e29E10F1EeA24e0D109aaB26C5b2Abd88","proof":{"type":"EcdsaSecp256k1Signature2019","created":"2022-06-07T18:23:41+08:00","verificationMethod":"did:veric:0x77CBcc0e29E10F1EeA24e0D109aaB26C5b2Abd88#verification","proofPurpose":"Authentication","jws":"eyJhbGciOiJFUzI1NiJ9..Oge0fus9C__fsEk8eUVYZgu47co5aFI8mvVjcjcvc8cUjjor8yEpuWhVjjtO-l0cLxUKTQRWwx0TwCDzulfk2A","nonce":"6666"}}`
-//   let obj = json_to_obj(jsonData)
-//   console.log('obj',obj.verifiableCredential);
-//   let bb = ethers.utils.toUtf8Bytes(jsonData)
-//   console.log('aa',bb);
-//
-//   // todo 888
-//   // ethers.utils.parseBytes32String()
-//   // ethers.utils.toUtf8String()
-//   // ethers.utils.toUtf8Bytes()
-//   // return ethers.utils.getAddress(hex);
-// }
 
 export {Web3Provider,signer}
