@@ -44,7 +44,6 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
             return false;
         }
         setTimeout(function (){
-            //todo 888 加个进度加载
             getVCs()
             setRefreshNum(refreshNum+1)
         }, 50000);
