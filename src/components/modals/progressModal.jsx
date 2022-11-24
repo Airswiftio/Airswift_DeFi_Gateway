@@ -17,13 +17,13 @@ const ProgressModal = ({ click, percentage,setPercentage }) => {
   }, []);
 
   useEffect(() => {
-    const load = setInterval(() => {
-      if (percentage < 99) {
-        setPercentage(percentage + 11);
-      }
-    }, 500);
-
-    return () => clearInterval(load);
+    // const load = setInterval(() => {
+    //   if (percentage < 99) {
+    //     setPercentage(percentage + 11);
+    //   }
+    // }, 500);
+    //
+    // return () => clearInterval(load);
   });
 
   return (

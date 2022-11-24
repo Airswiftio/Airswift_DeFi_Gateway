@@ -45,16 +45,14 @@ const Login = () => {
   };
 
   const connect = async () => {
-    // setPercentage(0);
-    // setIsOpen(true);
-    const res = await connectWallet();
+    setPercentage(0);
+    setIsOpen(true);
+    const res = await connectWallet(setPercentage,setIsOpen);
     if(res?.code !== 1000){
       setOpenAlert(true)
       setAlertData({msg:res?.msg})
       return false;
     }
-    // setPercentage(100);
-    // setIsOpen(false);
 
     const userInfo = res?.data?.user;
     const signature = res?.data?.sign_data;
@@ -65,7 +63,6 @@ const Login = () => {
 
     // Judge whether the user exists. If it exists, enter the login interface. Otherwise, register the user
     const res_ue = await CheckUserExist({address:user_address});
-    console.log('res_ue',res_ue);
     if(res_ue?.code !== 1000){
       setOpenAlert(true)
       setAlertData({msg:'Failed to query user!'})
@@ -75,7 +72,7 @@ const Login = () => {
       // Registered, Goto login
       // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
       const res_um = await GetUserRelatedMerchant({address:user_address});
-      if(res_um?.code !== 1000 || res_um?.data?.merchant_users?.length <= 0){
+      if(res_um?.code !== 1000 || !res_um?.data?.merchant_users?.length){
         setOpenAlert(true)
         setAlertData({msg:'Failed to get store information!'})
         return false;
@@ -94,7 +91,7 @@ const Login = () => {
 
   const enterNickname = async () => {
     const userInfo = userData;
-    if(nickname?.length <= 0){
+    if(!nickname?.length){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your nickname!'})
       return false;
@@ -128,17 +125,17 @@ const Login = () => {
 
   const SignUp = async () => {
     const userInfo = userData;
-    if(storeInfo?.store_name?.length <= 0){
+    if(!storeInfo?.store_name?.length){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your store name!'})
       return false;
     }
-    if(storeInfo?.store_link?.length <= 0){
+    if(!storeInfo?.store_link?.length){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your store link!'})
       return false;
     }
-    if(storeInfo?.callback_url?.length <= 0){
+    if(!storeInfo?.callback_url?.length){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your callback url!'})
       return false;
@@ -152,8 +149,6 @@ const Login = () => {
     }
 
     const didDocument = await getOneDIDById(didIDCreate(userInfo?.account))
-    console.log('didDocument',didDocument);
-
     const data = {
       "eth_address":userInfo?.account,
       "did": userInfo?.did,
@@ -196,17 +191,17 @@ const Login = () => {
 
   const SignIn = async (storeInfo) => {
     const userInfo = userData;
-    if(storeInfo?.merchant_id?.length <= 0){
+    if(!storeInfo?.merchant_id?.length){
       setOpenAlert(true)
       setAlertData({msg:'The merchant id cannot be empty!'})
       return false;
     }
-    if(storeInfo?.merchant_name?.length <= 0){
+    if(!storeInfo?.merchant_name?.length){
       setOpenAlert(true)
       setAlertData({msg:'The store name cannot be empty!'})
       return false;
     }
-    if(storeInfo?.role?.length <= 0){
+    if(!storeInfo?.role?.length){
       setOpenAlert(true)
       setAlertData({msg:'The role cannot be empty!'})
       return false;
@@ -256,18 +251,18 @@ const Login = () => {
   };
   return (
       <>
+        <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeProgressModal}>
+          <ProgressModal
+              click={closeProgressModal}
+              percentage={percentage}
+              setPercentage={setPercentage}
+          />
+        </Popup>
+        <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+          <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
+        </Popup>
         {step === '0' && (
             <div className="loginWrapper">
-              <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeProgressModal}>
-                <ProgressModal
-                    click={closeProgressModal}
-                    percentage={percentage}
-                    setPercentage={setPercentage}
-                />
-              </Popup>
-              <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
-                <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
-              </Popup>
               <div className="loginForm">
                 <div className="formHeader">
                   <img src={AirSwift} alt="AirSwift" />

@@ -264,12 +264,13 @@ export const switchNetwork = async (chainId = 0) => {
 }
 
 
-export const connectWallet = async () => {
+export const connectWallet = async (setPercentage,setIsOpen) => {
   //First, check whether the environment supports and whether metamask plug-ins are installed
   let res = beforeSend(false);
   if(res.code !== 1000){
     return res;
   }
+  setPercentage(10)
 
   let res1 = await detectionEnvironment();
   if(res1.code === 100){
@@ -279,6 +280,7 @@ export const connectWallet = async () => {
   else if(res1.code === 101){
     return res1;
   }
+  setPercentage(30)
 
   //Get account address
   let accounts = await requestAccounts();
@@ -286,12 +288,16 @@ export const connectWallet = async () => {
     return {code:-1,msg:'Account not exist!'};
   }
   let account =  accounts[0];
+  setPercentage(40)
 
   //Get account balance and connect to the network
   let balance = await getBalance(account);//Get the account balance and format it
+  setPercentage(50)
   let network = await getNetwork();
+  setPercentage(60)
   let networkName = network.chainId === 1 ? 'Mainnet':network.name;
   // let chainId = network.chainId.toString();
+  setPercentage(70)
 
   //Get the signature verification message from the back end
   let res2 = await challengeGenerate({address:account});
@@ -300,12 +306,16 @@ export const connectWallet = async () => {
     res2.msg = 'Failed to get sign message! '
     return res2;
   }
+  setPercentage(99)
 
   let res3 = await Web3SignData(account,res2?.data?.content);
   if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
     // dbClearAccount();
     return res3;
   }
+  setPercentage(100);
+  setIsOpen(false);
+
   // dbSetSignData(res3?.data)
   const publicKey = recoverPublicKeyFromSign(res2?.data?.content,res3?.data)
   let userWallet = {
