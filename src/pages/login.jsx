@@ -23,7 +23,7 @@ const Login = () => {
   const [step, setStep] = useState('0');
   const [stores, setStores] = useState([]);
   const [nickname, setNickname] = useState('');
-  const [storeInfo, setStoreInfo] = useState({});
+  const [storeInfo, setStoreInfo] = useState({store_name:'',store_link:'',callback_url:''});
   const [openAlert, setOpenAlert] = useState(false);
   const [alertData, setAlertData] = useState({});
   const [userData, setUserData] = useState({});
@@ -72,7 +72,7 @@ const Login = () => {
       // Registered, Goto login
       // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
       const res_um = await GetUserRelatedMerchant({address:user_address});
-      if(res_um?.code !== 1000 || !res_um?.data?.merchant_users?.length){
+      if(res_um?.code !== 1000 || res_um?.data?.merchant_users?.length <= 0){
         setOpenAlert(true)
         setAlertData({msg:'Failed to get store information!'})
         return false;
@@ -91,7 +91,7 @@ const Login = () => {
 
   const enterNickname = async () => {
     const userInfo = userData;
-    if(!nickname?.length){
+    if(nickname?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your nickname!'})
       return false;
@@ -125,17 +125,17 @@ const Login = () => {
 
   const SignUp = async () => {
     const userInfo = userData;
-    if(!storeInfo?.store_name?.length){
+    if(storeInfo?.store_name?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your store name!'})
       return false;
     }
-    if(!storeInfo?.store_link?.length){
+    if(storeInfo?.store_link?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your store link!'})
       return false;
     }
-    if(!storeInfo?.callback_url?.length){
+    if(storeInfo?.callback_url?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'Please enter your callback url!'})
       return false;
@@ -190,18 +190,20 @@ const Login = () => {
 
 
   const SignIn = async (storeInfo) => {
+
+    console.log('storeInfo',storeInfo);
     const userInfo = userData;
-    if(!storeInfo?.merchant_id?.length){
+    if(storeInfo?.merchant_id?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'The merchant id cannot be empty!'})
       return false;
     }
-    if(!storeInfo?.merchant_name?.length){
+    if(storeInfo?.merchant_name?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'The store name cannot be empty!'})
       return false;
     }
-    if(!storeInfo?.role?.length){
+    if(storeInfo?.role?.length <= 0){
       setOpenAlert(true)
       setAlertData({msg:'The role cannot be empty!'})
       return false;
