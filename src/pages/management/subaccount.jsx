@@ -4,7 +4,7 @@ import Popup from "reactjs-popup";
 import { TABLETYPE } from "@@/components/types";
 import { ManagementTable, DefaultButton, ConfirmationModal, SettingsModal } from "@@/components";
 
-import "./subaccount.scss";
+import "./styles/subaccount.scss";
 
 const SubAccount = () => {
   const [subAccounts, setSubAccounts] = useState();

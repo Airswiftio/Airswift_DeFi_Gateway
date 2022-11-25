@@ -1,7 +1,7 @@
 import React from "react";
 import { post } from "./requests";
 import { ManagementLogin } from "../../components";
-import "./login.scss";
+import "./styles/login.scss";
 
 const Login = () => {
   return (

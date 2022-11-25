@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { DefaultButton } from "..";
+import { DefaultButton } from "../..";
 import "./confirmationModal.scss";
 
 const ConfirmationModal = ({ click, setValue, title, type, selected }) => {

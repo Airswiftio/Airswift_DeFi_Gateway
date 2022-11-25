@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Popup from "reactjs-popup";
-import Logo from "../../assets/management/logo.svg";
-import { ProfileModal } from "../";
+import Logo from "@@/assets/management/logo.svg";
+import ProfilePhoto from "@@/assets/sample_profile.svg";
+import { ProfileModal } from "@@/components";
 import "./managementHeader.scss";
-
-import ProfilePhoto from "../../assets/sample_profile.svg";
 
 const ManagementHeader = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -30,10 +29,7 @@ const ManagementHeader = () => {
   }, []);
 
   return (
-    <div
-      className="managementNavWrapper"
-      onClick={() => setUrl(window.location.pathname)}
-    >
+    <div className="managementNavWrapper" onClick={() => setUrl(window.location.pathname)}>
       <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
         <ProfileModal click={closeModal} />
       </Popup>
@@ -80,10 +76,7 @@ const ManagementHeader = () => {
             <div className="online" />
           </div>
         ) : (
-          <Link
-            to="/management/login"
-            className={url.includes("login") ? "underline" : ""}
-          >
+          <Link to="/management/login" className={url.includes("login") ? "underline" : ""}>
             Login
           </Link>
         )}
@@ -109,33 +102,25 @@ const ManagementHeader = () => {
           <div className={mobileMenuOpen ? "mobileMenuLinks" : "hidden"}>
             <Link
               to="/management/dashboard"
-              className={
-                url.includes("/management/dashboard") ? "underline" : ""
-              }
+              className={url.includes("/management/dashboard") ? "underline" : ""}
             >
               Dashboard
             </Link>
             <Link
               to="/management/subaccount"
-              className={
-                url.includes("/management/subaccount") ? "underline" : ""
-              }
+              className={url.includes("/management/subaccount") ? "underline" : ""}
             >
               Subaccount
             </Link>
             <Link
               to="/management/merchant"
-              className={
-                url.includes("/management/merchant") ? "underline" : ""
-              }
+              className={url.includes("/management/merchant") ? "underline" : ""}
             >
               Merchant
             </Link>
             <Link
               to="/management/liquidity"
-              className={
-                url.includes("/management/liquidity") ? "underline" : ""
-              }
+              className={url.includes("/management/liquidity") ? "underline" : ""}
             >
               Liquidity
             </Link>

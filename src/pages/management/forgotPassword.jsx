@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import { ManagementResetPassword } from "../../components";
 import Logo from "../../assets/management/logo.svg";
-import "./login.scss";
+import "./styles/login.scss";
 
 const ForgotPassword = () => {
   const [resetEnabled, setResetEnabled] = useState(true);
@@ -15,8 +15,8 @@ const ForgotPassword = () => {
           <img src={Logo} alt="Logo" />
           <div className="title">Forgot password?</div>
           <div className="subtitle">
-            Please enter the email you registered with us. We will sent you a
-            link to reset your password.
+            Please enter the email you registered with us. We will sent you a link to reset your
+            password.
           </div>
           <Formik
             initialValues={{

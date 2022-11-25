@@ -1,7 +1,7 @@
-@import "../../_breakpoints.scss";
-@import "../../_mixins.scss";
+@import "@@/_breakpoints.scss";
+@import "@@/_mixins.scss";
 
-.merchantManagementWrapper {
+.subAccountWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,7 +13,7 @@
     min-height: 100vh;
   }
 
-  .management {
+  .subAccount {
     display: flex;
     margin-top: 50px;
     min-width: 800px;
@@ -27,8 +27,10 @@
       max-width: 100vw;
     }
 
-    .managementSearchWrapper {
-      padding: 0 15%;
+    .subAccountControls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 2em;
     }
   }
 }

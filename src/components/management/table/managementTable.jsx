@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ManagementPagination, TableRow } from "../";
-import { TABLETYPE } from "../types";
+import { ManagementPagination, TableRow } from "../..";
+import { TABLETYPE } from "../../types";
 
 import "./managementTable.scss";
 

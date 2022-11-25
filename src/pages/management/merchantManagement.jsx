@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+
 import { get, post } from "./requests";
 import { TABLETYPE } from "@@/components/types";
+import { Search, ManagementTable } from "@@/components";
+import "./styles/merchantManagement.scss";
 
-import { Search, ManagementTable } from "../../components";
-import "./merchantManagement.scss";
 const MerchantManagement = () => {
   const [merchants, setMerchants] = useState();
 

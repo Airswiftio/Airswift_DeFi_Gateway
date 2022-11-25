@@ -3,8 +3,6 @@ import { get, post } from "./requests";
 import { TABLETYPE } from "@@/components/types";
 import { Search, ManagementTable } from "@@/components";
 
-import "./liquidityManagement.scss";
-
 const LiquidityManagement = () => {
   const [pools, setPools] = useState();
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { SwitchToggle, ConfirmationModal, SettingsModal } from "../";
+import { SwitchToggle, ConfirmationModal, SettingsModal } from "@@/components";
 import SettingsSVG from "@@/assets/settings.svg";
 import Check from "@@/assets/check.svg";
 import Popup from "reactjs-popup";
-import { TABLETYPE } from "../types";
+import { TABLETYPE } from "@@/components/types";
 import "./managementTable.scss";
 
 const TableRow = ({ data, type, modify, selected, setSelected }) => {

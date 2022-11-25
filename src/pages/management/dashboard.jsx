@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { get } from "./requests";
 import { SmallCard } from "../../components";
 
-import "./dashboard.scss";
+import "./styles/dashboard.scss";
 
 const Dashboard = () => {
   const [overviewData, setOverviewData] = useState();
@@ -17,10 +17,7 @@ const Dashboard = () => {
         <div className="sectionOverview">
           <div className="sectionTitle">Merchant Overview</div>
           <div className="cards">
-            <SmallCard
-              title="Total Merchants"
-              stat={overviewData?.total_merchant_count}
-            />
+            <SmallCard title="Total Merchants" stat={overviewData?.total_merchant_count} />
             <SmallCard
               title="Today's New Merchants"
               stat={overviewData?.today_new_merchant_count}

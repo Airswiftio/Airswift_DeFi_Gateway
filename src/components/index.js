@@ -77,14 +77,15 @@ import ManagementCreateAccount from "./management/login/createAccount";
 import ManagementLogin from "./management/login/login";
 import ManagementResetPassword from "./management/login/resetPassword";
 import ManagementLayout from "./ManagementLayout";
-import ManagementHeader from "./management/managementHeader";
+import ManagementHeader from "./management/navigation/managementHeader";
 import SmallCard from "./management/dashboard/smallCard";
-import ManagementTable from "./management/managementTable";
-import TableRow from "./management/tableRow";
-import SwitchToggle from "./management/switchToggle";
-import ManagementPagination from "./management/pagination";
-import ConfirmationModal from "./management/confirmationModal";
-import SettingsModal from "./management/settingsModal";
+import ManagementTable from "./management/table/managementTable";
+import TableRow from "./management/table/tableRow";
+import SwitchToggle from "./management/table/switchToggle";
+import ManagementPagination from "./management/table/pagination";
+import ConfirmationModal from "./management/modals/confirmationModal";
+import SettingsModal from "./management/modals/settingsModal";
+import Arrow from "./management/utility/Arrows";
 
 export {
   Navbar,
@@ -139,4 +140,5 @@ export {
   LiquidityLayout,
   LiquidityHeader,
   TableRow,
+  Arrow,
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { DefaultButton } from "..";
+import { DefaultButton } from "@@/components";
 import "./settingsModal.scss";
 
 const SettingsModal = ({ click, setValue, title, type, data }) => {

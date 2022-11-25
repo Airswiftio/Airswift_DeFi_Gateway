@@ -1,6 +1,6 @@
 import React from "react";
 import "./pagination.scss";
-import Arrow from "./Arrows";
+import { Arrow } from "@@/components";
 
 const Pagination = ({ pages, currPage, setCurrPage }) => {
   const decrementPage = () => {
