@@ -7,7 +7,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
   const [name, setName] = useState(data.username);
   const [email, setEmail] = useState(data.email);
   const [password, setPassword] = useState(data.password);
-  const [privileges, setPrivileges] = useState(data.privileges);
+  const [privileges, setPrivileges] = useState([0, 0, 0]);
 
   const createSubaccount = (name, email, password, privileges) => {
     axios
@@ -65,6 +65,24 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
     });
   }, []);
 
+  useEffect(() => {
+    let temp = [];
+    data.permissions.forEach((p) => temp.push(p.id));
+    setPrivileges(temp);
+  }, [data]);
+
+  const changePrivilege = (id) => {
+    if (privileges.includes(id)) {
+      setPrivileges(privileges.filter((p) => p !== id));
+    } else {
+      setPrivileges([...privileges, id]);
+    }
+  };
+
+  useEffect(() => {
+    console.log(privileges);
+  }, [privileges]);
+
   return (
     <div className="settingsModal">
       <div className="modalContent">
@@ -89,6 +107,30 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
             <div className="input">
               <span>Confirm Password</span>
               <input />
+            </div>
+          </div>
+          <div className="row">
+            <span>Privileges:</span>
+
+            <div className="selector">
+              <span className="privilege" onClick={() => changePrivilege(1)}>
+                {privileges.includes(1) ? <div className="selectedPrivilege" /> : null}
+              </span>
+              <span>Sub Account</span>
+            </div>
+
+            <div className="selector">
+              <span className="privilege" onClick={() => changePrivilege(2)}>
+                {privileges.includes(2) ? <div className="selectedPrivilege" /> : null}
+              </span>
+              <span>Merchant</span>
+            </div>
+
+            <div className="selector">
+              <span className="privilege" onClick={() => changePrivilege(3)}>
+                {privileges.includes(3) ? <div className="selectedPrivilege" /> : null}
+              </span>
+              <span>Liquidity Pool</span>
             </div>
           </div>
         </div>

@@ -50,11 +50,18 @@ const ConfirmationModal = ({ click, setValue, title, type, selected }) => {
           ) : null}
           <DefaultButton
             title={type === 2 ? "Delete" : "Confirm"}
-            click={() => {
-              setValue("Confirm");
-              deleteAccount(selected);
-              click();
-            }}
+            click={
+              type === 2
+                ? () => {
+                    setValue("Confirm");
+                    deleteAccount(selected);
+                    click();
+                  }
+                : () => {
+                    setValue("Confirm");
+                    click();
+                  }
+            }
             alternateBg={type === 2 ? true : false}
             type={2}
           />

@@ -11,7 +11,7 @@
   backdrop-filter: blur(25px);
 
   .modalContent {
-    width: 500px;
+    width: 600px;
     min-width: 350px;
     height: 350px;
     background: white;
@@ -75,6 +75,29 @@
             outline: none;
             color: white;
           }
+        }
+      }
+    }
+
+    .selector {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+
+      .privilege {
+        width: 12px;
+        height: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .selectedPrivilege {
+          background: #8dfe59;
+          width: 8px;
+          height: 8px;
+          border-radius: 100%;
         }
       }
     }
