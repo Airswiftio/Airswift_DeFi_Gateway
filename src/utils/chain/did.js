@@ -69,6 +69,7 @@ const VPSignature = (vp = {}) => {
   // console.log('vpToType',ethers.utils.base58.encode(signatureData));
 
   // console.log('CreateDID()',JSON.stringify(CreateDID()));
+  console.log('signatureData',signatureData);
   return ethers.utils.hashMessage(signatureData);
 }
 
@@ -162,6 +163,7 @@ export function CreateDIDDocument(account = '',publicKey  = '' ){
 
 export async function createVP(VCids = []){
   let VCs = await getVCsByIDS(VCids);
+  console.log('VCids',VCids);
   let verifiableCredential = [];
   if(VCs?.length <= 0){
     return {code:-1,data:[],msg:'VC does not exist'}
@@ -191,9 +193,13 @@ export async function createVP(VCids = []){
   }
 
   VP.proof.jws = VPSignature(VP);
+  console.log('vp',VP);
   const msg1 = ethers.utils.hashMessage(JSON.stringify(VP))
+  console.log('msg1',msg1);
 
   let res3 = await Web3SignData(uAccount,msg1);
+  console.log('res3',res3);
+
   if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
     return res3;
   }

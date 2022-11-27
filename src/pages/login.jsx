@@ -190,8 +190,6 @@ const Login = () => {
 
 
   const SignIn = async (storeInfo) => {
-
-    console.log('storeInfo',storeInfo);
     const userInfo = userData;
     if(storeInfo?.merchant_id?.length <= 0){
       setOpenAlert(true)

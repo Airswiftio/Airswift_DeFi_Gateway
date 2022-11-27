@@ -15,7 +15,7 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertData, setAlertData] = useState({});
   const withdraw = async () => {
-    const VCids = array_column(data,'vc_id')
+    const VCids = data.map((vv)=> vv?.vcs?.[0]?.vcid)
     const res = await createVP(VCids);
     if(res?.code !== 1000){
       setOpenAlert(true)
@@ -23,6 +23,7 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
       return false;
     }
 
+    console.log('createVP',res);
     const res1 = await MerchantWithdraw({
       vp: res?.data,
       to_address:dbGetUserWallet()?.account})
@@ -31,7 +32,7 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
       setAlertData({msg:res1?.msg})
       return false;
     }
-    navigate("/dashboard")
+    navigate("/assets")
   }
 
   useEffect(() => {
