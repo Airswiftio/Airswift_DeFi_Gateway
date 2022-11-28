@@ -64,12 +64,7 @@ function signPubData(publicKey = '') {
 const VPSignature = (vp = {}) => {
   vp.proof.jws = '';
   let signatureData = VPToByte(vp)
-  // console.log('signatureData',signatureData);
-  // vp.proof.jws = signatureData
-  // console.log('vpToType',ethers.utils.base58.encode(signatureData));
-
-  // console.log('CreateDID()',JSON.stringify(CreateDID()));
-  console.log('signatureData',signatureData);
+  console.log('vpbyteString',ethers.utils.toUtf8String(signatureData));
   return ethers.utils.hashMessage(signatureData);
 }
 
@@ -163,7 +158,6 @@ export function CreateDIDDocument(account = '',publicKey  = '' ){
 
 export async function createVP(VCids = []){
   let VCs = await getVCsByIDS(VCids);
-  console.log('VCids',VCids);
   let verifiableCredential = [];
   if(VCs?.length <= 0){
     return {code:-1,data:[],msg:'VC does not exist'}
@@ -192,19 +186,16 @@ export async function createVP(VCids = []){
     },
   }
 
-  VP.proof.jws = VPSignature(VP);
-  console.log('vp',VP);
-  const msg1 = ethers.utils.hashMessage(JSON.stringify(VP))
-  console.log('msg1',msg1);
-
-  let res3 = await Web3SignData(uAccount,msg1);
-  console.log('res3',res3);
+  const VP_sign_hash = VPSignature(VP);
+  console.log('msg1',VP_sign_hash);
+  const res3 = await Web3SignData(uAccount,VP_sign_hash);
+  console.log('msg2',res3?.data);
 
   if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
     return res3;
   }
-  // vp.proof.jws = res3?.data;
-  return {code:1000,data:res3?.data,msg:'ok'}
+  VP.proof.jws = res3?.data;
+  return {code:1000,data:JSON.stringify(VP),msg:'ok'}
 }
 
 //1.进入资产页面，调用GetAvailableVC,直到没数据了，才结束，获取后存入本地，然后调用MarkVCReceived，标记已接收
@@ -226,5 +217,8 @@ export const getVCs = async (page = 1)=>{
       }
       await getVCs(page + 1)
     }
+  }
+  else{
+    return true;
   }
 }

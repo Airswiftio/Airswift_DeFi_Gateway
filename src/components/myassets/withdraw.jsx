@@ -48,7 +48,6 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
         const res = await GetWithdrawList(params)
         if(res?.code === 1000){
             setDataList(res?.data?.withdraws ?? [])
-            console.log('res?.data?.total',res);
             setDataTotal(res?.data?.total)
         }
     }

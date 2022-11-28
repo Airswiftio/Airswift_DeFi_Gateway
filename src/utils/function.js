@@ -169,7 +169,7 @@ export function dbDelSignData() {
 }
 
 export function addAllVCs(list) {
-  return (new dexieDB('as_vc')).addAll(list);
+  return (new dexieDB('as_vc')).addAllOrUpdate(list);
 }
 export function getAllVCs() {
   return (new dexieDB('as_vc')).getAll();

@@ -23,7 +23,6 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
       return false;
     }
 
-    console.log('createVP',res);
     const res1 = await MerchantWithdraw({
       vp: res?.data,
       to_address:dbGetUserWallet()?.account})
