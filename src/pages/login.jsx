@@ -166,6 +166,18 @@ const Login = () => {
       return false;
     }
 
+    // Goto login
+    // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
+    const res_um = await GetUserRelatedMerchant({address:userInfo?.account});
+    if(res_um?.code !== 1000 || res_um?.data?.merchant_users?.length <= 0){
+      setOpenAlert(true)
+      setAlertData({msg:'Failed to get store information!'})
+      return false;
+    }
+
+    setStores(res_um?.data?.merchant_users);
+    setStep('choose_store');
+/*
     //Query the user's nickname. If there is no nickname, set the nickname first
     const res_uu = await GetUserNickname({address:userInfo?.account});
     if(res_uu?.code !== 1000){
@@ -184,7 +196,7 @@ const Login = () => {
     userInfo.roles = userRole;
     userInfo.nickname = res_uu?.data?.nickname;
     dbSetUserWallet(userInfo);
-    navigate("/dashboard")
+    navigate("/dashboard")*/
 
   };
 
