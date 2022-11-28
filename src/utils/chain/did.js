@@ -95,19 +95,27 @@ const VCToByte = (vc) => {
   Bytes = [...Bytes,...BytesWriteString(vc.expirationDate)]
   Bytes = [...Bytes,...BytesWriteString(vc.description)]
   Bytes = [...Bytes,...CSToByte(vc.credentialSubject)]
-  Bytes = [...Bytes,...ProofToByte(vc.proof)]
+  Bytes = [...Bytes,...VCProofToByte(vc.proof)]
   return Bytes
 }
 
-const ProofToByte = (vp_proof) => {
+const VCProofToByte = (vc_proof) => {
+  let Bytes = BytesWriteString(vc_proof.type)
+  Bytes = [...Bytes,...BytesWriteString(vc_proof.created)]
+  Bytes = [...Bytes,...BytesWriteString(vc_proof.verificationMethod)]
+  Bytes = [...Bytes,...BytesWriteString(vc_proof.proofPurpose)]
+  Bytes = [...Bytes,...BytesWriteString(vc_proof.jws)]
+  return Bytes;
+}
+
+const VPProofToByte = (vp_proof) => {
   let Bytes = BytesWriteString(vp_proof.type)
   Bytes = [...Bytes,...BytesWriteString(vp_proof.created)]
   Bytes = [...Bytes,...BytesWriteString(vp_proof.verificationMethod)]
   Bytes = [...Bytes,...BytesWriteString(vp_proof.proofPurpose)]
   Bytes = [...Bytes,...BytesWriteString(vp_proof.jws)]
-  Bytes = [...Bytes,...BytesWriteString(vp_proof.nonce + '')]
+  Bytes = [...Bytes,...BytesWriteString(vp_proof.nonce + "")]
   return Bytes;
-
 }
 
 const VPToByte = (vp) => {
@@ -124,7 +132,7 @@ const VPToByte = (vp) => {
     return item;
   })
   Bytes = [...Bytes,...BytesWriteString(vp.holder)]
-  Bytes = [...Bytes,...ProofToByte(vp.proof)]
+  Bytes = [...Bytes,...VPProofToByte(vp.proof)]
   return Bytes;
 }
 
@@ -168,9 +176,9 @@ export async function createVP(VCids = []){
     verifiableCredential = [objVc,...verifiableCredential];
     return item;
   })
-
   const uAccount = dbGetUserWallet()?.account;
   const holder = DIDPrefix + uAccount;
+  const currentTime = moment().format();
   const VP = {
     "@context":[ContextSecp256k1,ContextDID],
     "type":[VerifiablePresentation],
@@ -178,13 +186,15 @@ export async function createVP(VCids = []){
     "holder":holder,
     "proof": {
       "type": Secp256k1Sig,
-      "created": "2022-06-11T00:31:19+08:00",
+      "created": currentTime,
       "verificationMethod": holder+"#verification",
       "proofPurpose": PurposeAuth,
       "jws": "",
-      "nonce": fullClose(10000,99999)
+      "nonce": Math.ceil(Date.now())+""
     },
   }
+
+  console.log('VP',VP);
 
   const VP_sign_hash = VPSignature(VP);
   console.log('msg1',VP_sign_hash);
