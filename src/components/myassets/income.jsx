@@ -43,10 +43,10 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
             setAlertData({msg:'Failed to reset vc!'})
             return false;
         }
-        setTimeout(function (){
-            getVCs()
+        setTimeout(async function (){
+            await getVCs();
             setRefreshNum(refreshNum+1)
-        }, 50000);
+        }, 5000);
 
     };
 
@@ -86,6 +86,7 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
     }, [search,selectStatus,selectCurrency,date,refreshNum]);
 
     useEffect(() => {
+        getVCs()
         getList();
         // getWithdrawTotal();
     }, []);
@@ -108,7 +109,7 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
                             <span>{item.amount}</span>
                             <span>{item.created_at}</span>
                             <span onClick={()=>openViewMore(item)}><img src={Doc} alt="View more"/></span>
-                            {item?.vc_exist === false && ['Created', 'Active'].includes(item?.vcs?.[0]?.vc_status) ? (<span onClick={()=>RestoreVC(item?.vcs?.[0]?.vc_status)}>Restore VC</span>) : <span><img src={Verified} alt="Verified"/></span>}
+                            {item?.vc_exist === false && ['Created', 'Active'].includes(item?.vcs?.[0]?.vc_status) ? ( <div className="RestoreVC" onClick={()=>RestoreVC(item?.vcs?.[0]?.vcid)}><div>Restore VC</div></div>) : <span><img src={Verified} alt="Verified"/></span>}
                         </div>
 
                     )

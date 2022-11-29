@@ -3,7 +3,7 @@ export const db = new Dexie('AirSwiftDeFiDatabase');
 db.version(1).stores({
     as_did: '++id, did, did_document',
     as_local: '++id, key, value',
-    as_vc: '++iid, id, created_at, updated_at, payment_id, payment, merchant_id, merchant, vc_id, vc_content, vc_status', // Primary key and indexed props
+    as_vc: 'id, created_at, updated_at, payment_id, payment, merchant_id, merchant, vc_id, vc_content, vc_status', // Primary key and indexed props
 });
 
 export function dexieDB(table = ''){
@@ -35,6 +35,15 @@ dexieDB.prototype = {
     },
     addAll(list = []){
         return db[this.table].bulkAdd(list)
+            .then((data)=>{
+                return data;
+            })
+            .catch((ff)=>{
+                return false;
+            });
+    },
+    async addAllOrUpdate(list = []){
+        return db[this.table].bulkPut(list)
             .then((data)=>{
                 return data;
             })
