@@ -9,11 +9,11 @@ import {
 } from "../";
 
 import "./withdraw.scss";
-import dummyData from "../../sample_data.json";
 import { useNavigate } from "react-router-dom";
-import {GetPaymentList, GetWithdrawList} from "@@/utils/request/api";
+import { GetWithdrawList} from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
+import {select_currency} from "@@/utils/config";
 
 const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
     const [page, setPage] = useState(0);
@@ -40,9 +40,11 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
             page:1,
             size:10,
             status:WithdrawStatus?.[selectStatus]?.key??'complete',
-            // payment_num:0,
-            // currency_id:0,
-            // date:0,
+            withdraw_num:search,
+            date:date??'',
+        }
+        if(selectCurrency !== null){
+            params.currency_id = select_currency()?.[selectCurrency]?.id
         }
         const res = await GetWithdrawList(params)
         if(res?.code === 1000){

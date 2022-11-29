@@ -14,6 +14,7 @@ import "./dashboard.scss";
 import {GetMerchantBaseSummary, GetMerchantPaymentStatChart} from "@@/utils/request/api";
 import {useNavigate} from "react-router-dom";
 import {arrListSort, explode} from "@@/utils/function";
+import {loading_currency} from "@@/utils/config";
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState(0);
@@ -57,6 +58,7 @@ const Dashboard = () => {
   useEffect(() => {
     getTotal();
     getChartData();
+    loading_currency()
   }, []);
 
   return (

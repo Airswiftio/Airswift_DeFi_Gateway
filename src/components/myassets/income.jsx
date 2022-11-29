@@ -10,6 +10,7 @@ import Verified from "@@/assets/verified.svg";
 import {array_column, getVCsByIDS} from "@@/utils/function";
 import {getVCs} from "@@/utils/chain/did";
 import Alert from "@@/components/PopUp/Alert";
+import {select_currency} from "@@/utils/config";
 
 const Income = ({search,selectStatus,selectCurrency,date}) => {
     const [refreshNum, setRefreshNum] = useState(0);
@@ -62,9 +63,11 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
             page:1,
             size:10,
             status:statusOptions?.[selectStatus]?.key??'success',
-            // payment_num:0,
-            // currency_id:0,
+            payment_num:search,
             date:date??'',
+        }
+        if(selectCurrency !== null){
+            params.currency_id = select_currency()?.[selectCurrency]?.id
         }
         const res = await GetPaymentList(params)
         if(res?.code === 1000){

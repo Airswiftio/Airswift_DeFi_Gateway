@@ -1,6 +1,6 @@
 import { get, post } from '@@/utils/request/http'
 const app_id = 0;
-const withdraw_id = 2;
+// const withdraw_id = 2;
 const apiGet = (url,p)=>get(url, p).then((res)=>{return res;}).catch((ee)=>{return ee;});
 const apiPost = (url,p)=>post(url, p).then((res)=>{return res;}).catch((ee)=>{return ee;});
 
@@ -44,7 +44,7 @@ export const ModifyApplicationApiKey = p => apiPost('/merchant/application/api_k
 export const ModifyApplicationIpnKey = p => apiPost('/merchant/application/ipn_key', p);
 export const GetAvailableCurrency = p => apiGet(`/merchant/config/all_currency`, p);
 export const GetPaymentDetail = (payment_id,p) => apiGet(`/merchant/application/${app_id}/payment/${payment_id}`, p);
-export const GetWithdrawDetail = p => apiGet(`/merchant/application/withdraw/${withdraw_id}`, p);
+// export const GetWithdrawDetail = p => apiGet(`/merchant/application/withdraw/${withdraw_id}`, p);
 
 // export const PaymentRefund = p => apiPost('/merchant/payment/refund', p);
 // export const PaymentWithdraw = p => apiPost('/merchant/payment/withdraw', p);
@@ -54,9 +54,6 @@ export const GrantUserMerchantRole = p => apiPost('/merchant/user/role/grant', p
 // export const RevokeUserMerchantRole = p => apiPost('/merchant/user/role/revoke', p);
 export const ChangeUserMerchantRole = p => apiPost('/merchant/user/role/change', p);
 
-
-
-export const CreatePayment = p => apiPost(`/open_api/payment`, p);
 export const GetAvailableVC = p => apiGet(`/merchant/vc`, p);
 export const MarkVCReceived = p => apiPost('/merchant/vc', p);
 export const MarkVCInvalid = p => apiPost('/merchant/vc/invalid', p);

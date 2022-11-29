@@ -47,6 +47,7 @@ const Assets = () => {
   }, [state]);
   useEffect( () => {
     // console.log('did',did);
+
     getIncomeTotal();
     getWithdrawTotal();
     getVCs()
@@ -72,8 +73,6 @@ const Assets = () => {
           <span className="title">
             {state === 0 ? "Income" : "Withdraw"} History
           </span>
-
-
           <div className="selectorsWrapper">
             <DropdownNew
                 buttonStyle={{width:'150px'}}

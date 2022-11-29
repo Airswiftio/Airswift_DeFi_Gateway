@@ -3,7 +3,6 @@ import {
   array_column,
   dbGetUserWallet,
   empty,
-  fullClose,
   getVCsByIDS, implode,
   json_to_obj
 } from "@@/utils/function";
@@ -43,6 +42,7 @@ function listSort(ArrList = [],key = 'id') {
   let list = [];
   sortKeys.map((item)=>{
     list = [...list,arr[item]]
+    return item;
   })
 
   return list;
