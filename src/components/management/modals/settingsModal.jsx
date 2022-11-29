@@ -1,59 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { get, post } from "@@/pages/management/requests";
 import axios from "axios";
 import { DefaultButton } from "@@/components";
 import "./settingsModal.scss";
 
 const SettingsModal = ({ click, setValue, title, type, data }) => {
-  const [name, setName] = useState(data.username);
-  const [email, setEmail] = useState(data.email);
-  const [password, setPassword] = useState(data.password);
+  const [name, setName] = useState(data?.username || "");
+  const [email, setEmail] = useState(data?.email || "");
+  const [password, setPassword] = useState(data?.password || "");
   const [privileges, setPrivileges] = useState([0, 0, 0]);
 
   const createSubaccount = (name, email, password, privileges) => {
-    axios
-      .post(
-        "/api/admin/manager/create",
-        {
-          name: name,
-          email: email,
-          password: password,
-          privileges: privileges,
-        },
-        {
-          withCredentials: true,
-          credentials: "same-origin",
-        }
-      )
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
+    post(
+      {
+        name: name,
+        email: email,
+        password: password,
+        privileges: privileges,
+      },
+      "/api/admin/manager/create"
+    );
   };
 
   const editSubaccount = () => {
-    axios
-      .post(
-        "/api/admin/manager/change",
-        {
-          manager_id: data.id,
-          name: name,
-          privileges: privileges,
-          password: password,
-          email: email,
-        },
-        {
-          withCredentials: true,
-          credentials: "same-origin",
-        }
-      )
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
+    post(
+      {
+        manager_id: data.id,
+        name: name,
+        privileges: privileges,
+        password: password,
+        email: email,
+      },
+      "/api/admin/manager/change"
+    );
   };
 
   useEffect(() => {
@@ -67,7 +46,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
 
   useEffect(() => {
     let temp = [];
-    data.permissions.forEach((p) => temp.push(p.id));
+    data?.permissions.forEach((p) => temp.push(p.id));
     setPrivileges(temp);
   }, [data]);
 
@@ -143,10 +122,12 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
                 ? () => {
                     createSubaccount(name, email, password, privileges);
                     click();
+                    get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
                   }
                 : () => {
                     editSubaccount();
                     click();
+                    get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
                   }
             }
           />

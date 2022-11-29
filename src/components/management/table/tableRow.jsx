@@ -47,7 +47,7 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
       case TABLETYPE.SUBACCOUNT:
         return (
           <>
-            <span className="col">
+            <span className="col checkboxColumn">
               <div
                 className="checkBox"
                 onClick={() =>
@@ -59,7 +59,7 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
                 {selected.includes(data.id) ? <img src={Check} alt="Check" /> : null}
               </div>
             </span>
-            <span className="col">{data.username}</span>
+            <span className="col checkboxColumn">{data.username}</span>
             <span className="col">
               {data.permissions.map((d) => (
                 <div key={d.id}>
@@ -99,7 +99,7 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
       </Popup>
       <div>{renderRow(type)}</div>
 
-      <span className="col status">
+      <span className="col status checkboxColumn">
         {type !== TABLETYPE.SUBACCOUNT ? (
           <SwitchToggle
             isOn={toggleState === "available"}

@@ -71,6 +71,19 @@
       }
     }
 
+    .checkboxColumn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+      text-align: left;
+
+      @include md {
+        min-width: 30px;
+        margin-right: 1em;
+      }
+    }
+
     span {
       min-width: 100px;
       text-align: left;
@@ -132,6 +145,19 @@
           height: 8px;
           border-radius: 100%;
         }
+      }
+    }
+
+    .checkboxColumn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+      text-align: left;
+
+      @include md {
+        min-width: 30px;
+        margin-right: 1em;
       }
     }
 

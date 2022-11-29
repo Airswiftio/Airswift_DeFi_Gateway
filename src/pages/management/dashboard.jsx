@@ -29,15 +29,19 @@ const Dashboard = () => {
           <div className="cards">
             <SmallCard
               title="Total Revenue"
-              stat={overviewData?.total_revenue_amount}
+              stat={overviewData?.total_revenue_amount.toFixed(5)}
               curr={true}
             />
             <SmallCard
               title="Today's Revenue"
-              stat={overviewData?.today_revenue_amount}
+              stat={overviewData?.today_revenue_amount.toFixed(5)}
               curr={true}
             />
-            <SmallCard title="Available Balance" stat="520.75" curr={true} />
+            <SmallCard
+              title="Available Balance"
+              stat={overviewData?.available_balance_amount.toFixed(5)}
+              curr={true}
+            />
           </div>
         </div>
       </div>

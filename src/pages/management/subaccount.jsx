@@ -14,7 +14,7 @@ const SubAccount = () => {
 
   useEffect(() => {
     get(setSubAccounts, "/api/admin/manager/list?page=1&size=10&status=all");
-  }, []);
+  }, [createIsOpen, deleteIsOpen]);
 
   useEffect(() => {
     console.log(selected);
@@ -25,7 +25,7 @@ const SubAccount = () => {
       <Popup open={deleteIsOpen} closeOnDocumentClick onClose={() => setDeleteOpen(false)}>
         <ConfirmationModal
           click={() => setDeleteOpen(false)}
-          setValue={console.log}
+          setValue={setSubAccounts}
           title="Are you sure 
 you want to delete these accounts?"
           type={2}
@@ -35,7 +35,7 @@ you want to delete these accounts?"
       <Popup open={createIsOpen} closeOnDocumentClick onClose={() => setCreateOpen(false)}>
         <SettingsModal
           click={() => setCreateOpen(false)}
-          setValue={console.log}
+          setValue={setSubAccounts}
           title="Create Subaccount"
           type={2}
         />

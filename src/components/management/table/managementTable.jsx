@@ -51,10 +51,10 @@ const ManagementTable = ({ data, type, modify, selected, setSelected }) => {
       case TABLETYPE.SUBACCOUNT:
         return (
           <>
-            <span className="col">
+            <span className="col checkboxColumn">
               <div className="checkBox" />
             </span>
-            <span className="col">Account</span>
+            <span className="col checkboxColumn">Account</span>
             <span className="col">Privileges</span>
           </>
         );

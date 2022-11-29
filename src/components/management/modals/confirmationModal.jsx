@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import axios from "axios";
+import { get, post } from "@@/pages/management/requests";
 import { DefaultButton } from "../..";
 import "./confirmationModal.scss";
 
@@ -14,23 +14,7 @@ const ConfirmationModal = ({ click, setValue, title, type, selected }) => {
   }, []);
 
   const deleteAccount = (id) => {
-    axios
-      .post(
-        "/api/admin/manager/delete",
-        {
-          manager_id: id,
-        },
-        {
-          withCredentials: true,
-          credentials: "same-origin",
-        }
-      )
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
+    post({ manager_id: id }, "/api/admin/manager/delete");
   };
 
   return (
@@ -56,10 +40,12 @@ const ConfirmationModal = ({ click, setValue, title, type, selected }) => {
                     setValue("Confirm");
                     deleteAccount(selected);
                     click();
+                    get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
                   }
                 : () => {
                     setValue("Confirm");
                     click();
+                    get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
                   }
             }
             alternateBg={type === 2 ? true : false}
