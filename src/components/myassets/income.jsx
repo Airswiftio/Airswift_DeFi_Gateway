@@ -4,7 +4,7 @@ import Popup from "reactjs-popup";
 import { HistoryTable, Modal, Pagination } from "../";
 
 import "./income.scss";
-import {GetPaymentList, MarkVCInvalid} from "@@/utils/request/api";
+import {GetPaymentDetail, GetPaymentList, MarkVCInvalid} from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
 import {array_column, getVCsByIDS} from "@@/utils/function";
@@ -21,12 +21,18 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
     const [openAlert, setOpenAlert] = useState(false);
     const [alertData, setAlertData] = useState({});
     const statusOptions = [
-        {key:'success',title:'Finished'},
+        {key:'success',title:'Success'},
         {key:'pending',title:'Pending'},
     ];
-    const openViewMore = (item) => {
+    const openViewMore = async (item) => {
+        const res = await GetPaymentDetail(item?.payment_num)
+        if(res?.code !== 1000){
+            setOpenAlert(true)
+            setAlertData({msg:'Failed to get payment!'})
+            return false;
+        }
+        setItemData(res?.data)
         setIsOpen(true);
-        setItemData(item)
     };
 
     const closeModal = () => {

@@ -18,7 +18,7 @@ const Assets = () => {
   const [date, setDate] = useState();
   const [search, setSearch] = useState('');
   const statusOptions = [
-    {key:'success',title:'Finished'},
+    {key:'success',title:'Success'},
     {key:'pending',title:'Pending'},
   ];
   const WithdrawStatus = [

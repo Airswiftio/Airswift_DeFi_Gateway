@@ -26,9 +26,8 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
         {key:'pending',title:'Pending'},
     ];
 
-    const openModal = () => {
+    const ViewMore = () => {
         setIsOpen(true);
-        console.log("Clicked");
     };
 
     const closeModal = () => {
@@ -68,13 +67,15 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
             <HistoryTable vc={false}>
                 {dataList.map(
                     (item, index) => (
-                        <div key={index} className="historyElementWrapper" onClick={openModal}>
+                        <div key={index} className="historyElementWrapper">
                             <span>{item?.withdraw_num}</span>
                             <span>{item?.status}</span>
                             <span>{item?.currency_symbol}</span>
                             <span>{item?.amount}</span>
                             <span>{item?.created_at}</span>
-                            <span><img src={Doc} alt="View more" /></span>
+                            {item?.status === 'complete'
+                                ? (<span>On Chain Status</span>)
+                                : (<span onClick={ViewMore}><img src={Doc} alt="View more" /></span>)}
                         </div>
                     )
                 )}
