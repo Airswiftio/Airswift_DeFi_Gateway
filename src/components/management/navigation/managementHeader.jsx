@@ -35,7 +35,7 @@ const ManagementHeader = ({ url, setUrl }) => {
         <ProfileModal click={closeModal} />
       </Popup>
 
-      <Link to="/management/login">
+      <Link to="/management/dashboard">
         <img className="logo" src={Logo} alt="Airswift" />
       </Link>
       <div className="navLinks">
