@@ -18,7 +18,7 @@ const Assets = () => {
   const [date, setDate] = useState();
   const [search, setSearch] = useState('');
   const statusOptions = [
-    {key:'success',title:'Finished'},
+    {key:'success',title:'Success'},
     {key:'pending',title:'Pending'},
   ];
   const WithdrawStatus = [
@@ -47,6 +47,7 @@ const Assets = () => {
   }, [state]);
   useEffect( () => {
     // console.log('did',did);
+
     getIncomeTotal();
     getWithdrawTotal();
     getVCs()
@@ -72,8 +73,6 @@ const Assets = () => {
           <span className="title">
             {state === 0 ? "Income" : "Withdraw"} History
           </span>
-
-
           <div className="selectorsWrapper">
             <DropdownNew
                 buttonStyle={{width:'150px'}}

@@ -55,6 +55,7 @@
         font-size: 1.1em;
         color: white;
         transition: all 0.3s ease-in-out;
+        cursor: pointer;
       }
   
       .installMetamask {
@@ -62,6 +63,7 @@
         text-decoration: underline;
         background: transparent;
         border: none;
+        cursor: pointer;
         font-family: 'ClashDisplay';
 
       }

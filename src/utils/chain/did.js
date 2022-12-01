@@ -3,7 +3,6 @@ import {
   array_column,
   dbGetUserWallet,
   empty,
-  fullClose,
   getVCsByIDS, implode,
   json_to_obj
 } from "@@/utils/function";
@@ -19,7 +18,7 @@ const ec = new EC('secp256k1');
 
 
 const PurposeAuth  = "Authentication"
-const Secp256k1Sig = "EcdsaSecp256k1Signature2019"
+const Secp256k1Sig = "EcdsaSecp256ETHSignature2022"
 const Secp256k1Key = "EcdsaSecp256k1VerificationKey2019"
 
 const ContextDID        = "https://w3id.org/did/v1"
@@ -31,6 +30,24 @@ const ContextSecp256k1  = "https://ns.did.ai/suites/secp256k1-2019/v1/"
 const VerifiablePresentation = "VerifiablePresentation"
 
 const DIDPrefix = "did:veric:"
+
+
+function listSort(ArrList = [],key = 'id') {
+  let arr = {}
+  let sortKeys = ArrList.map((item)=>{
+    arr[item[key]] = item;
+    return item[key];
+  })
+  sortKeys.sort();
+  let list = [];
+  sortKeys.map((item)=>{
+    list = [...list,arr[item]]
+    return item;
+  })
+
+  return list;
+}
+
 
 
 export function didIDCreate(account = '') {
@@ -62,9 +79,9 @@ function signPubData(publicKey = '') {
 
 
 const VPSignature = (vp = {}) => {
-  vp.proof.jws = '';
-  let signatureData = VPToByte(vp)
-  console.log('vpbyteString',ethers.utils.toUtf8String(signatureData));
+  let vp_copy = JSON.parse(JSON.stringify(vp));
+  vp_copy.proof.jws = '';
+  let signatureData = VPToByte(vp_copy)
   return ethers.utils.hashMessage(signatureData);
 }
 
@@ -121,7 +138,7 @@ const VPProofToByte = (vp_proof) => {
 const VPToByte = (vp) => {
   vp['@context'].sort()
   vp.type.sort()
-  vp.verifiableCredential.sort()
+  vp.verifiableCredential = listSort(vp.verifiableCredential,'id')
   // sortSort(vp.verifiableCredential)
 
   let Bytes = BytesWriteString(implode(vp['@context'], ","))
@@ -176,6 +193,7 @@ export async function createVP(VCids = []){
     verifiableCredential = [objVc,...verifiableCredential];
     return item;
   })
+
   const uAccount = dbGetUserWallet()?.account;
   const holder = DIDPrefix + uAccount;
   const currentTime = moment().format();
@@ -193,14 +211,8 @@ export async function createVP(VCids = []){
       "nonce": Math.ceil(Date.now())+""
     },
   }
-
-  console.log('VP',VP);
-
   const VP_sign_hash = VPSignature(VP);
-  console.log('msg1',VP_sign_hash);
   const res3 = await Web3SignData(uAccount,VP_sign_hash);
-  console.log('msg2',res3?.data);
-
   if(typeof res3?.code === 'undefined' || res3.code !== 1000 || empty(res3.data)){
     return res3;
   }

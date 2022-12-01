@@ -4,12 +4,13 @@ import Popup from "reactjs-popup";
 import { HistoryTable, Modal, Pagination } from "../";
 
 import "./income.scss";
-import {GetPaymentList, MarkVCInvalid} from "@@/utils/request/api";
+import {GetPaymentDetail, GetPaymentList, MarkVCInvalid} from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
 import {array_column, getVCsByIDS} from "@@/utils/function";
 import {getVCs} from "@@/utils/chain/did";
 import Alert from "@@/components/PopUp/Alert";
+import {select_currency} from "@@/utils/config";
 
 const Income = ({search,selectStatus,selectCurrency,date}) => {
     const [refreshNum, setRefreshNum] = useState(0);
@@ -21,12 +22,18 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
     const [openAlert, setOpenAlert] = useState(false);
     const [alertData, setAlertData] = useState({});
     const statusOptions = [
-        {key:'success',title:'Finished'},
+        {key:'success',title:'Success'},
         {key:'pending',title:'Pending'},
     ];
-    const openViewMore = (item) => {
+    const openViewMore = async (item) => {
+        const res = await GetPaymentDetail(item?.payment_num)
+        if(res?.code !== 1000){
+            setOpenAlert(true)
+            setAlertData({msg:'Failed to get payment!'})
+            return false;
+        }
+        setItemData(res?.data)
         setIsOpen(true);
-        setItemData(item)
     };
 
     const closeModal = () => {
@@ -56,9 +63,11 @@ const Income = ({search,selectStatus,selectCurrency,date}) => {
             page:1,
             size:10,
             status:statusOptions?.[selectStatus]?.key??'success',
-            // payment_num:0,
-            // currency_id:0,
+            payment_num:search,
             date:date??'',
+        }
+        if(selectCurrency !== null){
+            params.currency_id = select_currency()?.[selectCurrency]?.id
         }
         const res = await GetPaymentList(params)
         if(res?.code === 1000){
