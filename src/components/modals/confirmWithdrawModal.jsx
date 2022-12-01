@@ -1,38 +1,38 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { DefaultButton } from "..";
 import "./confirmWithdrawModal.scss";
 
 import USDC from "../../assets/usdc_icon.svg";
-import {MerchantWithdraw} from "@@/utils/request/api";
-import {createVP} from "@@/utils/chain/did";
-import {array_column, dbGetUserWallet} from "@@/utils/function";
+import { MerchantWithdraw } from "@@/utils/request/api";
+import { createVP } from "@@/utils/chain/did";
+import { array_column, dbGetUserWallet } from "@@/utils/function";
 import Popup from "reactjs-popup";
 import Alert from "@@/components/PopUp/Alert";
 
-const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
-
+const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertData, setAlertData] = useState({});
   const withdraw = async () => {
-    const VCids = data.map((vv)=> vv?.vcs?.[0]?.vcid)
+    const VCids = data.map((vv) => vv?.vcs?.[0]?.vcid);
     const res = await createVP(VCids);
-    if(res?.code !== 1000){
-      setOpenAlert(true)
-      setAlertData({msg:res?.msg})
+    if (res?.code !== 1000) {
+      setOpenAlert(true);
+      setAlertData({ msg: res?.msg });
       return false;
     }
 
     const res1 = await MerchantWithdraw({
       vp: res?.data,
-      to_address:dbGetUserWallet()?.account})
-    if(res1?.code !== 1000){
-      setOpenAlert(true)
-      setAlertData({msg:res1?.msg})
+      to_address: dbGetUserWallet()?.account,
+    });
+    if (res1?.code !== 1000) {
+      setOpenAlert(true);
+      setAlertData({ msg: res1?.msg });
       return false;
     }
-    navigate("/assets")
-  }
+    navigate("/assets");
+  };
 
   useEffect(() => {
     const modal = document.getElementsByClassName("withdrawModal");
@@ -46,7 +46,7 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
   const navigate = useNavigate();
   return (
     <div className="withdrawModal">
-      <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+      <Popup open={openAlert} closeOnDocumentClick onClose={() => setOpenAlert(false)}>
         <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
       </Popup>
       <div className="modalContent">
@@ -58,14 +58,7 @@ const ConfirmWithdrawModal = ({ click,data = [], total = 0, currency }) => {
             {` ${currency?.title}`}
           </div>
         </div>
-        <div className="gas">
-          <span>Gas Tips:</span>
-          <span>Gas fee**** ETH</span>
-        </div>
-        <DefaultButton
-          title="Confirm Withdraw"
-          click={withdraw}
-        />
+        <DefaultButton title="Confirm Withdraw" click={withdraw} />
       </div>
     </div>
   );

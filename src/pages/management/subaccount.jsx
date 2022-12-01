@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { get } from "./requests";
 import Popup from "reactjs-popup";
 import { TABLETYPE } from "@@/components/types";
-import { ManagementTable, DefaultButton, ConfirmationModal, SettingsModal } from "@@/components";
+import {
+  ManagementTable,
+  DefaultButton,
+  CreateSubAccountModal,
+  DeleteSubAccountModal,
+} from "@@/components";
 
 import "./styles/subaccount.scss";
 
@@ -17,23 +22,24 @@ const SubAccount = () => {
   }, [createIsOpen, deleteIsOpen]);
 
   useEffect(() => {
-    console.log(selected);
-  });
+    console.log("Selected: ", selected);
+  }, [selected]);
 
   return (
     <div className="subAccountWrapper">
       <Popup open={deleteIsOpen} closeOnDocumentClick onClose={() => setDeleteOpen(false)}>
-        <ConfirmationModal
+        <DeleteSubAccountModal
           click={() => setDeleteOpen(false)}
           setValue={setSubAccounts}
           title="Are you sure 
 you want to delete these accounts?"
           type={2}
-          selected={selected[0]}
+          selected={selected}
+          setSelected={setSelected}
         />
       </Popup>
       <Popup open={createIsOpen} closeOnDocumentClick onClose={() => setCreateOpen(false)}>
-        <SettingsModal
+        <CreateSubAccountModal
           click={() => setCreateOpen(false)}
           setValue={setSubAccounts}
           title="Create Subaccount"
@@ -50,6 +56,7 @@ you want to delete these accounts?"
           type={TABLETYPE.SUBACCOUNT}
           selected={selected}
           setSelected={setSelected}
+          modify={setSubAccounts}
         />
       </div>
     </div>

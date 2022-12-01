@@ -3,7 +3,7 @@ import { get, post } from "@@/pages/management/requests";
 import { DefaultButton } from "../..";
 import "./confirmationModal.scss";
 
-const ConfirmationModal = ({ click, setValue, title, type, id }) => {
+const DeleteSubAccountModal = ({ click, setValue, title, type, selected, setSelected }) => {
   useEffect(() => {
     const modal = document.getElementsByClassName("confirmationModal");
     modal[0].addEventListener("click", (e) => {
@@ -13,27 +13,34 @@ const ConfirmationModal = ({ click, setValue, title, type, id }) => {
     });
   }, []);
 
+  const deleteAccount = () => {
+    selected.forEach((id) => {
+      post({ manager_id: id }, "/api/admin/manager/delete");
+    });
+    setSelected([]);
+  };
+
   return (
     <div className="confirmationModal">
       <div className="modalContent">
         <div className="tip">{title}</div>
         <div className="btns">
-          {type === 2 ? (
-            <DefaultButton
-              title="Cancel"
-              click={() => {
-                setValue("Cancel");
-                click();
-              }}
-              type={2}
-            />
-          ) : null}
           <DefaultButton
-            title="Confirm"
+            title="Cancel"
+            click={() => {
+              setValue("Cancel");
+              click();
+            }}
+            type={2}
+          />
+
+          <DefaultButton
+            title="Delete"
             click={() => {
               setValue("Confirm");
+              deleteAccount();
               click();
-              post({ merchant_id: id, new_status: "unavailable" }, "/api/admin/merchant/status");
+              get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
             }}
             alternateBg={type === 2 ? true : false}
             type={2}
@@ -44,4 +51,4 @@ const ConfirmationModal = ({ click, setValue, title, type, id }) => {
   );
 };
 
-export default ConfirmationModal;
+export default DeleteSubAccountModal;

@@ -1,12 +1,14 @@
 import { createContext, useState } from "react";
+import Cookies from "js-cookie";
 
-const AuthContext = createContext({});
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState(Cookies.get("auth") === "true");
+  const [privs, setPrivs] = useState([]);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, privs, setPrivs }}>
       {children}
     </AuthContext.Provider>
   );

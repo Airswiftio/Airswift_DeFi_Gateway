@@ -85,6 +85,8 @@ import SwitchToggle from "./management/table/switchToggle";
 import ManagementPagination from "./management/table/pagination";
 import ConfirmationModal from "./management/modals/confirmationModal";
 import SettingsModal from "./management/modals/settingsModal";
+import CreateSubAccountModal from "./management/modals/createSubAccountModal";
+import DeleteSubAccountModal from "./management/modals/deleteSubAccountModal";
 import Arrow from "./management/utility/Arrows";
 
 export {
@@ -141,4 +143,6 @@ export {
   LiquidityHeader,
   TableRow,
   Arrow,
+  CreateSubAccountModal,
+  DeleteSubAccountModal,
 };

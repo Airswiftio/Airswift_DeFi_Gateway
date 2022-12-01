@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 import Popup from "reactjs-popup";
+import AuthContext from "@@/context/AuthProvider";
 import Logo from "@@/assets/management/logo.svg";
-import ProfilePhoto from "@@/assets/sample_profile.svg";
 import { ProfileModal } from "@@/components";
 import "./managementHeader.scss";
 
-const ManagementHeader = () => {
+const ManagementHeader = ({ url, setUrl }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const loggedIn = true;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [url, setUrl] = useState(window.location.pathname);
+  const authCtx = useContext(AuthContext);
 
   const openModal = () => {
     setIsOpen(true);
@@ -26,6 +26,7 @@ const ManagementHeader = () => {
 
   useEffect(() => {
     setUrl(window.location.pathname);
+    console.log(Cookies.get());
   }, []);
 
   return (
@@ -62,24 +63,17 @@ const ManagementHeader = () => {
         >
           Liquidity
         </Link>
-
-        {loggedIn ? (
-          <div className="profileContainer">
-            <div className="imageContainer">
-              <img
-                src={ProfilePhoto}
-                alt="profile"
-                className="navProfile"
-                onClick={() => openModal()}
-              />
-            </div>
-            <div className="online" />
-          </div>
-        ) : (
-          <Link to="/management/login" className={url.includes("login") ? "underline" : ""}>
-            Login
+        {authCtx.auth ? (
+          <Link
+            to="/management/login"
+            onClick={() => {
+              authCtx.setAuth(false);
+              Cookies.set("auth", "false");
+            }}
+          >
+            Logout
           </Link>
-        )}
+        ) : null}
       </div>
       <div className="mobileLinks">
         <div className="mobileMenu">

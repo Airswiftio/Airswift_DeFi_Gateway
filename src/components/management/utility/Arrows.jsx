@@ -1,6 +1,6 @@
 import React from "react";
 
-const Arrow = ({ direction, isEnd }) => {
+const Arrow = ({ direction, isEnd, click }) => {
   switch (direction) {
     case "LEFT":
       return (
@@ -10,6 +10,7 @@ const Arrow = ({ direction, isEnd }) => {
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke={isEnd ? "gray" : "#3ACBF6"}
+          onClick={click}
         >
           <path
             strokeLinecap="round"
@@ -26,6 +27,7 @@ const Arrow = ({ direction, isEnd }) => {
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke={isEnd ? "gray" : "#3ACBF6"}
+          onClick={click}
         >
           <path
             strokeLinecap="round"
