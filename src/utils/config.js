@@ -1,3 +1,8 @@
+import db from "@@/utils/db/browserDb";
+import {empty} from "@@/utils/function";
+import {GetAvailableCurrency} from "@@/utils/request/api";
+const dbStore = db;
+
 export function select_role(type = 0) {
   if(type === 0){
     return [
@@ -26,33 +31,49 @@ export function select_status(type = 'income') {
   }
 }
 
+export async function loading_currency() {
+  const currency_key = 'currency_key';
+  const Currency =  dbStore.get(currency_key);
+  if(!empty(Currency)){
+    return Currency
+  }
+  const data = {
+    list:[],
+    tree:[],
+  };
+  const res = await GetAvailableCurrency();
+  if(res?.code === 1000){
+    const currencyList = res?.data?.currencies ?? [];
+    const tmp_parent = {};
+    data.list = currencyList.map((item)=>{
+      tmp_parent[item?.chain_id] = {
+        id:item?.chain_detail?.id,
+        key:item?.chain_detail?.name,
+        chain_id:item?.chain_id,
+        title:item?.chain_detail?.name,
+        img:item?.chain_detail?.image_url};
+      return {id:item?.id,key:item?.search_name,title:item?.symbol,img:item?.image_url,chain_id:item?.chain_id}
+    })
+
+    for (const kk in tmp_parent) {
+      const tmp_child = currencyList.filter((item)=>{
+        return tmp_parent[kk]?.chain_id === item?.chain_id;
+      })
+      tmp_parent[kk]._child = tmp_child.map((item)=>{
+        return {id:item?.id,key:item?.search_name,title:item?.symbol,img:item?.image_url,chain_id:item?.chain_id}
+      })
+      data.tree = [...data.tree,tmp_parent[kk]]
+    }
+  }
+
+  dbStore.set(currency_key,data)
+  return data;
+}
+
 export function select_currency(type = 'list') {
-  if(type === 'list'){
-    return [
-      {id:1,key:'usd-coin',title:'USDC'},
-      {id:2,key:'tether',title:'USDT'},
-      {id:7,key:'wrapped-bitcoin',title:'WBTC'},
-      {id:8,key:'weth',title:'WETH'},
-    ]
-  }
-  else if(type === 'tree'){
-    return [
-      {
-        key:'Ethereum',
-        title:'Ethereum',
-        img:'https://storage.googleapis.com/zapper-fi-assets/tokens/ethereum/0x0000000000000000000000000000000000000000.png',
-        _child:[
-          {id:1,key:'usd-coin',title:'USDC',img:'https://storage.googleapis.com/zapper-fi-assets/tokens/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',},
-          {id:2,key:'tether',title:'USDT',img:'https://storage.googleapis.com/zapper-fi-assets/tokens/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',},
-          {id:7,key:'wrapped-bitcoin',title:'WBTC',img:'https://storage.googleapis.com/zapper-fi-assets/tokens/ethereum/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png',},
-          {id:8,key:'weth',title:'WETH',img:'https://storage.googleapis.com/zapper-fi-assets/tokens/ethereum/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',},
-        ]
-      }
-    ]
-  }
-  else{
-    return {};
-  }
+  const currency_key = 'currency_key';
+  const Currency =  dbStore.get(currency_key);
+  return Currency?.[type] ?? []
 }
 
 export function base_currency() {

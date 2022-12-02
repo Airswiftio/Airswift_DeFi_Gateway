@@ -10,6 +10,8 @@ const Pagination = ({ pages, currPage, setCurrPage }) => {
   };
 
   const incrementPage = () => {
+    console.log("Inc");
+
     if (currPage < pages - 1) {
       setCurrPage(currPage + 1);
     }

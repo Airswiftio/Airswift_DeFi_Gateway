@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import AuthContext from "@@/context/AuthProvider";
+import { post } from "@@/pages/management/requests";
 import { Formik, Field, Form } from "formik";
 import { useNavigate } from "react-router";
-import Logo from "../../../assets/management/logo.svg";
+import Logo from "@@/assets/management/logo.svg";
 
-const ManagementLogin = ({ authenticate }) => {
+const ManagementLogin = () => {
   const navigate = useNavigate();
+
+  const authCtx = useContext(AuthContext);
+
+  useEffect(() => {
+    if (authCtx.auth) {
+      navigate("/management/dashboard");
+    }
+  }, []);
+
+  const checkAuth = (a) => {
+    if (a.privileges.includes("sub-account")) {
+      authCtx.setPrivs(a.privileges);
+      Cookies.set("auth", true);
+      authCtx.setAuth(true);
+      navigate("/management/dashboard");
+    }
+  };
 
   return (
     <div className="formWrapper">
@@ -16,16 +36,16 @@ const ManagementLogin = ({ authenticate }) => {
           password: "",
         }}
         onSubmit={({ username, password }) => {
-          authenticate(
+          post(
             {
               username: username,
               password: password,
               captcha_id: "HRzGVk4MJJq0eYD4xSUk",
               captcha_code: "n4hkm6",
             },
-            "/api/admin/login"
+            "/api/admin/login",
+            checkAuth
           );
-          navigate("/management/dashboard");
         }}
       >
         <Form className="form">
@@ -33,7 +53,7 @@ const ManagementLogin = ({ authenticate }) => {
           <Field id="username" name="username" />
 
           <label htmlFor="password">Password</label>
-          <Field id="password" name="password" />
+          <Field id="password" name="password" type="password" />
 
           <div className="row">
             <label>

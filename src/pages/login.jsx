@@ -288,7 +288,7 @@ const Login = () => {
                   <button onClick={() => connect()} className="connectButton">
                     Connect Metamask Wallet
                   </button>
-                  <button className="installMetamask">Install Metamask Wallet</button>
+                  <button className="installMetamask" onClick={() => window.open('https://metamask.io/download/')}>Install Metamask Wallet</button>
                 </div>
               </div>
             </div>

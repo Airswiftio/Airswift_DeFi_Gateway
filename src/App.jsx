@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 
 import {
   Dashboard,
@@ -25,7 +25,7 @@ import {
 } from "@@/components";
 import { Routes, Route } from "react-router-dom";
 import "@@/App.scss";
-import {listenWallet} from "@@/utils/chain/wallet";
+import { listenWallet } from "@@/utils/chain/wallet";
 
 /* Protected route codes -> user: 2000, merchant: 3000, admin: 5000 */
 const ROLES = {
@@ -36,8 +36,7 @@ const ROLES = {
 
 function App() {
   useEffect(() => {
-    listenWallet();//监听钱包
-
+    listenWallet(); //监听钱包
   }, []);
   return (
     <Routes>
@@ -47,7 +46,7 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
 
         {/* Dev - Unprotected Management */}
-        <Route path="/management" element={<ManagementLayout />}>
+        <Route path="/management" element={<ManagementLayout title="Airswift Management" />}>
           <Route path="login" element={<ManagementLogin />} />
           <Route path="pw" element={<ManagementForgotPassword />} />
           <Route path="dashboard" element={<ManagementDashboard />} />
@@ -65,9 +64,7 @@ function App() {
         {/* Protected Routes Codes: */}
         <Route
           element={
-            <RequireAuth
-              allowedRoles={[ROLES.Contributor, ROLES.ShopManager, ROLES.Admin]}
-            />
+            <RequireAuth allowedRoles={[ROLES.Contributor, ROLES.ShopManager, ROLES.Admin]} />
           }
         >
           <Route path="/" element={<Dashboard />} />
@@ -83,9 +80,7 @@ function App() {
         {/* Catch all Route */}
         <Route
           element={
-            <RequireAuth
-              allowedRoles={[ROLES.Contributor, ROLES.ShopManager, ROLES.Admin]}
-            />
+            <RequireAuth allowedRoles={[ROLES.Contributor, ROLES.ShopManager, ROLES.Admin]} />
           }
         >
           <Route path="*" element={<Dashboard />} />

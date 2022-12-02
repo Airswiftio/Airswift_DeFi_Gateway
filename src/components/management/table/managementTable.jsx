@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import Check from "@@/assets/check.svg";
 import { ManagementPagination, TableRow } from "../..";
 import { TABLETYPE } from "../../types";
 
 import "./managementTable.scss";
+import { useEffect } from "react";
 
 const ManagementTable = ({ data, type, modify, selected, setSelected }) => {
-  const items = data.length;
+  const [items, setItems] = useState(0);
   const [currPage, setCurrPage] = useState(0);
+  const [allSelected, setAllSelected] = useState(false);
 
   const renderRows = (num) => {
     const rows = [];
@@ -32,6 +35,21 @@ const ManagementTable = ({ data, type, modify, selected, setSelected }) => {
     return rows;
   };
 
+  const selectAll = () => {
+    console.log(data);
+    if (allSelected) {
+      setAllSelected(false);
+      setSelected([]);
+    } else {
+      setAllSelected(true);
+      let all = [];
+      data.forEach((d) => {
+        all.push(d.id);
+      });
+      setSelected(all);
+    }
+  };
+
   const renderHeader = (t) => {
     switch (t) {
       case TABLETYPE.MERCHANT:
@@ -52,7 +70,9 @@ const ManagementTable = ({ data, type, modify, selected, setSelected }) => {
         return (
           <>
             <span className="col checkboxColumn">
-              <div className="checkBox" />
+              <div className="checkBox" onClick={selectAll}>
+                {allSelected ? <img src={Check} alt="Check" /> : null}
+              </div>
             </span>
             <span className="col checkboxColumn">Account</span>
             <span className="col">Privileges</span>
@@ -63,6 +83,10 @@ const ManagementTable = ({ data, type, modify, selected, setSelected }) => {
         return null;
     }
   };
+
+  useEffect(() => {
+    setItems(data?.length);
+  }, [data]);
 
   return (
     <div className="managementTableWrapper">

@@ -1,9 +1,7 @@
 import React from "react";
-
 import "./search.scss";
-import moment from "moment";
 
-const Search = ({ title = "Trans ID",search,setSearch }) => {
+const Search = ({ title = "Trans ID", search, setSearch }) => {
   return (
     <div className="searchWrapper">
       <svg
@@ -20,10 +18,13 @@ const Search = ({ title = "Trans ID",search,setSearch }) => {
         />
       </svg>
 
-      <input className="input" placeholder={title}
-             onChange={(event) => {
-                 setSearch(event.target.value)
-      }}/>
+      <input
+        className="input"
+        placeholder={title}
+        onChange={(event) => {
+          setSearch(event.target.value);
+        }}
+      />
     </div>
   );
 };

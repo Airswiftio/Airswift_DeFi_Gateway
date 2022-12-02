@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SwitchToggle, ConfirmationModal, SettingsModal } from "@@/components";
+import { post } from "@@/pages/management/requests";
 import SettingsSVG from "@@/assets/settings.svg";
 import Check from "@@/assets/check.svg";
 import Popup from "reactjs-popup";
@@ -7,41 +8,41 @@ import { TABLETYPE } from "@@/components/types";
 import "./managementTable.scss";
 
 const TableRow = ({ data, type, modify, selected, setSelected }) => {
-  const [toggleState, setToggleState] = useState(data.status);
+  const [toggleState, setToggleState] = useState(data?.status);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
     setIsOpen(true);
-    console.log("Clicked");
   };
 
   const closeModal = () => {
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    if (modify && toggleState !== data.status) {
+  const handleToggle = () => {
+    if (toggleState === "unavailable") {
       if (type === TABLETYPE.MERCHANT) {
-        modify({ merchant_id: data.id, new_status: toggleState }, "/api/admin/merchant/status");
+        post({ merchant_id: data?.id, new_status: "available" }, "/api/admin/merchant/status");
       } else if (type === TABLETYPE.LIQUIDITY) {
-        modify({ pool_id: data.id, new_status: toggleState }, "/api/admin/pool/status");
+        post({ pool_id: data?.id, new_status: "available" }, "/api/admin/pool/status");
       }
     }
-  }, [toggleState, data.id, data.status, modify, type]);
+    setToggleState(toggleState === "available" ? "unavailable" : "available");
+  };
 
   const renderRow = (t) => {
     switch (t) {
       case TABLETYPE.MERCHANT:
         return (
           <>
-            <span className="col">{data.id}</span>
-            <span className="col">{data.did || "No DID Address Found"}</span>
+            <span className="col">{data?.id}</span>
+            <span className="col">{data?.did || "No DID Address Found"}</span>
           </>
         );
       case TABLETYPE.LIQUIDITY:
         return (
           <>
-            <span className="col">{data.name}</span>
+            <span className="col">{data?.name}</span>
           </>
         );
       case TABLETYPE.SUBACCOUNT:
@@ -83,16 +84,17 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
         {type === TABLETYPE.SUBACCOUNT ? (
           <SettingsModal
             click={closeModal}
-            setValue={setToggleState}
             title="Settings"
             type={1}
             data={data}
+            setValue={modify}
           />
         ) : (
           <ConfirmationModal
             click={closeModal}
             setValue={setToggleState}
             title="Are you sure you want to disable this DID?"
+            id={data?.id}
             type={1}
           />
         )}
@@ -103,10 +105,8 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
         {type !== TABLETYPE.SUBACCOUNT ? (
           <SwitchToggle
             isOn={toggleState === "available"}
-            handleToggle={() =>
-              setToggleState(toggleState === "available" ? "unavailable" : "available")
-            }
-            id={data.id}
+            handleToggle={handleToggle}
+            id={data?.id}
             open={openModal}
           />
         ) : (

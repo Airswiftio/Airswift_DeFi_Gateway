@@ -1,5 +1,5 @@
 import axios from "axios";
-import {dbClearAccount, dbGetJWTToken} from "@@/utils/function";
+import {dbClearAccount} from "@@/utils/function";
 
 //Call apiURL of back-end interface
 const ApiUrl = process.env.REACT_APP_API_URL

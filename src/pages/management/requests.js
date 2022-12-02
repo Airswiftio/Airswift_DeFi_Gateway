@@ -8,19 +8,24 @@ const get = (setData, url) => {
     })
     .then(function (response) {
       setData(response.data.msg);
+      return response.data.msg;
     })
     .catch(function (error) {
       console.log("Error", error);
     });
 };
 
-const post = (data, url) => {
+const post = (data, url, cb) => {
   axios
     .post(url, data, {
       withCredentials: true,
       credentials: "same-origin",
     })
-    .then(function (response) {})
+    .then(function (response) {
+      if (cb !== undefined) {
+        cb(response.data.msg);
+      }
+    })
     .catch(function (error) {
       console.log("Error", error);
     });

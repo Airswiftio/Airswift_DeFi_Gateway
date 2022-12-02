@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { get, post } from "@@/pages/management/requests";
-import axios from "axios";
 import { DefaultButton } from "@@/components";
 import "./settingsModal.scss";
 
@@ -8,7 +7,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
   const [name, setName] = useState(data?.username || "");
   const [email, setEmail] = useState(data?.email || "");
   const [password, setPassword] = useState(data?.password || "");
-  const [privileges, setPrivileges] = useState([0, 0, 0]);
+  const [privileges, setPrivileges] = useState([0, 0, 0, 0]);
 
   const createSubaccount = (name, email, password, privileges) => {
     post(
@@ -59,7 +58,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
   };
 
   useEffect(() => {
-    console.log(privileges);
+    console.log("Priv: ", privileges);
   }, [privileges]);
 
   return (
@@ -110,6 +109,13 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
                 {privileges.includes(3) ? <div className="selectedPrivilege" /> : null}
               </span>
               <span>Liquidity Pool</span>
+            </div>
+
+            <div className="selector">
+              <span className="privilege" onClick={() => changePrivilege(4)}>
+                {privileges.includes(4) ? <div className="selectedPrivilege" /> : null}
+              </span>
+              <span>Withdraw</span>
             </div>
           </div>
         </div>
