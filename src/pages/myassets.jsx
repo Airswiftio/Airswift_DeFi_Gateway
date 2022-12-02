@@ -26,13 +26,13 @@ const Assets = () => {
     {key:'pending',title:'Pending'},
   ];
   const getIncomeTotal = async () => {
-    const res = await GetPaymentSummary()
+    const res = await GetPaymentSummary({tz:new Date().getTimezoneOffset() / -60})
     setIncomeTotal({
       total:res?.data?.latest_90_days_total_payment?.toFixed(2) ?? incomeTotal?.total?.toFixed(2),
       today:res?.data?.today_total_payment?.toFixed(2)  ?? incomeTotal?.today?.toFixed(2)})
   }
   const getWithdrawTotal = async () => {
-    const res = await GetWithdrawSummary()
+    const res = await GetWithdrawSummary({tz:new Date().getTimezoneOffset() / -60})
     setWithdrawTotal({
       total:res?.data?.latest_90_days_total_withdraw?.toFixed(2) ?? withdrawTotal?.total?.toFixed(2),
       today:res?.data?.today_total_withdraw?.toFixed(2) ?? withdrawTotal?.today?.toFixed(2)})
