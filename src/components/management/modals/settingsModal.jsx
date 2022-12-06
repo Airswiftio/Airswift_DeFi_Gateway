@@ -119,25 +119,16 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
             </div>
           </div>
         </div>
-        <div className="btn">
-          <DefaultButton
-            title="Save"
-            type={1}
-            click={
-              type === 2
-                ? () => {
-                    createSubaccount(name, email, password, privileges);
-                    click();
-                    get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
-                  }
-                : () => {
-                    editSubaccount();
-                    click();
-                    get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
-                  }
-            }
-          />
-        </div>
+        <button
+          className="btn"
+          onClick={() => {
+            editSubaccount();
+            click();
+            get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
+          }}
+        >
+          Save
+        </button>
       </div>
     </div>
   );

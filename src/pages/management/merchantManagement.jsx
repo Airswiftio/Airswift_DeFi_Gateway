@@ -14,7 +14,7 @@ const MerchantManagement = () => {
   }, []);
 
   const search = (val) => {
-    setItems(merchants.merchants.filter((m) => m.id.toString().includes(val)));
+    setItems(merchants.merchants.filter((m) => m.did.toString().includes(val)));
   };
 
   useEffect(() => {

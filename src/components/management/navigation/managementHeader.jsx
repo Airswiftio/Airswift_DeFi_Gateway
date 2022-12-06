@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import Cookies from "js-cookie";
 import Popup from "reactjs-popup";
 import AuthContext from "@@/context/AuthProvider";
@@ -10,11 +11,9 @@ import "./managementHeader.scss";
 const ManagementHeader = ({ url, setUrl }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const authCtx = useContext(AuthContext);
+  const [privs, setPrivs] = useState([]);
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
+  const authCtx = useContext(AuthContext);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -27,6 +26,17 @@ const ManagementHeader = ({ url, setUrl }) => {
   useEffect(() => {
     setUrl(window.location.pathname);
     console.log(Cookies.get());
+  }, []);
+
+  useEffect(() => {
+    let temp = [];
+    axios.get("/api/admin/permission/all").then((res) => {
+      res.data.msg.permissions.forEach((p) => {
+        temp.push(p.identity);
+      });
+      setPrivs(temp);
+    });
+    console.log("Privs: ", privs);
   }, []);
 
   return (
@@ -45,24 +55,33 @@ const ManagementHeader = ({ url, setUrl }) => {
         >
           Dashboard
         </Link>
-        <Link
-          to="/management/subaccount"
-          className={url.includes("/management/subaccount") ? "underline" : ""}
-        >
-          Subaccount
-        </Link>
-        <Link
-          to="/management/merchant"
-          className={url.includes("/management/merchant") ? "underline" : ""}
-        >
-          Merchant
-        </Link>
-        <Link
-          to="/management/liquidity"
-          className={url.includes("/management/liquidity") ? "underline" : ""}
-        >
-          Liquidity
-        </Link>
+        {privs.includes("sub-account") ? (
+          <Link
+            to="/management/subaccount"
+            className={url.includes("/management/subaccount") ? "underline" : ""}
+          >
+            Subaccount
+          </Link>
+        ) : null}
+
+        {privs.includes("merchant") ? (
+          <Link
+            to="/management/merchant"
+            className={url.includes("/management/merchant") ? "underline" : ""}
+          >
+            Merchant
+          </Link>
+        ) : null}
+
+        {privs.includes("liquidity-pool") ? (
+          <Link
+            to="/management/liquidity"
+            className={url.includes("/management/liquidity") ? "underline" : ""}
+          >
+            Liquidity
+          </Link>
+        ) : null}
+
         {authCtx.auth ? (
           <Link
             to="/management/login"

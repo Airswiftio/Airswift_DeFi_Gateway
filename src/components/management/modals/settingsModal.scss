@@ -43,6 +43,15 @@
 
     .btn {
       width: 250px;
+      background: linear-gradient(98.48deg, #8dfe59 -3.85%, #3acbf6 35.75%, #6055ff 69.61%);
+      box-shadow: inset 0px 2px 0px rgba(255, 255, 255, 0.2),
+        inset 0px -2px 0px rgba(59, 53, 146, 0.5);
+      border-radius: 80px;
+      padding: 1em;
+      border: none;
+      color: white;
+      font-family: "ClashDisplay", "Poppins";
+      font-size: 16px;
     }
 
     .inputs {

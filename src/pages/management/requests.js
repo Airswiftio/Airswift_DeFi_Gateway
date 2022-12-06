@@ -10,9 +10,7 @@ const get = (setData, url) => {
       setData(response.data.msg);
       return response.data.msg;
     })
-    .catch(function (error) {
-      console.log("Error", error);
-    });
+    .catch(function (error) {});
 };
 
 const post = (data, url, cb) => {
@@ -27,7 +25,9 @@ const post = (data, url, cb) => {
       }
     })
     .catch(function (error) {
-      console.log("Error", error);
+      if (cb !== undefined) {
+        cb(error);
+      }
     });
 };
 

@@ -52,17 +52,17 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
               <div
                 className="checkBox"
                 onClick={() =>
-                  selected.includes(data.id)
-                    ? setSelected(selected.filter((e) => e !== data.id))
-                    : setSelected([...selected, data.id])
+                  selected.includes(data?.id)
+                    ? setSelected(selected.filter((e) => e !== data?.id))
+                    : setSelected([...selected, data?.id])
                 }
               >
-                {selected.includes(data.id) ? <img src={Check} alt="Check" /> : null}
+                {selected.includes(data?.id) ? <img src={Check} alt="Check" /> : null}
               </div>
             </span>
-            <span className="col checkboxColumn">{data.username}</span>
+            <span className="col checkboxColumn">{data?.username}</span>
             <span className="col">
-              {data.permissions.map((d) => (
+              {data?.permissions.map((d) => (
                 <div key={d.id}>
                   <span className="privilege">
                     {d.group_id ? <div className="selectedPrivilege" /> : null}
@@ -103,12 +103,15 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
 
       <span className="col status checkboxColumn">
         {type !== TABLETYPE.SUBACCOUNT ? (
-          <SwitchToggle
-            isOn={toggleState === "available"}
-            handleToggle={handleToggle}
-            id={data?.id}
-            open={openModal}
-          />
+          <div className="col">
+            <SwitchToggle
+              isOn={toggleState === "available"}
+              handleToggle={handleToggle}
+              id={data?.id}
+              open={openModal}
+            />
+            <span style={{ "min-width": "80px", "text-align": "right" }}>{toggleState}</span>
+          </div>
         ) : (
           <img src={SettingsSVG} alt="settings" onClick={() => setIsOpen(true)} />
         )}

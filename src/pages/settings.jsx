@@ -1,11 +1,10 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ApiKeys, IpnKeys, AppConfig, MyStore } from "@@/components";
 
 import "./settings.scss";
-import {GetApplicationDetail} from "@@/utils/request/api";
+import { GetApplicationDetail } from "@@/utils/request/api";
 
 const Settings = () => {
-
   const [currentPage, setCurrentPage] = useState(0);
   const [myStore, setMyStore] = useState({});
   const [apiKeys, setApiKeys] = useState({});
@@ -13,37 +12,38 @@ const Settings = () => {
   const [appConfig, setAppConfig] = useState({});
 
   const pages = [
-    <MyStore myStore={myStore} setMyStore={setMyStore}/>,
+    <MyStore myStore={myStore} setMyStore={setMyStore} />,
     <ApiKeys apiKeys={apiKeys} setApiKeys={setApiKeys} />,
-    <IpnKeys ipnKeys={ipnKeys} setIpnKeys={setIpnKeys}/>,
-    <AppConfig appConfig={appConfig} setAppConfig={setAppConfig}/>
+    <IpnKeys ipnKeys={ipnKeys} setIpnKeys={setIpnKeys} />,
+    <AppConfig appConfig={appConfig} setAppConfig={setAppConfig} />,
   ];
   const titles = ["My Store", "API Keys", "IPN Keys", "App Configuration"];
 
-
   const getAppDetail = async () => {
-    const res = await GetApplicationDetail({app_id:0})
-    if(res?.code === 1000){
+    const res = await GetApplicationDetail({ app_id: 0 });
+    if (res?.code === 1000) {
       setMyStore({
-        id:res?.data?.id,
-        name:res?.data?.name,
-        link:res?.data?.link,
-        callbackUrl:res?.data?.callbackUrl,
-        legal_tender:res?.data?.legal_tender})
+        id: res?.data?.id,
+        name: res?.data?.name,
+        link: res?.data?.link,
+        callbackUrl: res?.data?.callbackUrl,
+        legal_tender: res?.data?.legal_tender,
+      });
       setApiKeys({
-        api_key:res?.data?.api_key,
-        api_key_created_at:res?.data?.api_key_created_at})
+        api_key: res?.data?.api_key,
+        api_key_created_at: res?.data?.api_key_created_at,
+      });
       setIpnKeys({
-        ipn_key:res?.data?.ipn_key,
-        ipn_key_created_at:res?.data?.ipn_key_created_at})
+        ipn_key: res?.data?.ipn_key,
+        ipn_key_created_at: res?.data?.ipn_key_created_at,
+      });
       setAppConfig({
-        name:res?.data?.name,
-        link:res?.data?.link,
-        callbackUrl:res?.data?.callbackUrl})
-
-
+        name: res?.data?.name,
+        link: res?.data?.link,
+        callbackUrl: res?.data?.callbackUrl,
+      });
     }
-  }
+  };
 
   useEffect(() => {
     getAppDetail();
@@ -53,28 +53,16 @@ const Settings = () => {
     <div>
       <div className="settingsWrapper">
         <div className="sideColumn">
-          <button
-            className={currentPage === 0 ? "selected" : ""}
-            onClick={() => setCurrentPage(0)}
-          >
+          <button className={currentPage === 0 ? "selected" : ""} onClick={() => setCurrentPage(0)}>
             My Store
           </button>
-          <button
-            className={currentPage === 1 ? "selected" : ""}
-            onClick={() => setCurrentPage(1)}
-          >
+          <button className={currentPage === 1 ? "selected" : ""} onClick={() => setCurrentPage(1)}>
             API Keys
           </button>
-          <button
-            className={currentPage === 2 ? "selected" : ""}
-            onClick={() => setCurrentPage(2)}
-          >
+          <button className={currentPage === 2 ? "selected" : ""} onClick={() => setCurrentPage(2)}>
             IPN Keys
           </button>
-          <button
-            className={currentPage === 3 ? "selected" : ""}
-            onClick={() => setCurrentPage(3)}
-          >
+          <button className={currentPage === 3 ? "selected" : ""} onClick={() => setCurrentPage(3)}>
             App Configuration
           </button>
         </div>

@@ -132,9 +132,11 @@ const CreateSubAccountModal = ({ click, setValue, title }) => {
             </div>
           </div>
         </div>
-        <div className="btn">
-          <button type="submit"> Submit </button>
-        </div>
+
+        <button type="submit" className="btn">
+          {" "}
+          Submit{" "}
+        </button>
       </form>
     </div>
   );
