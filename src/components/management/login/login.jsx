@@ -6,6 +6,8 @@ import { post } from "@@/pages/management/requests";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import Logo from "@@/assets/management/logo.svg";
+import { get } from "@@/utils/request/http";
+import axios from "axios";
 
 const formSchema = yup.object().shape({
   username: yup.string().required(),
@@ -14,6 +16,7 @@ const formSchema = yup.object().shape({
 
 const ManagementLogin = () => {
   const [error, setError] = useState();
+  const [captcha, setCaptcha] = useState();
   const navigate = useNavigate();
 
   const authCtx = useContext(AuthContext);
@@ -22,6 +25,12 @@ const ManagementLogin = () => {
     if (authCtx.auth) {
       navigate("/management/dashboard");
     }
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("/api/admin/login/captcha/create")
+      .then((response) => setCaptcha(response.data.msg.captcha_content));
   }, []);
 
   const checkAuth = (a) => {
@@ -53,6 +62,7 @@ const ManagementLogin = () => {
     initialValues: {
       username: "",
       password: "",
+      captcha: "",
     },
     validationSchema: formSchema,
     onSubmit: onSubmit,
@@ -74,6 +84,21 @@ const ManagementLogin = () => {
           values={values.password}
           onChange={handleChange}
         />
+
+        <div className="captchaWrapper">
+          <div className="captcha">
+            <img src={captcha} alt="captcha" />
+          </div>
+          <input
+            id="captcha"
+            name="captcha"
+            type="text"
+            className="captchaInput"
+            values={values.captcha}
+            onChange={handleChange}
+            placeholder="Enter captcha text"
+          />
+        </div>
 
         <div className="row">
           <label>

@@ -76,6 +76,35 @@
         }
       }
 
+      .captchaWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        .captcha {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: white;
+          color: black;
+          border-radius: 4px 4px 0 0;
+          height: 70px;
+          text-align: center;
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            max-width: 100%;
+          }
+        }
+
+        .captchaInput {
+          border-radius: 0 0 4px 4px;
+          padding: 0.5em;
+          height: 40px;
+          text-align: center;
+        }
+      }
+
       .forgot {
         font-size: 12px;
         text-decoration: underline;
