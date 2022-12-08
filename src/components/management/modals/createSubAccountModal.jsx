@@ -5,17 +5,21 @@ import * as yup from "yup";
 import "./settingsModal.scss";
 
 const formSchema = yup.object().shape({
-  email: yup.string().email("Please enter a valid email").required(),
-  name: yup.string().required(),
-  password: yup.string().min(5).required(),
+  email: yup.string().email("Please enter a valid email").required("Please enter an email address"),
+  name: yup.string().required("Name field cannot be blank"),
+  password: yup
+    .string()
+    .min(5, "Password must be atleast 5 characters")
+    .required("Password field cannot be blank"),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password"), null], "Passwords must match")
-    .required(),
+    .oneOf([yup.ref("password"), null], "Passwords do not match")
+    .required("Please confirm your password"),
 });
 
 const CreateSubAccountModal = ({ click, setValue, title }) => {
   const [privs, setPrivs] = useState([]);
+  const [showErrors, setShowErrors] = useState(false);
 
   const createSubaccount = (name, email, password, privileges) => {
     post(
@@ -53,7 +57,7 @@ const CreateSubAccountModal = ({ click, setValue, title }) => {
     get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
   };
 
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, errors } = useFormik({
     initialValues: {
       name: "",
       email: "",
@@ -61,6 +65,8 @@ const CreateSubAccountModal = ({ click, setValue, title }) => {
       confirmPassword: "",
     },
     validationSchema: formSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: onSubmit,
   });
 
@@ -74,10 +80,12 @@ const CreateSubAccountModal = ({ click, setValue, title }) => {
             <div className="input">
               <span>Name</span>
               <input value={values.name} onChange={handleChange} name="name" />
+              <span className="errorMessage">{errors.name ? errors.name : " "}</span>
             </div>
             <div className="input">
               <span>Email</span>
               <input value={values.email} onChange={handleChange} name="email" />
+              <span className="errorMessage">{errors.email ? errors.email : " "}</span>
             </div>
           </div>
           <div className="row">
@@ -89,6 +97,7 @@ const CreateSubAccountModal = ({ click, setValue, title }) => {
                 name="password"
                 type="password"
               />
+              <span className="errorMessage">{errors.password ? errors.password : " "}</span>
             </div>
             <div className="input">
               <span>Confirm Password</span>
@@ -98,6 +107,9 @@ const CreateSubAccountModal = ({ click, setValue, title }) => {
                 name="confirmPassword"
                 type="password"
               />
+              <span className="errorMessage">
+                {errors.confirmPassword ? errors.confirmPassword : ""}
+              </span>
             </div>
           </div>
           <div className="row">

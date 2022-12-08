@@ -46,6 +46,7 @@ const Login = () => {
   };
 
   const connect = async () => {
+    console.log("Connecting...");
     setPercentage(0);
     setIsOpen(true);
     const res = await connectWallet(setPercentage, setIsOpen);
@@ -61,17 +62,22 @@ const Login = () => {
     setUserData(userInfo);
     setSignData(signature);
 
+    console.log("User Address: ", user_address);
     // Judge whether the user exists. If it exists, enter the login interface. Otherwise, register the user
     const res_ue = await CheckUserExist({ address: user_address });
+    console.log("User Exists: ", res_ue);
+
     if (res_ue?.code !== 1000) {
       setOpenAlert(true);
       setAlertData({ msg: "Failed to query user!" });
       return false;
     }
+
     if (res_ue?.data === true) {
       // Registered, Goto login
       // Query the Merchant information of the user. If there is information, enter the selection interface. If there is no information, enter the setting store interface. If there is information, enter the login selection interface
       const res_um = await GetUserRelatedMerchant({ address: user_address });
+      console.log("User Related Merchants: ", res_um);
       if (res_um?.code !== 1000 || res_um?.data?.merchant_users?.length <= 0) {
         setOpenAlert(true);
         setAlertData({ msg: "Failed to get store information!" });
@@ -83,6 +89,7 @@ const Login = () => {
       return false;
     } else {
       //not register
+      console.log("Regisering User...");
       setStep("set_store");
       return false;
     }
@@ -123,6 +130,7 @@ const Login = () => {
 
   const SignUp = async () => {
     const userInfo = userData;
+    console.log("User Info: ", userData);
     if (storeInfo?.store_name?.length <= 0) {
       setOpenAlert(true);
       setAlertData({ msg: "Please enter your store name!" });
@@ -147,6 +155,7 @@ const Login = () => {
     }
 
     const didDocument = await getOneDIDById(didIDCreate(userInfo?.account));
+    console.log("DID Document: ", didDocument);
     const data = {
       eth_address: userInfo?.account,
       did: userInfo?.did,
@@ -157,9 +166,8 @@ const Login = () => {
       did_document: JSON.stringify(didDocument?.did_document ?? ""),
     };
 
-    console.log("DID: ", didDocument);
-
     const res = await UserRegister(data);
+    console.log("User Registered: ", res);
     if (res?.code !== 1000 || res?.success !== true) {
       console.log(JSON.stringify(res));
       setOpenAlert(true);

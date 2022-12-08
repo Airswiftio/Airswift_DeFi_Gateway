@@ -13,7 +13,6 @@ const ManagementResetPassword = () => {
 
   const onSubmit = async () => {
     await new Promise((r) => setTimeout(r, 500));
-    alert("Please check your email for a password reset link.");
     navigate("/management/login");
   };
 
@@ -30,13 +29,16 @@ const ManagementResetPassword = () => {
       <img src={Logo} alt="Logo" />
       <div className="title">Reset password</div>
       <form onSubmit={handleSubmit} className="form">
-        <input
-          id="email"
-          name="email"
-          value={values.email}
-          onChange={handleChange}
-          placeholder="Please enter your email"
-        />
+        <div className="input">
+          <input
+            id="email"
+            name="email"
+            value={values.email}
+            onChange={handleChange}
+            placeholder="Please enter your email"
+          />
+        </div>
+
         <button className="btn" type="submit">
           Submit
         </button>

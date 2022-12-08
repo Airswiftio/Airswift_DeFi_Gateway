@@ -6,7 +6,7 @@ import { post } from "@@/pages/management/requests";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import Logo from "@@/assets/management/logo.svg";
-import { get } from "@@/utils/request/http";
+import Refresh from "@@/assets/management/refresh.svg";
 import axios from "axios";
 
 const formSchema = yup.object().shape({
@@ -28,10 +28,15 @@ const ManagementLogin = () => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get("/api/admin/login/captcha/create")
-      .then((response) => setCaptcha(response.data.msg.captcha_content));
+    fetchCaptcha();
   }, []);
+
+  const fetchCaptcha = () => {
+    axios.get("/api/admin/login/captcha/create").then((response) => {
+      console.log(response.data.msg);
+      setCaptcha(response.data.msg);
+    });
+  };
 
   const checkAuth = (a) => {
     if (a.name === "AxiosError") {
@@ -49,8 +54,8 @@ const ManagementLogin = () => {
       {
         username: values.username,
         password: values.password,
-        captcha_id: "HRzGVk4MJJq0eYD4xSUk",
-        captcha_code: "n4hkm6",
+        captcha_id: captcha.captcha_id,
+        captcha_code: values.captcha,
       },
       "/api/admin/login",
       checkAuth
@@ -58,13 +63,15 @@ const ManagementLogin = () => {
     console.log("Err: ", error);
   };
 
-  const { values, handleChange, handleSubmit } = useFormik({
+  const { values, handleChange, handleSubmit, errors } = useFormik({
     initialValues: {
       username: "",
       password: "",
       captcha: "",
     },
     validationSchema: formSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: onSubmit,
   });
 
@@ -74,30 +81,39 @@ const ManagementLogin = () => {
       <div className="title">Log in</div>
       <form onSubmit={handleSubmit} className="form">
         <label htmlFor="username">Username</label>
-        <input id="username" name="username" value={values.username} onChange={handleChange} />
+        <div className="input">
+          <input id="username" name="username" value={values.username} onChange={handleChange} />
+        </div>
+        <span className="errorMessage">{errors.username}</span>
 
         <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          values={values.password}
-          onChange={handleChange}
-        />
+        <div className="input">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            values={values.password}
+            onChange={handleChange}
+          />
+        </div>
+        <span className="errorMessage">{errors.password}</span>
 
         <div className="captchaWrapper">
           <div className="captcha">
-            <img src={captcha} alt="captcha" />
+            <img src={captcha?.captcha_content} alt="captcha" />
           </div>
-          <input
-            id="captcha"
-            name="captcha"
-            type="text"
-            className="captchaInput"
-            values={values.captcha}
-            onChange={handleChange}
-            placeholder="Enter captcha text"
-          />
+          <div className="input captchaInput">
+            <input
+              id="captcha"
+              name="captcha"
+              type="text"
+              className=""
+              values={values.captcha}
+              onChange={handleChange}
+              placeholder="Enter captcha text"
+            />
+            <img src={Refresh} alt="refresh" onClick={fetchCaptcha} />
+          </div>
         </div>
 
         <div className="row">
@@ -109,7 +125,7 @@ const ManagementLogin = () => {
             Forgot password?
           </span>
         </div>
-        <span>{error}</span>
+        <span className="errorMessage">{error}</span>
 
         <button className="btn" type="submit">
           Log in
