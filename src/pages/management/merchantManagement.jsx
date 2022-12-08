@@ -8,10 +8,12 @@ import "./styles/merchantManagement.scss";
 const MerchantManagement = () => {
   const [merchants, setMerchants] = useState([]);
   const [items, setItems] = useState(merchants);
+  const [currPage, setCurrPage] = useState(0);
+  const [pages, setPages] = useState(0);
 
   useEffect(() => {
-    get(setMerchants, "/api/admin/merchant/list?page=1&size=10&status=all");
-  }, []);
+    get(setMerchants, `/api/admin/merchant/list?page=${1}&size=1000&status=all`);
+  }, [currPage]);
 
   const search = (val) => {
     setItems(merchants.merchants.filter((m) => m.did.toString().includes(val)));
@@ -19,6 +21,7 @@ const MerchantManagement = () => {
 
   useEffect(() => {
     setItems(merchants?.merchants);
+    setPages(Math.ceil(merchants.total / 5));
   }, [merchants]);
 
   return (
@@ -49,7 +52,14 @@ const MerchantManagement = () => {
             />
           </div>
         </div>
-        <ManagementTable data={items} modify={post} type={TABLETYPE.MERCHANT} />
+        <ManagementTable
+          data={items}
+          modify={post}
+          type={TABLETYPE.MERCHANT}
+          currPage={currPage}
+          setCurrPage={setCurrPage}
+          pages={pages}
+        />
       </div>
     </div>
   );

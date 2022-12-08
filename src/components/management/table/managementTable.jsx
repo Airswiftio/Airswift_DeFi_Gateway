@@ -6,9 +6,17 @@ import { TABLETYPE } from "../../types";
 import "./managementTable.scss";
 import { useEffect } from "react";
 
-const ManagementTable = ({ data, type, modify, selected, setSelected }) => {
+const ManagementTable = ({
+  data,
+  type,
+  modify,
+  selected,
+  setSelected,
+  currPage,
+  setCurrPage,
+  pages,
+}) => {
   const [items, setItems] = useState(0);
-  const [currPage, setCurrPage] = useState(0);
   const [allSelected, setAllSelected] = useState(false);
 
   const renderRows = (num) => {
@@ -103,11 +111,7 @@ const ManagementTable = ({ data, type, modify, selected, setSelected }) => {
         <div>{renderRows(items)[currPage]}</div>
       </div>
 
-      <ManagementPagination
-        pages={Math.ceil(items / 5)}
-        currPage={currPage}
-        setCurrPage={setCurrPage}
-      />
+      <ManagementPagination pages={pages} currPage={currPage} setCurrPage={setCurrPage} />
     </div>
   );
 };
