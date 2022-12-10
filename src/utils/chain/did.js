@@ -50,7 +50,7 @@ function listSort(ArrList = [], key = "id") {
 
 export function didIDCreate(account = "") {
   account = empty(account) ? dbGetUserWallet()?.account : account;
-  console.log("DID Create Account: ", DIDPrefix + account);
+  //console.log("DID Create Account: ", DIDPrefix + account);
   return DIDPrefix + account;
 }
 

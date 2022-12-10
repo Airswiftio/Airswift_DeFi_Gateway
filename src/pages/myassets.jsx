@@ -23,14 +23,15 @@ const Assets = () => {
     { key: "pending", title: "Pending" },
   ];
   const getIncomeTotal = async () => {
-    const res = await GetPaymentSummary({ tz: new Date().getTimezoneOffset() / -60 });
+    const res = await GetPaymentSummary({ tz: 8 });
     setIncomeTotal({
       total: res?.data?.latest_90_days_total_payment?.toFixed(2) ?? incomeTotal?.total?.toFixed(2),
       today: res?.data?.today_total_payment?.toFixed(2) ?? incomeTotal?.today?.toFixed(2),
     });
   };
   const getWithdrawTotal = async () => {
-    const res = await GetWithdrawSummary({ tz: new Date().getTimezoneOffset() / -60 });
+    // new Date().getTimezoneOffset() / -60
+    const res = await GetWithdrawSummary({ tz: 8 });
     setWithdrawTotal({
       total:
         res?.data?.latest_90_days_total_withdraw?.toFixed(2) ?? withdrawTotal?.total?.toFixed(2),
@@ -51,6 +52,11 @@ const Assets = () => {
     getWithdrawTotal();
     getVCs();
   }, []);
+
+  useEffect(() => {
+    console.log("Income: ", incomeTotal);
+    console.log("Withdraw: ", withdrawTotal);
+  });
 
   return (
     <div>

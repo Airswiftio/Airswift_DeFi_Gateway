@@ -7,6 +7,7 @@ const apiGet = (url, p) =>
       return res;
     })
     .catch((ee) => {
+      console.log(ee);
       return ee;
     });
 const apiPost = (url, p) =>

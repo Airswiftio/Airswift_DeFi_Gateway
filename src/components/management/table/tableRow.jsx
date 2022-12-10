@@ -110,7 +110,7 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
               id={data?.id}
               open={openModal}
             />
-            <span style={{ "min-width": "80px", "text-align": "right" }}>{toggleState}</span>
+            <span style={{ minWidth: "80px", textAlign: "right" }}>{toggleState}</span>
           </div>
         ) : (
           <img src={SettingsSVG} alt="settings" onClick={() => setIsOpen(true)} />

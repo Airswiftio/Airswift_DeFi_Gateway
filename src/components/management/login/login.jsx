@@ -39,6 +39,7 @@ const ManagementLogin = () => {
   };
 
   const checkAuth = (a) => {
+    console.log("A: ", a);
     if (a.name === "AxiosError") {
       setError("Manager not found or password not correct.");
     } else if (a.privileges.includes("sub-account")) {

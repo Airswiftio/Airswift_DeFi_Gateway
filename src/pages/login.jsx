@@ -13,7 +13,7 @@ import {
   UserLogin,
   UserRegister,
 } from "@@/utils/request/api";
-import { dbSetUserWallet, empty, getOneDIDById } from "@@/utils/function";
+import { dbSetUserWallet, empty, getOneDIDById, addDIDWhenEmpty } from "@@/utils/function";
 import LoginSvg from "@@/assets/login.svg";
 import Alert from "@@/components/PopUp/Alert";
 import { didIDCreate } from "@@/utils/chain/did";
@@ -154,7 +154,9 @@ const Login = () => {
       return false;
     }
 
-    const didDocument = await getOneDIDById(didIDCreate(userInfo?.account));
+    const createDID = didIDCreate(userInfo?.account);
+    console.log("Created DID: ", createDID);
+    const didDocument = await addDIDWhenEmpty(createDID);
     console.log("DID Document: ", didDocument);
     const data = {
       eth_address: userInfo?.account,
@@ -276,7 +278,9 @@ const Login = () => {
               </button>
               <button
                 className="installMetamask"
-                onClick={() => window.open("https://metamask.io/download/")}
+                onClick={() =>
+                  !window.ethereum ? window.open("https://metamask.io/download/") : null
+                }
               >
                 Install Metamask Wallet
               </button>

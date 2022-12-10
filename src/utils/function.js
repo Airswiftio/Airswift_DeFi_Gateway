@@ -192,8 +192,8 @@ export function addDIDWhenEmpty(item) {
   return new dexieDB("as_did").addOnce(data, { did: did });
 }
 
-export function getOneDIDById(did = "") {
-  const didById = new dexieDB("as_did").get({ did: did });
-  console.log(didById);
+export async function getOneDIDById(did = "") {
+  const didById = await new dexieDB("as_did").get({ did: did });
+  console.log("GET DID By ID: ", didById);
   return didById;
 }

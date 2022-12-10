@@ -5,10 +5,16 @@ import { Search, ManagementTable } from "@@/components";
 
 const LiquidityManagement = () => {
   const [pools, setPools] = useState();
+  const [currPage, setCurrPage] = useState(0);
+  const [pages, setPages] = useState(0);
 
   useEffect(() => {
     get(setPools, "/api/admin/pool/list?page=1&size=10&status=all");
-  }, []);
+  }, [currPage]);
+
+  useEffect(() => {
+    setPages(Math.ceil(pools?.pools.length / 5));
+  }, [pools]);
 
   return (
     <div className="merchantManagementWrapper">
@@ -16,7 +22,14 @@ const LiquidityManagement = () => {
         <div className="managementSearchWrapper">
           <Search title="Search Pools or Token" />
         </div>
-        <ManagementTable data={pools?.pools || {}} type={TABLETYPE.LIQUIDITY} modify={post} />
+        <ManagementTable
+          data={pools?.pools || {}}
+          type={TABLETYPE.LIQUIDITY}
+          modify={post}
+          currPage={currPage}
+          setCurrPage={setCurrPage}
+          pages={pages}
+        />
       </div>
     </div>
   );

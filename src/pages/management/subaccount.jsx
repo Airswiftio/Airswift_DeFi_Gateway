@@ -16,14 +16,20 @@ const SubAccount = () => {
   const [deleteIsOpen, setDeleteOpen] = useState(false);
   const [createIsOpen, setCreateOpen] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [currPage, setCurrPage] = useState(0);
+  const [pages, setPages] = useState(0);
 
   useEffect(() => {
-    get(setSubAccounts, "/api/admin/manager/list?page=1&size=10&status=all");
-  }, [createIsOpen, deleteIsOpen]);
+    get(setSubAccounts, "/api/admin/manager/list?page=1&size=1000&status=all");
+  }, [currPage]);
 
   useEffect(() => {
     console.log("Selected: ", selected);
   }, [selected]);
+
+  useEffect(() => {
+    setPages(Math.ceil(subAccounts?.managers.length / 5));
+  }, [subAccounts]);
 
   return (
     <div className="subAccountWrapper">
@@ -57,6 +63,9 @@ you want to delete these accounts?"
           selected={selected}
           setSelected={setSelected}
           modify={setSubAccounts}
+          currPage={currPage}
+          setCurrPage={setCurrPage}
+          pages={pages}
         />
       </div>
     </div>
