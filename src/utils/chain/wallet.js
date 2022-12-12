@@ -76,9 +76,9 @@ export const detectionEnvironment = async () => {
   if (!WEthereum.isMetaMask) {
     return {code:100,msg:'MetaMask not install!',url:metamaskUrl};
   }
-  if(!checkNetwork((await getNetwork()).chainId)){
-    return {code:101,msg:'Chain error'}
-  }
+  // if(!checkNetwork((await getNetwork()).chainId)){
+  //   return {code:101,msg:'Chain error'}
+  // }
   return {code:1000,msg:'ok'};
 }
 
@@ -206,9 +206,9 @@ export const switchNetwork = async (chainId = 0) => {
     return{code:-1,msg:'Change network failed!'}
   }
 
-  if(![1,5,56,97].includes(chainId)){
-    return{code:-1,msg:'Chain error!'}
-  }
+  // if(![1,5,56,97].includes(chainId)){
+  //   return{code:-1,msg:'Chain error!'}
+  // }
 
   const chainData = {
     'chain_1':{
