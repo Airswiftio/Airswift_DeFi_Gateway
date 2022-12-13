@@ -35,6 +35,10 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
         setIsOpen(false);
     };
 
+    const viewChainTx = (item) => {
+        window.open(`https://testnet.bscscan.com/tx/${item.tx_hash}`)
+    }
+
     const getList = async () => {
         let params = {
             // app_id:0,
@@ -77,7 +81,11 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
                             <span>{item?.amount}</span>
                             <span>{conversionUtcDate(item.created_at)}</span>
                             {item?.status === 'complete'
-                                ? (<span>On Chain Status</span>)
+                                ? (
+                                    <div className="onChainStatus" onClick={()=>viewChainTx(item)} >
+                                        <div>On Chain Status</div>
+                                    </div>
+                                )
                                 : (<span onClick={ViewMore}><img src={Doc} alt="View more" /></span>)}
                         </div>
                     )
