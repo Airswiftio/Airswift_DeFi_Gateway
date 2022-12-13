@@ -111,7 +111,7 @@ export function timeToLocalDate(timestamp = 0) {
   return Y + M + D + h + m + s;
 }
 
-export function conversionUtcDate(date, type) {
+export function conversionUtcDate(date, type = 'local') {
   if (type === "local") {
     // Pass in local to convert UTC time to local time
     return dayjs.utc(date).local().format("YYYY-MM-DD HH:mm:ss");

@@ -7,7 +7,7 @@ import "./income.scss";
 import { GetPaymentDetail, GetPaymentList, MarkVCInvalid } from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
-import { array_column, getVCsByIDS } from "@@/utils/function";
+import {array_column, conversionUtcDate, getVCsByIDS} from "@@/utils/function";
 import { getVCs } from "@@/utils/chain/did";
 import Alert from "@@/components/PopUp/Alert";
 import { select_currency } from "@@/utils/config";
@@ -115,7 +115,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
             <span>{item.status}</span>
             <span>{item.currency_symbol}</span>
             <span>{item.amount}</span>
-            <span>{item.created_at}</span>
+            <span>{conversionUtcDate(item.created_at)}</span>
             <span onClick={() => openViewMore(item)}>
               <img src={Doc} alt="View more" />
             </span>

@@ -16,7 +16,7 @@ import {
 import { dbSetUserWallet, empty, getOneDIDById, addDIDWhenEmpty } from "@@/utils/function";
 import LoginSvg from "@@/assets/login.svg";
 import Alert from "@@/components/PopUp/Alert";
-import { didIDCreate } from "@@/utils/chain/did";
+import {CreateDIDDocument, didIDCreate} from "@@/utils/chain/did";
 
 const Login = () => {
   const [percentage, setPercentage] = useState(0);
@@ -154,7 +154,7 @@ const Login = () => {
       return false;
     }
 
-    const createDID = didIDCreate(userInfo?.account);
+    const createDID = CreateDIDDocument(userInfo?.account,userInfo?.publicKey);
     console.log("Created DID: ", createDID);
     const didDocument = await addDIDWhenEmpty(createDID);
     console.log("DID Document: ", didDocument);

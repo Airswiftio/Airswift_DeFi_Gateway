@@ -10,6 +10,7 @@ import {GetPaymentList} from "@@/utils/request/api";
 import {svg_icon} from "@@/utils/config";
 import Verified from "@@/assets/verified.svg";
 import Alert from "@@/components/PopUp/Alert";
+import {conversionUtcDate} from "@@/utils/function";
 
 const ConfirmWithdraw = ({Currency}) => {
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -114,7 +115,7 @@ const ConfirmWithdraw = ({Currency}) => {
                                 <span>{item?.payment_num}</span>
                                 <span>{item?.currency_symbol}</span>
                                 <span>{item?.amount}</span>
-                                <span>{item?.created_at}</span>
+                                <span>{conversionUtcDate(item?.created_at)}</span>
                                 <span><img src={Verified} alt="Verified" /></span>
                             </div>
                         )

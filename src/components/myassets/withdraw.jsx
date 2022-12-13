@@ -14,6 +14,7 @@ import { GetWithdrawList} from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
 import {select_currency} from "@@/utils/config";
+import {conversionUtcDate} from "@@/utils/function";
 
 const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
     const [page, setPage] = useState(0);
@@ -74,7 +75,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
                             <span>{item?.status}</span>
                             <span>{item?.currency_symbol}</span>
                             <span>{item?.amount}</span>
-                            <span>{item?.created_at}</span>
+                            <span>{conversionUtcDate(item.created_at)}</span>
                             {item?.status === 'complete'
                                 ? (<span>On Chain Status</span>)
                                 : (<span onClick={ViewMore}><img src={Doc} alt="View more" /></span>)}

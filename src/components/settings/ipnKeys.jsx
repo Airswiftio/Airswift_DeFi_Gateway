@@ -2,6 +2,7 @@ import React from "react";
 import { DefaultButton } from "@@/components";
 import "./ipnKeys.scss";
 import { ModifyApplicationIpnKey} from "@@/utils/request/api";
+import {conversionUtcDate} from "@@/utils/function";
 
 const IpnKeys = ({ipnKeys,setIpnKeys}) => {
 
@@ -21,7 +22,7 @@ const IpnKeys = ({ipnKeys,setIpnKeys}) => {
 
             <div className="row">
                 <span>Last Created Time</span>
-                <span className="time">{ipnKeys.ipn_key_created_at}</span>
+                <span className="time">{conversionUtcDate(ipnKeys.ipn_key_created_at)}</span>
             </div>
 
             <div className="row">

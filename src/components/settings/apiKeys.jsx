@@ -3,6 +3,7 @@ import Copy from "@@/assets/copy.svg";
 import Refresh from "@@/assets/refresh.svg";
 import "./apiKeys.scss";
 import {ModifyApplicationApiKey} from "@@/utils/request/api";
+import {conversionUtcDate} from "@@/utils/function";
 
 const ApiKeys = ({apiKeys,setApiKeys}) => {
 
@@ -26,7 +27,7 @@ const ApiKeys = ({apiKeys,setApiKeys}) => {
             <div className="row">
                 <span>Created Time</span>
                 <span className="time">
-                    {apiKeys.api_key_created_at}
+                    {conversionUtcDate(apiKeys.api_key_created_at)}
                 </span>
             </div>
 
