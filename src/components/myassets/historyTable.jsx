@@ -10,7 +10,7 @@ const HistoryTable = ({ children, vc = true, select }) => {
         <span>Trans ID</span>
         <span>Status</span>
         <span>Currency</span>
-        <span>Amount(USD)</span>
+        <span>Amount</span>
         <span>Time</span>
         <span>View More</span>
         {vc ? <span>VCs</span> : null}

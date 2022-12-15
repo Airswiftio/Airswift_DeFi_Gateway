@@ -15,7 +15,7 @@ const LOGIN =  '/login'
 //Create an axis instance, where you can set the default configuration of the request
 const instance = axios.create({
     timeout: 10000, // Set request timeout for 10s
-    // baseURL: '/api'
+    //baseURL: '/api'
     baseURL: ApiUrl   //Set the baeUrl of different environments according to the reverse proxy configured by yourself
 })
 

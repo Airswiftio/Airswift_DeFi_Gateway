@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState} from "react";
 
 import {
   Dashboard,
@@ -35,6 +35,7 @@ const ROLES = {
 };
 
 function App() {
+  const [state, setState] = useState(0);
   useEffect(() => {
     listenWallet(); //监听钱包
   }, []);
@@ -68,9 +69,9 @@ function App() {
           }
         >
           <Route path="/" element={<Dashboard />} />
-          <Route path="assets" element={<MyAssets />} />
+          <Route path="assets" element={<MyAssets state={state} setState={setState} />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="withdraw" element={<Withdraw />} />
+          <Route path="withdraw" element={<Withdraw setState={setState}/>} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>

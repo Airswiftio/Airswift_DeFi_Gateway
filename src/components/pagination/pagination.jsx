@@ -30,7 +30,7 @@ const Pagination = ({ pages, page, setPage }) => {
           onClick={() => setPage(e)}
           key={e}
         >
-          {e}
+          {e+1}
         </button>
       ))}
       <img src={RightArrow} alt="right" onClick={() => incrementPage()} />

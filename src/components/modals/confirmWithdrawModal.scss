@@ -23,6 +23,19 @@
     gap: 1em;
     font-size: 12px;
     font-family: "Poppins";
+    position: relative;
+
+    .back{
+      position: absolute;
+      top:20px;
+      left:30px;
+      border: 0px;
+      background:none;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      font-family: 'ClashDisplay', 'Poppins';
+      font-size: 15px;
+    }
 
     .title {
       font-size: 24px;

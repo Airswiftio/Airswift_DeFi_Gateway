@@ -6,8 +6,8 @@ import { GetPaymentSummary, GetWithdrawSummary } from "@@/utils/request/api";
 import { getVCs } from "@@/utils/chain/did";
 import { select_currency } from "@@/utils/config";
 
-const Assets = () => {
-  const [state, setState] = useState(0);
+const Assets = ({state, setState}) => {
+  //const [state, setState] = useState(0);
   const [incomeTotal, setIncomeTotal] = useState({ total: 0, today: 0 });
   const [withdrawTotal, setWithdrawTotal] = useState({ total: 0, today: 0 });
   const [selectStatus, setSelectStatus] = useState();
@@ -24,6 +24,7 @@ const Assets = () => {
   ];
   const getIncomeTotal = async () => {
     const res = await GetPaymentSummary({ tz: 8 });
+    console.log("income total",res)
     setIncomeTotal({
       total: res?.data?.latest_90_days_total_payment?.toFixed(2) ?? incomeTotal?.total?.toFixed(2),
       today: res?.data?.today_total_payment?.toFixed(2) ?? incomeTotal?.today?.toFixed(2),

@@ -8,7 +8,7 @@ import ETH from "@@/assets/eth_icon.svg";
 import {GetWithdrawList} from "@@/utils/request/api";
 import {select_currency} from "@@/utils/config";
 
-const Withdraw = () => {
+const Withdraw = ({setState}) => {
   const [confirm, setConfirm] = useState(false);
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
@@ -23,6 +23,10 @@ const Withdraw = () => {
   useEffect(() => {
     setOptions1(Options?.[selectNetwork]?._child)
   }, [selectNetwork]);
+
+  const back = () => {
+    setStep(0);
+};
 
     return (
     <div className="withdrawPageWrapper">
@@ -98,7 +102,7 @@ const Withdraw = () => {
         ) }
 
         {step === 1 &&  (
-          <ConfirmWithdraw Currency={Currency} />
+          <ConfirmWithdraw Currency={Currency} setStep={back} setState={setState} />
           )
         }
       </div>

@@ -15,7 +15,7 @@ import { select_currency } from "@@/utils/config";
 const Income = ({ search, selectStatus, selectCurrency, date }) => {
   const [refreshNum, setRefreshNum] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [dataList, setDataList] = useState([]);
   const [dataTotal, setDataTotal] = useState(0);
   const [itemData, setItemData] = useState({});
@@ -25,6 +25,9 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
   ];
+
+  const pagesize=3;
+
   const openViewMore = async (item) => {
     const res = await GetPaymentDetail(item?.payment_num);
     if (res?.code !== 1000) {
@@ -59,8 +62,8 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
   const getList = async () => {
     let params = {
       // app_id:0,
-      page: 1,
-      size: 10,
+      page: page+1,
+      size: pagesize,
       status: statusOptions?.[selectStatus]?.key ?? "all",
       payment_num: search,
       date: date ?? "",
@@ -72,27 +75,41 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
     console.log("Payments: ", res);
     if (res?.code === 1000) {
       let payments_data = res?.data?.payments ?? [];
+
+      console.log("1",payments_data )
+
       let VCids = [];
       payments_data.map((item, index) => {
         VCids = [...VCids, item?.vcs?.[0]?.vcid];
         return item;
       });
 
+      console.log("VC", VCids )
+
+      console.log("2",payments_data )
+
       let VCList = await getVCsByIDS(VCids);
+      console.log("VC", VCList )
       let VCExistIDS = array_column(VCList, "vc_id");
+
+      console.log("3",payments_data )
+
       payments_data.map((item, index) => {
         item.vc_exist = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? true : false;
         return item;
       });
       // console.log('rrd',rrd);
+      console.log("4",payments_data )
       setDataList(payments_data);
       setDataTotal(res?.data?.total);
     }
   };
 
   useEffect(() => {
+    // alert(page+1);
     getList();
-  }, [search, selectStatus, selectCurrency, date, refreshNum]);
+    console.log( "total page", parseInt(dataTotal / 10))
+  }, [search, selectStatus, selectCurrency, date, page, refreshNum]);
 
   useEffect(() => {
     getVCs();
@@ -132,7 +149,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
           </div>
         ))}
       </HistoryTable>
-      <Pagination pages={parseInt(dataTotal / 10)} page={page} setPage={setPage} />
+      <Pagination pages={parseInt(dataTotal / pagesize)+1} page={page} setPage={setPage} />
     </div>
   );
 };

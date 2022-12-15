@@ -12,7 +12,7 @@ import Verified from "@@/assets/verified.svg";
 import Alert from "@@/components/PopUp/Alert";
 import {conversionUtcDate} from "@@/utils/function";
 
-const ConfirmWithdraw = ({Currency}) => {
+const ConfirmWithdraw = ({Currency, setStep, setState}) => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [isAll, setIsAll] = useState(false);
     const [checkedList, setCheckedList] = useState([]);
@@ -42,6 +42,8 @@ const ConfirmWithdraw = ({Currency}) => {
     const closeModal = () => {
         setIsOpen(false);
     };
+
+
 
     const selectAll = () => {
         setIsAll(checkedList?.length === 0 ? true : false);
@@ -92,11 +94,13 @@ const ConfirmWithdraw = ({Currency}) => {
                     data={selectData}
                     currency={Currency}
                     click={closeModal}
+                    setState={setState}
                 />
             </Popup>
             <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
                 <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
             </Popup>
+            <button  className="back" onClick={() => setStep()}>back</button>
             <div className="title">Select available transactions</div>
             <div className="historyTableWrapper">
                 <div className="columnLabels">
@@ -122,7 +126,6 @@ const ConfirmWithdraw = ({Currency}) => {
                     )}
                 </div>
             </div>
-
             <DefaultButton
                 title="Confirm Withdraw"
                 align={1}

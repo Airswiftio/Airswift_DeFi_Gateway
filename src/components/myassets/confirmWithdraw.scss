@@ -5,10 +5,13 @@
   justify-content: space-between;
   gap: 2em;
   width: 100%;
+  position: relative;
 
   .title {
+    margin-top: 40px;
     align-self: flex-start;
   }
+
   .historyTableWrapper {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
@@ -41,5 +44,16 @@
         }
       }
     }
+  }
+  .back{
+    position: absolute;
+    top:-10px;
+    left:-30px;
+    border: 0px;
+    background:none;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    font-family: 'ClashDisplay', 'Poppins';
+    font-size: 15px;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef,useState } from "react";
 import Cookies from "js-cookie";
 import AuthContext from "@@/context/AuthProvider";
 import * as yup from "yup";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import Logo from "@@/assets/management/logo.svg";
 import Refresh from "@@/assets/management/refresh.svg";
 import axios from "axios";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 const formSchema = yup.object().shape({
   username: yup.string().required(),
@@ -18,6 +19,8 @@ const ManagementLogin = () => {
   const [error, setError] = useState();
   const [captcha, setCaptcha] = useState();
   const navigate = useNavigate();
+  const [token, setToken] = useState(null);
+  const captchaRef = useRef(null);
 
   const authCtx = useContext(AuthContext);
 
@@ -26,6 +29,14 @@ const ManagementLogin = () => {
       navigate("/management/dashboard");
     }
   }, []);
+
+  const onLoad = () => {
+    // this reaches out to the hCaptcha JS API and runs the
+    // execute function on it. you can use other functions as
+    // documented here:
+    // https://docs.hcaptcha.com/configuration#jsapi
+    captchaRef.current.execute();
+  };
 
   useEffect(() => {
     fetchCaptcha();
@@ -57,8 +68,9 @@ const ManagementLogin = () => {
         password: values.password,
         captcha_id: captcha.captcha_id,
         captcha_code: values.captcha,
+        
       },
-      "/api/admin/login",
+      "/api/admin/login?"+"h-captcha-response="+token,
       checkAuth
     );
     console.log("Err: ", error);
@@ -103,6 +115,13 @@ const ManagementLogin = () => {
           <div className="captcha">
             <img src={captcha?.captcha_content} alt="captcha" />
           </div>
+          <HCaptcha
+            sitekey="c594cd42-7325-4ca7-a19e-d7a6715a8f4e"
+            onLoad={onLoad}
+            onVerify={setToken}
+            ref={captchaRef}
+          />
+
           <div className="input captchaInput">
             <input
               id="captcha"

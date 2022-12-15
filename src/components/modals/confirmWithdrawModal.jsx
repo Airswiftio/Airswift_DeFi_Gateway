@@ -10,7 +10,7 @@ import { array_column, dbGetUserWallet } from "@@/utils/function";
 import Popup from "reactjs-popup";
 import Alert from "@@/components/PopUp/Alert";
 
-const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency }) => {
+const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertData, setAlertData] = useState({});
   const withdraw = async () => {
@@ -31,6 +31,7 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency }) => {
       setAlertData({ msg: res1?.msg });
       return false;
     }
+    setState(1);
     navigate("/assets");
   };
 
@@ -49,8 +50,10 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency }) => {
       <Popup open={openAlert} closeOnDocumentClick onClose={() => setOpenAlert(false)}>
         <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
       </Popup>
+    
       <div className="modalContent">
-        <div className="title">Withdraw Confirmation</div>
+      <button  className="back" onClick={() => click()}>back</button>
+        <div className="title">Withdraw Confirmation </div>
         <div className="withdrawTotal">
           <div className="total">{`$ ${total}`}</div>
           <div className="currency">
