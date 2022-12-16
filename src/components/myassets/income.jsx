@@ -7,7 +7,7 @@ import "./income.scss";
 import { GetPaymentDetail, GetPaymentList, MarkVCInvalid } from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
-import {array_column, conversionUtcDate, getVCsByIDS} from "@@/utils/function";
+import { array_column, conversionUtcDate, getVCsByIDS } from "@@/utils/function";
 import { getVCs } from "@@/utils/chain/did";
 import Alert from "@@/components/PopUp/Alert";
 import { select_currency } from "@@/utils/config";

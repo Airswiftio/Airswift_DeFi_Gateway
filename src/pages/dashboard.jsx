@@ -31,6 +31,7 @@ const Dashboard = () => {
 
   const getChartData = async (gap = "24h") => {
     const res = await GetMerchantPaymentStatChart({ gap: gap });
+    console.log("Data: ", res?.data);
     if (res?.code === 1000) {
       let data = res?.data?.payment_amount_stat ?? [];
       if (data?.length > 0) {
