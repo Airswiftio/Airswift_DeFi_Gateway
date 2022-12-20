@@ -16,6 +16,7 @@ const Assets = ({state, setState}) => {
   const [search, setSearch] = useState("");
   const statusOptions = [
     { key: "all", title: "All"},
+    {key:'closed',title:'Closed'},
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
   ];

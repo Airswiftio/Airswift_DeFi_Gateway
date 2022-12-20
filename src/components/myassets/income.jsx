@@ -23,6 +23,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
   const [alertData, setAlertData] = useState({});
   const statusOptions = [
     { key: "all", title: "Al" },
+    {key:'closed',title:'Closed'},
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
   ];
