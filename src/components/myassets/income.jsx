@@ -22,6 +22,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertData, setAlertData] = useState({});
   const statusOptions = [
+    { key: "all", title: "Al" },
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
   ];
@@ -60,9 +61,10 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
   };
 
   const getList = async () => {
+    console.log(statusOptions?.[selectStatus]?.key ?? "all")
     let params = {
       // app_id:0,
-      page: page+1,
+      page: page,
       size: pagesize,
       status: statusOptions?.[selectStatus]?.key ?? "all",
       payment_num: search,

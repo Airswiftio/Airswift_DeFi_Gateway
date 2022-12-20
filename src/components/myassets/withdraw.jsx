@@ -23,6 +23,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
     const WithdrawStatus = [
+        {key:'all',title:'All'},
         {key:'complete',title:'Complete'},
         {key:'pending',title:'Pending'},
     ];
@@ -40,6 +41,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
     }
 
     const getList = async () => {
+        console.log(WithdrawStatus?.[selectStatus]?.key??'complete')
         let params = {
             // app_id:0,
             page:1,
