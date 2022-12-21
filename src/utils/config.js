@@ -83,6 +83,7 @@ export async function loading_currency() {
 export function select_currency(type = "list") {
   const currency_key = "currency_key";
   const Currency = dbStore.get(currency_key);
+  console.log(Currency)
   return Currency?.[type] ?? [];
 }
 

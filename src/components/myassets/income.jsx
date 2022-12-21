@@ -71,8 +71,10 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
       payment_num: search,
       date: date ?? "",
     };
+    const currencyOptions = select_currency();
+    currencyOptions.unshift({ key: "all", title: "All"});
     if (selectCurrency !== null) {
-      params.currency_id = select_currency()?.[selectCurrency]?.id;
+      params.currency_id = currencyOptions?.[selectCurrency]?.id;
     }
     const res = await GetPaymentList(params);
     console.log("Payments: ", res);

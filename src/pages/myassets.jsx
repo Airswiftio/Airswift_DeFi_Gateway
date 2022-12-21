@@ -16,10 +16,13 @@ const Assets = ({state, setState}) => {
   const [search, setSearch] = useState("");
   const statusOptions = [
     { key: "all", title: "All"},
-    {key:'closed',title:'Closed'},
+    { key:'closed',title:'Closed'},
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
   ];
+  const currencyOptions = select_currency();
+  currencyOptions.unshift({ key: "all", title: "All"});
+  console.log(currencyOptions);
   const WithdrawStatus = [
     { key: "all", title: "All"},
     { key: "complete", title: "Complete" },
@@ -90,7 +93,7 @@ const Assets = ({state, setState}) => {
             />
             <DropdownNew
               buttonStyle={{ width: "150px" }}
-              options={select_currency()}
+              options={currencyOptions}
               defaultTitle="Currency"
               selected={selectCurrency}
               setSelected={setSelectCurrency}
