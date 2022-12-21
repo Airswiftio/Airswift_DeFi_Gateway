@@ -25,8 +25,9 @@ const Dashboard = () => {
 
   const getTotal = async () => {
     const res = await GetMerchantBaseSummary();
+    console.log("income total",res)
     setTotalBalance(res?.data?.total_balance?.toFixed(2) ?? totalBalance.toFixed(2));
-    setTodayIncome(res?.data?.total_withdraw?.toFixed(2) ?? todayIncome.toFixed(2));
+    setTodayIncome(res?.data?.today_total_payment?.toFixed(2) ?? todayIncome.toFixed(2));
   };
 
   const getChartData = async (gap = "24h") => {
