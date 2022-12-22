@@ -15,7 +15,7 @@ import { select_currency } from "@@/utils/config";
 const Income = ({ search, selectStatus, selectCurrency, date }) => {
   const [refreshNum, setRefreshNum] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [dataList, setDataList] = useState([]);
   const [dataTotal, setDataTotal] = useState(0);
   const [itemData, setItemData] = useState({});
@@ -65,7 +65,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
     console.log(statusOptions?.[selectStatus]?.key ?? "all")
     let params = {
       // app_id:0,
-      page: page,
+      page: page+1,
       size: pagesize,
       status: statusOptions?.[selectStatus]?.key ?? "all",
       payment_num: search,
