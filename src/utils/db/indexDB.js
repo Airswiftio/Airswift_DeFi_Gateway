@@ -70,6 +70,7 @@ dexieDB.prototype = {
             });
     },
     getAllByKey(key = '',IDs = []){
+        // console.log(db[this.table].where(key).anyOf(IDs))
         return db[this.table].where(key).anyOf(IDs).toArray()
             .then((data)=>{
                 return data;

@@ -92,7 +92,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
       console.log("VC", VCids )
 
       console.log("2",payments_data )
-
+      VCids=VCids.filter(Boolean);
       let VCList = await getVCsByIDS(VCids);
       console.log("VC", VCList )
       let VCExistIDS = array_column(VCList, "vc_id");
