@@ -15,6 +15,7 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState 
   const [alertData, setAlertData] = useState({});
   const withdraw = async () => {
     const VCids = data.map((vv) => vv?.vcs?.[0]?.vcid);
+    console.log('data',data);
     const res = await createVP(VCids);
     if (res?.code !== 1000) {
       setOpenAlert(true);
@@ -31,8 +32,11 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState 
       setAlertData({ msg: res1?.msg });
       return false;
     }
+
     setState(1);
-    navigate("/assets");
+    navigate("/assets",{
+      state: {status:1},
+    });
   };
 
   useEffect(() => {
