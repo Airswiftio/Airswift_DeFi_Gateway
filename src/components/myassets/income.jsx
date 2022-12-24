@@ -154,7 +154,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
           </div>
         ))}
       </HistoryTable>
-      <Pagination pages={parseInt(dataTotal / pagesize)+1} page={page} setPage={setPage} />
+      <Pagination pages={Math.ceil(dataTotal / pagesize)} page={page} setPage={setPage} />
     </div>
   );
 };

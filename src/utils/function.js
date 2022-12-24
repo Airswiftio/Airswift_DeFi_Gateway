@@ -168,6 +168,7 @@ export function dbDelSignData() {
 }
 
 export function addAllVCs(list) {
+  console.log(new dexieDB("as_vc").addAllOrUpdate(list))
   return new dexieDB("as_vc").addAllOrUpdate(list);
 }
 export function getAllVCs() {

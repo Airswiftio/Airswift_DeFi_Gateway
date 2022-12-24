@@ -16,6 +16,7 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState 
   const withdraw = async () => {
     const VCids = data.map((vv) => vv?.vcs?.[0]?.vcid);
     const res = await createVP(VCids);
+    console.log(res)
     if (res?.code !== 1000) {
       setOpenAlert(true);
       setAlertData({ msg: res?.msg });
