@@ -5,8 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./datepicker.scss";
 import moment from "moment";
 
-const Datepicker = ({date,setDate}) => {
-  const [initial, setInitial] = useState(true);
+const Datepicker = ({date,setDate,initial, setInitial}) => {
   const [pickedDate, setPickedDate] = useState(new Date());
 
   const CustomInput = forwardRef(({ value, onClick }, ref) => (

@@ -17,6 +17,11 @@ const Assets = ({state, setState}) => {
   const [selectCurrency, setSelectCurrency] = useState();
   const [date, setDate] = useState();
   const [search, setSearch] = useState("");
+  const [searchTransID, setSearchTransID] = useState("");
+  const local_tz = new Date().getTimezoneOffset() / -60
+  const [initial, setInitial] = useState(true);
+
+
   const statusOptions = [
     { key: "all", title: "All"},
     { key:'closed',title:'Closed'},
@@ -32,7 +37,7 @@ const Assets = ({state, setState}) => {
     { key: "pending", title: "Pending" },
   ];
   const getIncomeTotal = async () => {
-    const res = await GetPaymentSummary({ tz: 8 });
+    const res = await GetPaymentSummary({ tz: local_tz });
     console.log("income total",res)
     setIncomeTotal({
       total: res?.data?.latest_90_days_total_payment?.toFixed(2) ?? incomeTotal?.total?.toFixed(2),
@@ -40,20 +45,28 @@ const Assets = ({state, setState}) => {
     });
   };
   const getWithdrawTotal = async () => {
-    // new Date().getTimezoneOffset() / -60
-    const res = await GetWithdrawSummary({ tz: 8 });
+    const res = await GetWithdrawSummary({ tz: local_tz });
     setWithdrawTotal({
-      total:
-        res?.data?.latest_90_days_total_withdraw?.toFixed(2) ?? withdrawTotal?.total?.toFixed(2),
+      total: res?.data?.latest_90_days_total_withdraw?.toFixed(2) ?? withdrawTotal?.total?.toFixed(2),
       today: res?.data?.today_total_withdraw?.toFixed(2) ?? withdrawTotal?.today?.toFixed(2),
     });
   };
 
-  useEffect(() => {
+  const SearchTransID = () => {
+    setSearchTransID(search)
+  }
+
+  const ClearSearch = () => {
     setSelectStatus(null);
     setSelectCurrency(null);
     setDate(null);
+    setInitial(true);
     setSearch("");
+    setSearchTransID('');
+  }
+
+  useEffect(() => {
+    ClearSearch()
   }, [state]);
   useEffect(() => {
     getIncomeTotal();
@@ -100,8 +113,10 @@ const Assets = ({state, setState}) => {
               selected={selectCurrency}
               setSelected={setSelectCurrency}
             />
-            <Datepicker date={date} setDate={setDate} />
+            <Datepicker date={date} setDate={setDate} initial={initial} setInitial={setInitial} />
             <Search search={search} setSearch={setSearch} />
+            <div className="Search" onClick={SearchTransID}>Search</div>
+            <div className="Clear" onClick={ClearSearch}>Clear</div>
           </div>
           {/*<Selectors setFilters={setFilters} filters={filters} />*/}
           {state === 0 ? (

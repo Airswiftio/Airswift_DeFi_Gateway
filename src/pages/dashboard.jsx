@@ -40,13 +40,13 @@ const Dashboard = () => {
           if (gap === "24h") {
             data[kk].time1 = data[kk].title.replaceAll("-", "").replaceAll(" ", "");
             data[kk].time = explode(data[kk].title, " ")[1];
+            data[kk].time = data[kk].time + (data[kk].time < 12 ? 'am' :'pm')
           } else if (gap === "7d" || gap === "1m") {
             data[kk].time1 = data[kk].title.replaceAll("-", "");
             data[kk].time = explode(data[kk].title, "-")[1] + "." + explode(data[kk].title, "-")[2];
           }
 
-          //todo 888 Wait for obtaining the real data before deleting random data
-          const random = Math.random() * 100;
+          const random = 0;
           data[kk].balance = data[kk]?.amount + random;
           data[kk].lineBal = data[kk]?.amount + random;
         }

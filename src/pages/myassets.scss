@@ -37,6 +37,37 @@
       position: absolute;
       z-index: 5;
       top: 4em;
+
+      .Search{
+        cursor: pointer;
+        margin-left: 12px;
+        padding: 0 20px;
+        gap: 8px;
+        height: 36px;
+        line-height: 36px;
+        color: rgba(255, 255, 255, 0.7);
+        border: 2px solid transparent;
+        border-radius: 35px;
+        background-clip: padding-box, border-box;
+        background-origin: padding-box, border-box;
+        background-image: linear-gradient(to right, #040B24, #040B24), linear-gradient(98.48deg, #8DFE59 -3.85%, #3ACBF6 35.75%, #6055FF 69.61%);
+      }
+
+      .Clear{
+        cursor: pointer;
+        margin-left: 12px;
+        padding: 0 20px;
+        gap: 8px;
+        height: 36px;
+        line-height: 36px;
+        color: rgba(255, 255, 255, 0.7);
+        border: 2px solid transparent;
+        border-radius: 35px;
+        background-clip: padding-box, border-box;
+        background-origin: padding-box, border-box;
+        background-image: linear-gradient(to right, #040B24, #040B24), linear-gradient(98.48deg, #8DFE59 -3.85%, #3ACBF6 35.75%, #6055FF 69.61%);
+      }
     }
+
   }
 }

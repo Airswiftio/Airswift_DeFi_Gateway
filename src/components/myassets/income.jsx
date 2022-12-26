@@ -15,14 +15,14 @@ import { select_currency } from "@@/utils/config";
 const Income = ({ search, selectStatus, selectCurrency, date }) => {
   const [refreshNum, setRefreshNum] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [dataList, setDataList] = useState([]);
   const [dataTotal, setDataTotal] = useState(0);
   const [itemData, setItemData] = useState({});
   const [openAlert, setOpenAlert] = useState(false);
   const [alertData, setAlertData] = useState({});
   const statusOptions = [
-    { key: "all", title: "Al" },
+    { key: "all", title: "All" },
     {key:'closed',title:'Closed'},
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
@@ -65,7 +65,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
     console.log(statusOptions?.[selectStatus]?.key ?? "all")
     let params = {
       // app_id:0,
-      page: page+1,
+      page: page,
       size: pagesize,
       status: statusOptions?.[selectStatus]?.key ?? "all",
       payment_num: search,
@@ -83,16 +83,19 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
 
       console.log("1",payments_data )
 
+      //Only success status can have vc
       let VCids = [];
       payments_data.map((item, index) => {
-        VCids = [...VCids, item?.vcs?.[0]?.vcid];
+        if(item.status === 'success' && item?.vcs?.[0]?.vcid){
+          VCids = [...VCids, item?.vcs?.[0]?.vcid];
+        }
         return item;
       });
 
       console.log("VC", VCids )
 
       console.log("2",payments_data )
-      VCids=VCids.filter(Boolean);
+      // VCids=VCids.filter(Boolean);
       let VCList = await getVCsByIDS(VCids);
       console.log("VC", VCList )
       let VCExistIDS = array_column(VCList, "vc_id");
@@ -100,6 +103,10 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
       console.log("3",payments_data )
 
       payments_data.map((item, index) => {
+        item.vc_status = 'none';
+        if(item.status === 'success'){
+          item.vc_status = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? 'yes' : 'lose';
+        }
         item.vc_exist = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? true : false;
         return item;
       });
@@ -114,7 +121,14 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
     // alert(page+1);
     getList();
     console.log( "total page", parseInt(dataTotal / 10))
-  }, [search, selectStatus, selectCurrency, date, page, refreshNum]);
+  }, [ page, refreshNum]);
+
+  useEffect(() => {
+    if(page === 1){
+      getList();
+    }
+    setPage(1)
+  }, [search, selectStatus, selectCurrency, date]);
 
   useEffect(() => {
     getVCs();
@@ -141,16 +155,23 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
             <span onClick={() => openViewMore(item)}>
               <img src={Doc} alt="View more" />
             </span>
-            {item?.vc_exist === false &&
-            ["Created", "Active"].includes(item?.vcs?.[0]?.vc_status) ? (
-              <div className="RestoreVC" onClick={() => RestoreVC(item?.vcs?.[0]?.vcid)}>
-                <div>Restore VC</div>
-              </div>
-            ) : (
-              <span>
-                <img src={Verified} alt="Verified" />
-              </span>
-            )}
+            {item?.vc_status === 'lose' &&
+                (
+                    <div className="RestoreVC" onClick={() => RestoreVC(item?.vcs?.[0]?.vcid)}>
+                      <div>Restore VC</div>
+                    </div>
+                )
+            }
+            {item?.vc_status === 'yes' &&
+                (
+                    <span><img src={Verified} alt="Verified" /></span>
+                )
+            }
+            {item?.vc_status === 'none' &&
+                (
+                    <span>None</span>
+                )
+            }
           </div>
         ))}
       </HistoryTable>
