@@ -5,9 +5,12 @@ import "./myassets.scss";
 import { GetPaymentSummary, GetWithdrawSummary } from "@@/utils/request/api";
 import { getVCs } from "@@/utils/chain/did";
 import { select_currency } from "@@/utils/config";
+import {useLocation} from "react-router-dom";
 
 const Assets = ({state, setState}) => {
   //const [state, setState] = useState(0);
+  const state_data = useLocation()?.state;
+
   const [incomeTotal, setIncomeTotal] = useState({ total: 0, today: 0 });
   const [withdrawTotal, setWithdrawTotal] = useState({ total: 0, today: 0 });
   const [selectStatus, setSelectStatus] = useState();
@@ -53,11 +56,10 @@ const Assets = ({state, setState}) => {
     setSearch("");
   }, [state]);
   useEffect(() => {
-    // console.log('did',did);
-
     getIncomeTotal();
     getWithdrawTotal();
     getVCs();
+    setState(state_data?.status ?? 0)
   }, []);
 
   useEffect(() => {
