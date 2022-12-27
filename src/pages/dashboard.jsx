@@ -14,20 +14,24 @@ import "./dashboard.scss";
 import { GetMerchantBaseSummary, GetMerchantPaymentStatChart } from "@@/utils/request/api";
 import { useNavigate } from "react-router-dom";
 import { arrListSort, explode } from "@@/utils/function";
-import { loading_currency } from "@@/utils/config";
+import {get_exchange_rate, get_shop_currency_symbol, loading_currency} from "@@/utils/config";
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState(0);
-  const [totalBalance, setTotalBalance] = useState(0);
-  const [todayIncome, setTodayIncome] = useState(0);
+  const [totalBalance, setTotalBalance] = useState('0');
+  const [todayIncome, setTodayIncome] = useState('0');
   const [chartData, setChartData] = useState([]);
   const navigate = useNavigate();
 
   const getTotal = async () => {
     const res = await GetMerchantBaseSummary();
+    let currency_symbol = await get_shop_currency_symbol();
+    let exchange_rate = await get_exchange_rate();
+    let total_balance = ((res?.data?.total_balance ?? 0) * exchange_rate).toFixed(2);
+    let today_income = ((res?.data?.today_total_payment ?? 0) * exchange_rate).toFixed(2);
     console.log("income total",res)
-    setTotalBalance(res?.data?.total_balance?.toFixed(2) ?? totalBalance.toFixed(2));
-    setTodayIncome(res?.data?.today_total_payment?.toFixed(2) ?? todayIncome.toFixed(2));
+    setTotalBalance(currency_symbol + ' ' + total_balance);
+    setTodayIncome(currency_symbol + ' ' + today_income);
   };
 
   const getChartData = async (gap = "24h") => {

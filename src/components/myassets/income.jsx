@@ -20,6 +20,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
   const [dataTotal, setDataTotal] = useState(0);
   const [itemData, setItemData] = useState({});
   const [openAlert, setOpenAlert] = useState(false);
+  const [openLoading, setOpenLoading] = useState(false);
   const [alertData, setAlertData] = useState({});
   const statusOptions = [
     { key: "all", title: "All" },
@@ -46,9 +47,10 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
   };
 
   const RestoreVC = async (vc_id) => {
+    setOpenLoading(true);
     const res = await MarkVCInvalid({
       vc_ids: [vc_id],
-      all: true,
+      // all: true,
     });
     if (res?.code !== 1000) {
       setOpenAlert(true);
@@ -57,6 +59,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
     }
     setTimeout(async function () {
       await getVCs();
+      setOpenLoading(false);
       setRefreshNum(refreshNum + 1);
     }, 5000);
   };
@@ -143,6 +146,15 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
       </Popup>
       <Popup open={openAlert} closeOnDocumentClick onClose={() => setOpenAlert(false)}>
         <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
+      </Popup>
+
+      <Popup
+          open={openLoading}
+          closeOnDocumentClick={false}
+          onClose={() => setOpenLoading(false)}
+          overlayStyle = {{ background: 'rgba(0,0,0,0.8)' }}
+      >
+        <div className="loading"> Waiting ... </div>
       </Popup>
       <HistoryTable>
         {dataList.map((item, index) => (

@@ -75,6 +75,15 @@ export function array_column(array, field) {
   return array.map((v) => v[field]);
 }
 
+export function array_column2(array, field) {
+  let arr = {}
+   array.map((v) => {
+     arr[v[field]] = v;
+     return v
+   });
+  return arr;
+}
+
 export function explode(str, separator) {
   return str.split(separator);
 }

@@ -1,6 +1,7 @@
 import db from "@@/utils/db/browserDb";
-import { empty } from "@@/utils/function";
-import { GetAvailableCurrency } from "@@/utils/request/api";
+import {array_column, array_column2, empty} from "@@/utils/function";
+import {GetApplicationDetail, GetAvailableCurrency, GetExchangeRate} from "@@/utils/request/api";
+import sdStorage from "@@/utils/db/localStorageNew";
 const dbStore = db;
 
 export function select_role(type = 0) {
@@ -89,8 +90,8 @@ export function select_currency(type = "list") {
 
 export function base_currency() {
   return [
-    { key: "usd", title: "USD" },
-    { key: "cad", title: "CAD" },
+    { key: "usd", title: "USD",symbol:"$" },
+    { key: "cad", title: "CAD" ,symbol:"C$"},
   ];
 }
 
@@ -113,4 +114,44 @@ export function svg_icon(type = "") {
     default:
       return "";
   }
+}
+
+
+export async function get_shop_currency() {
+  const key = "shop_currency";
+  let res1 =  sdStorage.get(key)
+  if(res1 !== ''){
+    return res1;
+  }
+
+  const res = await GetApplicationDetail();
+  const currency = (res?.data?.legal_tender ?? 'usd').toUpperCase();
+  sdStorage.save(key,currency);
+  return currency;
+}
+
+
+export async function get_exchange_rate() {
+  const shop_currency = (await get_shop_currency());
+  const key = "exchange_rate_" + shop_currency;
+  let res1 =  sdStorage.get(key)
+  if(res1 !== ''){
+    return res1;
+  }
+
+  const res = await GetExchangeRate({to:shop_currency});
+  let rate = 1;
+  if(res?.code === 1000){
+    rate = res?.data?.rate ?? 1
+  }
+  sdStorage.save(key,rate,60*60);
+  return rate;
+}
+
+
+
+export async function get_shop_currency_symbol() {
+  const currency = await get_shop_currency();
+  const currencys = array_column2(base_currency(),'key')
+  return currencys[currency.toLowerCase()]?.symbol;
 }

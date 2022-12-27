@@ -6,6 +6,7 @@ import {ModifyApplicationBase} from "@@/utils/request/api";
 import {base_currency} from "@@/utils/config";
 import Popup from "reactjs-popup";
 import Alert from "@@/components/PopUp/Alert";
+import sdStorage from "@@/utils/db/localStorageNew";
 
 const MyStore = ({myStore,setMyStore}) => {
     const [selected, setSelected] = useState(null);
@@ -24,7 +25,7 @@ const MyStore = ({myStore,setMyStore}) => {
             setAlertData({msg:res?.msg})
             return false;
         }
-
+        sdStorage.save('shop_currency',base_currency()?.[value]?.key?.toUpperCase());
     }
 
     useEffect(() => {

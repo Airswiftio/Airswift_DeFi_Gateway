@@ -4,7 +4,7 @@ import { InfoCard, Toggle, Income, Withdraw, Datepicker, Search, DropdownNew } f
 import "./myassets.scss";
 import { GetPaymentSummary, GetWithdrawSummary } from "@@/utils/request/api";
 import { getVCs } from "@@/utils/chain/did";
-import { select_currency } from "@@/utils/config";
+import {get_exchange_rate, get_shop_currency_symbol, select_currency} from "@@/utils/config";
 import {useLocation} from "react-router-dom";
 
 const Assets = ({state, setState}) => {
@@ -39,16 +39,25 @@ const Assets = ({state, setState}) => {
   const getIncomeTotal = async () => {
     const res = await GetPaymentSummary({ tz: local_tz });
     console.log("income total",res)
+    let currency_symbol = await get_shop_currency_symbol();
+    let exchange_rate = await get_exchange_rate();
+    let total = ((res?.data?.latest_90_days_total_payment ?? incomeTotal?.total) * exchange_rate).toFixed(2);
+    let today = ((res?.data?.today_total_payment ?? incomeTotal?.today) * exchange_rate).toFixed(2);
+    console.log("income total",res)
     setIncomeTotal({
-      total: res?.data?.latest_90_days_total_payment?.toFixed(2) ?? incomeTotal?.total?.toFixed(2),
-      today: res?.data?.today_total_payment?.toFixed(2) ?? incomeTotal?.today?.toFixed(2),
+      total: currency_symbol + ' ' + total,
+      today: currency_symbol + ' ' + today,
     });
   };
   const getWithdrawTotal = async () => {
     const res = await GetWithdrawSummary({ tz: local_tz });
+    let currency_symbol = await get_shop_currency_symbol();
+    let exchange_rate = await get_exchange_rate();
+    let total = ((res?.data?.latest_90_days_total_withdraw ?? withdrawTotal?.total) * exchange_rate).toFixed(2);
+    let today = ((res?.data?.today_total_withdraw ?? withdrawTotal?.today) * exchange_rate).toFixed(2);
     setWithdrawTotal({
-      total: res?.data?.latest_90_days_total_withdraw?.toFixed(2) ?? withdrawTotal?.total?.toFixed(2),
-      today: res?.data?.today_total_withdraw?.toFixed(2) ?? withdrawTotal?.today?.toFixed(2),
+      total: currency_symbol + ' ' + total,
+      today: currency_symbol + ' ' + today,
     });
   };
 
