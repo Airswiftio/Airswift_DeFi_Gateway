@@ -32,7 +32,9 @@ const Withdraw = ({setState}) => {
     <div className="withdrawPageWrapper">
       {step === 0 && (
         <div className="controls">
-          <button className="backButton" onClick={() => navigate("/assets")}>
+          <button className="backButton" onClick={() => navigate("/assets",{
+            state: {status:1},
+          })}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

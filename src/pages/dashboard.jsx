@@ -14,24 +14,29 @@ import "./dashboard.scss";
 import { GetMerchantBaseSummary, GetMerchantPaymentStatChart } from "@@/utils/request/api";
 import { useNavigate } from "react-router-dom";
 import { arrListSort, explode } from "@@/utils/function";
-import { loading_currency } from "@@/utils/config";
+import {get_exchange_rate, get_shop_currency_symbol, loading_currency} from "@@/utils/config";
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState(0);
-  const [totalBalance, setTotalBalance] = useState(0);
-  const [todayIncome, setTodayIncome] = useState(0);
+  const [totalBalance, setTotalBalance] = useState('0');
+  const [todayIncome, setTodayIncome] = useState('0');
   const [chartData, setChartData] = useState([]);
   const navigate = useNavigate();
+  const local_tz = new Date().getTimezoneOffset() / -60
 
   const getTotal = async () => {
     const res = await GetMerchantBaseSummary();
+    let currency_symbol = await get_shop_currency_symbol();
+    let exchange_rate = await get_exchange_rate();
+    let total_balance = ((res?.data?.total_balance ?? 0) * exchange_rate).toFixed(2);
+    let today_income = ((res?.data?.today_total_payment ?? 0) * exchange_rate).toFixed(2);
     console.log("income total",res)
-    setTotalBalance(res?.data?.total_balance?.toFixed(2) ?? totalBalance.toFixed(2));
-    setTodayIncome(res?.data?.today_total_payment?.toFixed(2) ?? todayIncome.toFixed(2));
+    setTotalBalance(currency_symbol + ' ' + total_balance);
+    setTodayIncome(currency_symbol + ' ' + today_income);
   };
 
   const getChartData = async (gap = "24h") => {
-    const res = await GetMerchantPaymentStatChart({ gap: gap });
+    const res = await GetMerchantPaymentStatChart({ gap: gap,tz:local_tz });
     console.log("Data: ", res?.data);
     if (res?.code === 1000) {
       let data = res?.data?.payment_amount_stat ?? [];
@@ -40,13 +45,14 @@ const Dashboard = () => {
           if (gap === "24h") {
             data[kk].time1 = data[kk].title.replaceAll("-", "").replaceAll(" ", "");
             data[kk].time = explode(data[kk].title, " ")[1];
-          } else if (gap === "7d" || gap === "1m") {
+            data[kk].time = data[kk].time + (data[kk].time < 12 ? 'am' :'pm')
+          }
+          else if (gap === "7d" || gap === "1m") {
             data[kk].time1 = data[kk].title.replaceAll("-", "");
             data[kk].time = explode(data[kk].title, "-")[1] + "." + explode(data[kk].title, "-")[2];
           }
 
-          //todo 888 Wait for obtaining the real data before deleting random data
-          const random = Math.random() * 100;
+          const random = 0;
           data[kk].balance = data[kk]?.amount + random;
           data[kk].lineBal = data[kk]?.amount + random;
         }

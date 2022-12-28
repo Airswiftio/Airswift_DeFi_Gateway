@@ -17,6 +17,7 @@ import { dbSetUserWallet, empty, getOneDIDById, addDIDWhenEmpty } from "@@/utils
 import LoginSvg from "@@/assets/login.svg";
 import Alert from "@@/components/PopUp/Alert";
 import {CreateDIDDocument, didIDCreate} from "@@/utils/chain/did";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [percentage, setPercentage] = useState(0);
@@ -281,7 +282,7 @@ const Login = () => {
               <button
                 className="installMetamask"
                 onClick={() =>
-                  !window.ethereum ? window.open("https://metamask.io/download/") : null
+                  !window.ethereum ? window.open("https://metamask.io/download/") : toast("Metamask plugin already installed!")
                 }
               >
                 Install Metamask Wallet

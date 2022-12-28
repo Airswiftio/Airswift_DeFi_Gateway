@@ -20,21 +20,37 @@ const Pagination = ({ pages, page, setPage }) => {
 
   return (
     <div className="pagination">
-      <button className="pageButton" onClick={() => setPage(0)}>
+      <button className="pageButton pointer" onClick={() => setPage(1)}>
         First
       </button>
-      <img src={LeftArrow} alt="left" onClick={() => decrementPage()} />
-      {[...Array(pages).keys()].map((e) => (
-        <button
-          className={`pageButton ${e === page ? "selected" : null}`}
-          onClick={() => setPage(e)}
-          key={e}
-        >
-          {e+1}
+      <img className="pointer" src={LeftArrow} alt="left" onClick={() => decrementPage()} />
+        {page >= 4 && <button className="pageButton default"> ... </button>}
+        {page >= 3 &&
+            <button className="pageButton pointer" onClick={() => setPage(page - 2)}>
+                {page - 2}
+            </button>
+        }
+        {page >= 2 &&
+            <button className="pageButton pointer" onClick={() => setPage(page - 1)}>
+                {page - 1}
+            </button>
+        }
+        <button className="pageButton selected default" >
+            {page}
         </button>
-      ))}
-      <img src={RightArrow} alt="right" onClick={() => incrementPage()} />
-      <button className="pageButton" onClick={() => setPage(pages - 1)}>
+        {page <= pages - 1 &&
+            <button className="pageButton pointer" onClick={() => setPage(page + 1)}>
+                {page + 1}
+            </button>
+        }
+        {page <= pages - 2 &&
+            <button className="pageButton pointer" onClick={() => setPage(page + 2)}>
+                {page + 2}
+            </button>
+        }
+        {page <= pages - 3 && <button className="pageButton default"> ... </button>}
+      <img className="pointer" src={RightArrow} alt="right" onClick={() => incrementPage()} />
+      <button className="pageButton pointer" onClick={() => setPage(pages)}>
         Last
       </button>
     </div>

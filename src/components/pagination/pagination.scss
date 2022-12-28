@@ -23,4 +23,13 @@
     background: #3acbf6;
     color: #040b24;
   }
+  .disable{
+    cursor:not-allowed;
+  }
+  .default{
+    cursor: default;
+  }
+  .pointer{
+    cursor: pointer;
+  }
 }

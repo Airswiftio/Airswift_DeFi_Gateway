@@ -1,9 +1,9 @@
 import Dexie from 'dexie';
 export const db = new Dexie('AirSwiftDeFiDatabase');
-db.version(1).stores({
+db.version(20).stores({
     as_did: '++id, did, did_document',
     as_local: '++id, key, value',
-    as_vc: 'id, created_at, updated_at, payment_id, payment, merchant_id, merchant, vc_id, vc_content, vc_status', // Primary key and indexed props
+    as_vc: 'id, created_at, updated_at, payment_id, payment, merchant_id, merchant, vc_id, vc_content, vc_status, is_get, trans_id, currency, amount, time', // Primary key and indexed props
 });
 
 export function dexieDB(table = ''){
@@ -78,6 +78,9 @@ dexieDB.prototype = {
             .catch((ff)=>{
                 return false;
             });
+    },
+    _init(){
+        return db[this.table];
     },
 }
 

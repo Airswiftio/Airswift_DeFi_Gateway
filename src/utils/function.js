@@ -75,6 +75,23 @@ export function array_column(array, field) {
   return array.map((v) => v[field]);
 }
 
+export function array_column2(array, field) {
+  let arr = {}
+   array.map((v) => {
+     arr[v[field]] = v;
+     return v
+   });
+  return arr;
+}
+
+export function array_values(array) {
+  let arr = []
+  for (const key in array) {
+    arr = [...arr,array[key]]
+  }
+  return arr;
+}
+
 export function explode(str, separator) {
   return str.split(separator);
 }
@@ -168,10 +185,20 @@ export function dbDelSignData() {
 }
 
 export function addAllVCs(list) {
+  console.log(new dexieDB("as_vc").addAllOrUpdate(list))
   return new dexieDB("as_vc").addAllOrUpdate(list);
 }
 export function getAllVCs() {
   return new dexieDB("as_vc").getAll();
+}
+
+
+export async function getVCsCanWithdraw(currency = '') {
+  // const vcs = await new dexieDB("as_vc")._init().where({is_get:1}).where('vc_status').anyOf(['Active','Created']).toArray();
+  const vcs = await new dexieDB("as_vc")._init().where({is_get:1,currency:currency}).filter(function (vc) {
+    return ['Active','Created'].includes(vc.vc_status);
+  }).toArray();
+  return vcs;
 }
 
 export function getVCsByIDS(IDs = []) {
@@ -197,3 +224,5 @@ export async function getOneDIDById(did = "") {
   console.log("GET DID By ID: ", didById);
   return didById;
 }
+
+

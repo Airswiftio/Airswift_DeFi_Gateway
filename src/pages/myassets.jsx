@@ -4,16 +4,24 @@ import { InfoCard, Toggle, Income, Withdraw, Datepicker, Search, DropdownNew } f
 import "./myassets.scss";
 import { GetPaymentSummary, GetWithdrawSummary } from "@@/utils/request/api";
 import { getVCs } from "@@/utils/chain/did";
-import { select_currency } from "@@/utils/config";
+import {get_exchange_rate, get_shop_currency_symbol, select_currency} from "@@/utils/config";
+import {useLocation} from "react-router-dom";
 
 const Assets = ({state, setState}) => {
   //const [state, setState] = useState(0);
+  const state_data = useLocation()?.state;
+
   const [incomeTotal, setIncomeTotal] = useState({ total: 0, today: 0 });
   const [withdrawTotal, setWithdrawTotal] = useState({ total: 0, today: 0 });
   const [selectStatus, setSelectStatus] = useState();
   const [selectCurrency, setSelectCurrency] = useState();
   const [date, setDate] = useState();
   const [search, setSearch] = useState("");
+  const [searchTransID, setSearchTransID] = useState("");
+  const local_tz = new Date().getTimezoneOffset() / -60
+  const [initial, setInitial] = useState(true);
+
+
   const statusOptions = [
     { key: "all", title: "All"},
     { key:'closed',title:'Closed'},
@@ -29,35 +37,51 @@ const Assets = ({state, setState}) => {
     { key: "pending", title: "Pending" },
   ];
   const getIncomeTotal = async () => {
-    const res = await GetPaymentSummary({ tz: 8 });
+    const res = await GetPaymentSummary({ tz: local_tz });
+    console.log("income total",res)
+    let currency_symbol = await get_shop_currency_symbol();
+    let exchange_rate = await get_exchange_rate();
+    let total = ((res?.data?.latest_90_days_total_payment ?? incomeTotal?.total) * exchange_rate).toFixed(2);
+    let today = ((res?.data?.today_total_payment ?? incomeTotal?.today) * exchange_rate).toFixed(2);
     console.log("income total",res)
     setIncomeTotal({
-      total: res?.data?.latest_90_days_total_payment?.toFixed(2) ?? incomeTotal?.total?.toFixed(2),
-      today: res?.data?.today_total_payment?.toFixed(2) ?? incomeTotal?.today?.toFixed(2),
+      total: currency_symbol + ' ' + total,
+      today: currency_symbol + ' ' + today,
     });
   };
   const getWithdrawTotal = async () => {
-    // new Date().getTimezoneOffset() / -60
-    const res = await GetWithdrawSummary({ tz: 8 });
+    const res = await GetWithdrawSummary({ tz: local_tz });
+    let currency_symbol = await get_shop_currency_symbol();
+    let exchange_rate = await get_exchange_rate();
+    let total = ((res?.data?.latest_90_days_total_withdraw ?? withdrawTotal?.total) * exchange_rate).toFixed(2);
+    let today = ((res?.data?.today_total_withdraw ?? withdrawTotal?.today) * exchange_rate).toFixed(2);
     setWithdrawTotal({
-      total:
-        res?.data?.latest_90_days_total_withdraw?.toFixed(2) ?? withdrawTotal?.total?.toFixed(2),
-      today: res?.data?.today_total_withdraw?.toFixed(2) ?? withdrawTotal?.today?.toFixed(2),
+      total: currency_symbol + ' ' + total,
+      today: currency_symbol + ' ' + today,
     });
   };
 
-  useEffect(() => {
+  const SearchTransID = () => {
+    setSearchTransID(search)
+  }
+
+  const ClearSearch = () => {
     setSelectStatus(null);
     setSelectCurrency(null);
     setDate(null);
+    setInitial(true);
     setSearch("");
+    setSearchTransID('');
+  }
+
+  useEffect(() => {
+    ClearSearch()
   }, [state]);
   useEffect(() => {
-    // console.log('did',did);
-
     getIncomeTotal();
     getWithdrawTotal();
     getVCs();
+    setState(state_data?.status ?? 0)
   }, []);
 
   useEffect(() => {
@@ -98,8 +122,10 @@ const Assets = ({state, setState}) => {
               selected={selectCurrency}
               setSelected={setSelectCurrency}
             />
-            <Datepicker date={date} setDate={setDate} />
+            <Datepicker date={date} setDate={setDate} initial={initial} setInitial={setInitial} />
             <Search search={search} setSearch={setSearch} />
+            <div className="Search" onClick={SearchTransID}>Search</div>
+            <div className="Clear" onClick={ClearSearch}>Clear</div>
           </div>
           {/*<Selectors setFilters={setFilters} filters={filters} />*/}
           {state === 0 ? (

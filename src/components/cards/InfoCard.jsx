@@ -9,7 +9,7 @@ const InfoCard = ({ title, value, type }) => {
       <img src={type === 0 ? Balance : Income} alt="Balance" />
       <div className="info">
         <span>{title}</span>
-        <span className="balance">$ {value}</span>
+        <span className="balance">{value}</span>
       </div>
     </div>
   );

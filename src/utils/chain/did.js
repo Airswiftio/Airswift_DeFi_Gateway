@@ -177,7 +177,9 @@ export function CreateDIDDocument(account = "", publicKey = "") {
 }
 
 export async function createVP(VCids = []) {
+
   let VCs = await getVCsByIDS(VCids);
+  console.log('VCs',VCs)
   let verifiableCredential = [];
   if (VCs?.length <= 0) {
     return { code: -1, data: [], msg: "VC does not exist" };
@@ -185,11 +187,12 @@ export async function createVP(VCids = []) {
 
   VCs.map((item, index) => {
     const objVc = json_to_obj(
-      ethers.utils.toUtf8String(ethers.utils.base64.decode(item.vc_content))
+      ethers.utils.toUtf8String(ethers.utils.base64.decode(item?.vc_content))
     );
     verifiableCredential = [objVc, ...verifiableCredential];
     return item;
   });
+  console.log('verifiableCredential',verifiableCredential)
 
   const uAccount = dbGetUserWallet()?.account;
   const holder = DIDPrefix + uAccount;
@@ -208,8 +211,13 @@ export async function createVP(VCids = []) {
       nonce: Math.ceil(Date.now()) + "",
     },
   };
+  
   const VP_sign_hash = VPSignature(VP);
+  console.log('uAccount',uAccount)
+  console.log('VP_sign_hash',VP_sign_hash)
+
   const res3 = await Web3SignData(uAccount, VP_sign_hash);
+  console.log('res3',res3)
   if (typeof res3?.code === "undefined" || res3.code !== 1000 || empty(res3.data)) {
     return res3;
   }
