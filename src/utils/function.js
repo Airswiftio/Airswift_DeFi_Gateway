@@ -193,9 +193,9 @@ export function getAllVCs() {
 }
 
 
-export async function getVCsCanWithdraw() {
+export async function getVCsCanWithdraw(currency = '') {
   // const vcs = await new dexieDB("as_vc")._init().where({is_get:1}).where('vc_status').anyOf(['Active','Created']).toArray();
-  const vcs = await new dexieDB("as_vc")._init().where({is_get:1}).filter(function (vc) {
+  const vcs = await new dexieDB("as_vc")._init().where({is_get:1,currency:currency}).filter(function (vc) {
     return ['Active','Created'].includes(vc.vc_status);
   }).toArray();
   return vcs;

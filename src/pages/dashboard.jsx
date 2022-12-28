@@ -46,7 +46,8 @@ const Dashboard = () => {
             data[kk].time1 = data[kk].title.replaceAll("-", "").replaceAll(" ", "");
             data[kk].time = explode(data[kk].title, " ")[1];
             data[kk].time = data[kk].time + (data[kk].time < 12 ? 'am' :'pm')
-          } else if (gap === "7d" || gap === "1m") {
+          }
+          else if (gap === "7d" || gap === "1m") {
             data[kk].time1 = data[kk].title.replaceAll("-", "");
             data[kk].time = explode(data[kk].title, "-")[1] + "." + explode(data[kk].title, "-")[2];
           }

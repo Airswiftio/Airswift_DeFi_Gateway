@@ -6,11 +6,11 @@ import {
     ConfirmWithdrawModal,
 } from "../";
 import "./confirmWithdraw.scss";
-import {GetPaymentList} from "@@/utils/request/api";
+import {BatchGetVcStatus, GetPaymentList} from "@@/utils/request/api";
 import {svg_icon} from "@@/utils/config";
 import Verified from "@@/assets/verified.svg";
 import Alert from "@@/components/PopUp/Alert";
-import {conversionUtcDate, getVCsCanWithdraw} from "@@/utils/function";
+import {addAllVCs, array_column, array_column2, conversionUtcDate, getVCsCanWithdraw} from "@@/utils/function";
 
 const ConfirmWithdraw = ({Currency, setStep, setState}) => {
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -66,22 +66,55 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
     const [dataTotal, setDataTotal] = useState(0);
 
     const getList = async () => {
-        const list_data = await getVCsCanWithdraw()
-        console.log('list_data',list_data);
-        let params = {
-            // app_id:0,
-            page:1,
-            size:10,
-            status:'success',
-            // payment_num:0,
-            currency_id:Currency?.id,
-            // date:date??'',
+        console.log('Currency');
+        const list_data = await getVCsCanWithdraw(Currency?.title)
+        const vcsIDs = array_column(list_data,'vc_id')
+        console.log('vcsIDs',vcsIDs);
+        if(list_data?.length > 0){
+            const res1 = await BatchGetVcStatus({vc_ids:vcsIDs})
+            if(res1?.code === 1000 && res1?.data?.total > 0){
+                const vcs_list = array_column2(res1?.data?.vcs,'vcid');
+                const list_data2 = list_data;
+
+                //Update the status of vc in indexDB
+                list_data.map((vv)=>{
+                    if(vcs_list?.[vv?.vc_id]?.vc_status){
+                        vv.vc_status = vcs_list?.[vv?.vc_id]?.vc_status;
+                    }
+                    return vv
+                })
+                await addAllVCs(list_data)
+
+                //Select the VCs that can be withdrawn
+                list_data2.filter((vv)=>{
+                    //不可以使用的vc更新到indexDB
+                    return vcs_list?.[vv?.vc_id]?.vc_status === 'Created' || vcs_list?.[vv?.vc_id]?.vc_status === 'Active'
+                })
+
+
+                setDataList(list_data2 ?? [])
+                setDataTotal(list_data2?.length)
+            }
         }
-        const res = await GetPaymentList(params)
-        if(res?.code === 1000){
-            setDataList(res?.data?.payments ?? [])
-            setDataTotal(res?.data?.total)
-        }
+
+
+        //
+        // console.log('res1',res1);
+        // console.log('list_data',list_data);
+        // let params = {
+        //     // app_id:0,
+        //     page:1,
+        //     size:10,
+        //     status:'success',
+        //     // payment_num:0,
+        //     currency_id:Currency?.id,
+        //     // date:date??'',
+        // }
+        // const res = await GetPaymentList(params)
+        // if(res?.code === 1000){
+        //     setDataList(res?.data?.payments ?? [])
+        //     setDataTotal(res?.data?.total)
+        // }
     }
     useEffect(() => {
         getList();
@@ -118,10 +151,10 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
                         (item, index) => (
                             <div key={index} className="historyElementWrapper" onClick={()=>selectRow(index)}>
                                 <span style={{width:'10%'}}><div className="checkBox">{checkedList?.includes(index) ? svg_icon('selected'):null}</div></span>
-                                <span>{item?.payment_num}</span>
-                                <span>{item?.currency_symbol}</span>
+                                <span>{item?.trans_id}</span>
+                                <span>{item?.currency}</span>
                                 <span>{item?.amount}</span>
-                                <span>{conversionUtcDate(item?.created_at)}</span>
+                                <span>{conversionUtcDate(item?.time)}</span>
                                 <span><img src={Verified} alt="Verified" /></span>
                             </div>
                         )

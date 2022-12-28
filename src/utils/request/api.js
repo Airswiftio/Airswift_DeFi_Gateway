@@ -71,4 +71,5 @@ export const MarkVCReceived = (p) => apiPost("/merchant/vc", p);
 export const MarkVCInvalid = (p) => apiPost("/merchant/vc/invalid", p);
 export const MerchantWithdraw = (p) => apiPost("/merchant/withdraw", p);
 
+export const BatchGetVcStatus = (p) => apiPost("/merchant/vc/status", p);
 export const GetExchangeRate = (p) => apiGet("/merchant/config/exchange_rate", p);
