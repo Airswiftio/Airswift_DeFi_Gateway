@@ -9,7 +9,8 @@ const LiquidityManagement = () => {
   const [pages, setPages] = useState(0);
 
   useEffect(() => {
-    get(setPools, "/api/admin/pool/list?page=1&size=10&status=all");
+    get(setPools, "/api/admin/pool/list?page="+(currPage+1)+"&size=10&status=available");
+    console.log(pools)
   }, [currPage]);
 
   useEffect(() => {

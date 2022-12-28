@@ -27,6 +27,7 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
         post({ pool_id: data?.id, new_status: "available" }, "/api/admin/pool/status");
       }
     }
+    
     setToggleState(toggleState === "available" ? "unavailable" : "available");
   };
 
@@ -110,7 +111,9 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
               id={data?.id}
               open={openModal}
             />
-            <span style={{ minWidth: "80px", textAlign: "right" }}>{toggleState}</span>
+            <span style={{ minWidth: "80px", textAlign: "right" }}>
+              {type === TABLETYPE.MERCHANT ? toggleState==="available"? "enable" : "disable" : toggleState}
+              </span>
           </div>
         ) : (
           <img src={SettingsSVG} alt="settings" onClick={() => setIsOpen(true)} />

@@ -19,6 +19,8 @@ const ManagementTable = ({
   const [items, setItems] = useState(0);
   const [allSelected, setAllSelected] = useState(false);
 
+  console.log(data)
+
   const renderRows = (num) => {
     const rows = [];
     let temp = [];
