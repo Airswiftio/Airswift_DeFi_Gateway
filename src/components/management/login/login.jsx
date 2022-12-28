@@ -17,7 +17,7 @@ const formSchema = yup.object().shape({
 
 const ManagementLogin = () => {
   const [error, setError] = useState();
-  const [captcha, setCaptcha] = useState();
+  const [captcha, setCaptcha] = useState("");
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const captchaRef = useRef(null);
@@ -37,21 +37,29 @@ const ManagementLogin = () => {
     // https://docs.hcaptcha.com/configuration#jsapi
     captchaRef.current.execute();
   };
-
-  useEffect(() => {
-    fetchCaptcha();
-  }, []);
-
-  const fetchCaptcha = () => {
-    axios.get("/api/admin/login/captcha/create").then((response) => {
-      console.log(response.data.msg);
-      setCaptcha(response.data.msg);
-    });
+    const onRefresh = () => {
+    // this reaches out to the hCaptcha JS API and runs the
+    // execute function on it. you can use other functions as
+    // documented here:
+    // https://docs.hcaptcha.com/configuration#jsapi
+   captchaRef.current.resetCaptcha();
   };
+
+  // useEffect(() => {
+  //   fetchCaptcha();
+  // }, []);
+
+  // const fetchCaptcha = () => {
+  //   axios.get("/api/admin/login/captcha/create").then((response) => {
+  //     console.log(response.data.msg);
+  //     setCaptcha(response.data.msg);
+  //   });
+  // };
 
   const checkAuth = (a) => {
     console.log("A: ", a);
     if (a.name === "AxiosError") {
+      onRefresh();
       setError("Manager not found or password not correct.");
     } else if (a.privileges.includes("sub-account")) {
       authCtx.setPrivs(a.privileges);
@@ -80,7 +88,6 @@ const ManagementLogin = () => {
     initialValues: {
       username: "",
       password: "",
-      captcha: "",
     },
     validationSchema: formSchema,
     validateOnChange: false,
@@ -112,28 +119,16 @@ const ManagementLogin = () => {
         <span className="errorMessage">{errors.password}</span>
 
         <div className="captchaWrapper">
-          <div className="captcha">
-            <img src={captcha?.captcha_content} alt="captcha" />
-          </div>
+          <div>
           <HCaptcha
             sitekey="c594cd42-7325-4ca7-a19e-d7a6715a8f4e"
             onLoad={onLoad}
             onVerify={setToken}
             ref={captchaRef}
+            className="captcha"
           />
-
-          <div className="input captchaInput">
-            <input
-              id="captcha"
-              name="captcha"
-              type="text"
-              className=""
-              values={values.captcha}
-              onChange={handleChange}
-              placeholder="Enter captcha text"
-            />
-            <img src={Refresh} alt="refresh" onClick={fetchCaptcha} />
           </div>
+
         </div>
 
         <div className="row">

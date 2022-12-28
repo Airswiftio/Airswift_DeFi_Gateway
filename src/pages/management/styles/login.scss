@@ -76,6 +76,8 @@
       .captchaWrapper {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
         gap: 0;
         .captcha {
           display: flex;

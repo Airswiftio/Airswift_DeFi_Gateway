@@ -67,6 +67,8 @@ const Login = () => {
     const res_ue = await CheckUserExist({ address: user_address });
     console.log("User Exists: ", res_ue);
 
+
+    
     if (res_ue?.code !== 1000) {
       setOpenAlert(true);
       setAlertData({ msg: "Failed to query user!" });
