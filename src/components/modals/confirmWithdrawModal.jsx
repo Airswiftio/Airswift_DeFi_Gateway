@@ -60,9 +60,9 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState 
       <button  className="back" onClick={() => click()}>back</button>
         <div className="title">Withdraw Confirmation </div>
         <div className="withdrawTotal">
-          <div className="total">{`$ ${total}`}</div>
+          <div className="total">{`${total} `}</div>
           <div className="currency">
-            <img src={USDC} alt="currency" />
+            {/*<img src={USDC} alt="currency" />*/}
             {` ${currency?.title}`}
           </div>
         </div>

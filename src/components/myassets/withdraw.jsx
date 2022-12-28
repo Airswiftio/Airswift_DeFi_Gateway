@@ -17,11 +17,12 @@ import {select_currency} from "@@/utils/config";
 import {conversionUtcDate} from "@@/utils/function";
 
 const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [modalIsOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
+    const pageSize = 10;
     const WithdrawStatus = [
         {key:'all',title:'All'},
         {key:'complete',title:'Complete'},
@@ -37,16 +38,16 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
     };
 
     const viewChainTx = (item) => {
-        window.open(`https://testnet.bscscan.com/tx/${item.tx_hash}`)
+        window.open(`https://goerli.etherscan.io/tx/${item.tx_hash}`)
     }
 
     const getList = async () => {
         console.log(WithdrawStatus?.[selectStatus]?.key??'complete')
         let params = {
             // app_id:0,
-            page:1,
-            size:10,
-            status:WithdrawStatus?.[selectStatus]?.key??'complete',
+            page:page,
+            size:pageSize,
+            status:WithdrawStatus?.[selectStatus]?.key??'all',
             withdraw_num:search,
             date:date??'',
         }
@@ -94,7 +95,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
                 )}
             </HistoryTable>
             <Pagination
-                pages={parseInt(dataTotal/ 10)}
+                pages={Math.ceil(dataTotal/ pageSize)}
                 page={page}
                 setPage={setPage}
             />
@@ -103,7 +104,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
                 align={1}
                 click={() => navigate("/withdraw")}
             />
-            <div className="help">How can I use VP?</div>
+            {/*<div className="help">How can I use VP?</div>*/}
         </div>
     );
 };

@@ -7,7 +7,7 @@ import "./income.scss";
 import { GetPaymentDetail, GetPaymentList, MarkVCInvalid } from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
-import { array_column, conversionUtcDate, getVCsByIDS } from "@@/utils/function";
+import {addAllVCs, array_column, array_column2, array_values, conversionUtcDate, getVCsByIDS} from "@@/utils/function";
 import { getVCs } from "@@/utils/chain/did";
 import Alert from "@@/components/PopUp/Alert";
 import { select_currency } from "@@/utils/config";
@@ -29,7 +29,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
     { key: "pending", title: "Pending" },
   ];
 
-  const pagesize=3;
+  const pageSize=3;
 
   const openViewMore = async (item) => {
     const res = await GetPaymentDetail(item?.payment_num);
@@ -69,7 +69,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
     let params = {
       // app_id:0,
       page: page,
-      size: pagesize,
+      size: pageSize,
       status: statusOptions?.[selectStatus]?.key ?? "all",
       payment_num: search,
       date: date ?? "",
@@ -102,17 +102,45 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
       let VCList = await getVCsByIDS(VCids);
       console.log("VC", VCList )
       let VCExistIDS = array_column(VCList, "vc_id");
+      let VCList1 = array_column2(VCList, "vc_id");
 
       console.log("3",payments_data )
 
       payments_data.map((item, index) => {
         item.vc_status = 'none';
         if(item.status === 'success'){
-          item.vc_status = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? 'yes' : 'lose';
+          if(item?.vcs?.[0]?.vc_status === 'Invalid'){
+            item.vc_status = 'none';
+          }
+          else if(item?.vcs?.[0]?.vc_status === 'Withdraw' || item?.vcs?.[0]?.vc_status === 'Processing'){
+            item.vc_status = 'yes';
+          }
+          else if(item?.vcs?.[0]?.vc_status === 'Created' || item?.vcs?.[0]?.vc_status === 'Active'){
+            item.vc_status = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? 'yes' : 'lose';
+          }
+
+          let this_vc = VCList1?.[item?.vcs?.[0]?.vcid];
+          if(this_vc){
+            this_vc.is_get = 1;
+            this_vc.trans_id = item?.payment_num;
+            this_vc.currency = item?.currency_symbol;
+            this_vc.amount = item?.amount;
+            this_vc.vc_status = item?.vcs?.[0]?.vc_status;
+            this_vc.time = item?.created_at;
+            VCList1[item?.vcs?.[0]?.vcid] = this_vc;
+          }
         }
         item.vc_exist = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? true : false;
         return item;
       });
+
+      const vc_data = array_values(VCList1);
+      if(vc_data?.length > 0){
+        await addAllVCs(vc_data);
+      }
+      console.log('VCList1',VCList1);
+      console.log('aa',array_values(VCList1));
+
       // console.log('rrd',rrd);
       console.log("4",payments_data )
       setDataList(payments_data);
@@ -187,7 +215,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
           </div>
         ))}
       </HistoryTable>
-      <Pagination pages={Math.ceil(dataTotal / pagesize)} page={page} setPage={setPage} />
+      <Pagination pages={Math.ceil(dataTotal / pageSize)} page={page} setPage={setPage} />
     </div>
   );
 };

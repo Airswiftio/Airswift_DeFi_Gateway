@@ -7,42 +7,29 @@
 
   .row {
     display: flex;
+    flex-direction: row;
+    gap: 3em;
     align-items: center;
     justify-content: flex-start;
-    gap: 1em;
+    color: rgba(255, 255, 255, 0.8);
 
-    //span {
-    //  text-align: left;
-    //  display: flex;
-    //  min-width: 200px;
-    //}
     &>span:first-child {
       width: 300px;
       text-align: left;
     }
 
-    .message {
-      color: rgba(95, 255, 169, 1);
-      display: flex;
-      justify-content: center;
-      font-size: 12px;
+    img {
+      width: 18px;
     }
 
     .time {
       color: rgba(255, 255, 255, 0.5);
       text-align: center;
-      display: flex;
-      justify-content: center;
+      width: fit-content;
     }
 
-    .button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .message, .time, .button { 
-      width: 300px;
+    .time, .img {
+      //width: 100px;
     }
   }
 }

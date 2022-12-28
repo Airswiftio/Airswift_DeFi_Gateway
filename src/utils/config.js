@@ -8,13 +8,13 @@ export function select_role(type = 0) {
   if (type === 0) {
     return [
       { key: "shop_manager", title: "Shop Manager" },
-      { key: "admin", title: "Admin" },
+      // { key: "admin", title: "Admin" },
     ];
   } else {
     return [
-      { key: "admin", title: "Admin" },
+      // { key: "admin", title: "Admin" },
       { key: "shop_manager", title: "Shop Manager" },
-      { key: "contributor", title: "Contributor" },
+      // { key: "contributor", title: "Contributor" },
     ];
   }
 }
@@ -133,6 +133,10 @@ export async function get_shop_currency() {
 
 export async function get_exchange_rate() {
   const shop_currency = (await get_shop_currency());
+  if(shop_currency.toUpperCase() === 'USD'){
+    return 1;
+  }
+  
   const key = "exchange_rate_" + shop_currency;
   let res1 =  sdStorage.get(key)
   if(res1 !== ''){

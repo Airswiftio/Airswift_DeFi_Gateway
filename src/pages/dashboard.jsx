@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [todayIncome, setTodayIncome] = useState('0');
   const [chartData, setChartData] = useState([]);
   const navigate = useNavigate();
+  const local_tz = new Date().getTimezoneOffset() / -60
 
   const getTotal = async () => {
     const res = await GetMerchantBaseSummary();
@@ -35,7 +36,7 @@ const Dashboard = () => {
   };
 
   const getChartData = async (gap = "24h") => {
-    const res = await GetMerchantPaymentStatChart({ gap: gap });
+    const res = await GetMerchantPaymentStatChart({ gap: gap,tz:local_tz });
     console.log("Data: ", res?.data);
     if (res?.code === 1000) {
       let data = res?.data?.payment_amount_stat ?? [];

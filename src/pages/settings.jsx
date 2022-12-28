@@ -3,6 +3,8 @@ import { ApiKeys, IpnKeys, AppConfig, MyStore } from "@@/components";
 
 import "./settings.scss";
 import { GetApplicationDetail } from "@@/utils/request/api";
+import Popup from "reactjs-popup";
+import Alert from "@@/components/PopUp/Alert";
 
 const Settings = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -10,10 +12,12 @@ const Settings = () => {
   const [apiKeys, setApiKeys] = useState({});
   const [ipnKeys, setIpnKeys] = useState({});
   const [appConfig, setAppConfig] = useState({});
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertData, setAlertData] = useState({});
 
   const pages = [
-    <MyStore myStore={myStore} setMyStore={setMyStore} />,
-    <ApiKeys apiKeys={apiKeys} setApiKeys={setApiKeys} />,
+    <MyStore myStore={myStore} setMyStore={setMyStore}  />,
+    <ApiKeys apiKeys={apiKeys} setApiKeys={setApiKeys} setOpenAlert={setOpenAlert} setAlertData={setAlertData}/>,
     <IpnKeys ipnKeys={ipnKeys} setIpnKeys={setIpnKeys} />,
     <AppConfig appConfig={appConfig} setAppConfig={setAppConfig} />,
   ];
@@ -51,6 +55,9 @@ const Settings = () => {
 
   return (
     <div>
+      <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+        <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
+      </Popup>
       <div className="settingsWrapper">
         <div className="sideColumn">
           <button className={currentPage === 0 ? "selected" : ""} onClick={() => setCurrentPage(0)}>

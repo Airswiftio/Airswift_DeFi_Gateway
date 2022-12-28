@@ -5,11 +5,13 @@ import { AuthProvider } from "@@/context/AuthProvider";
 import { FilterProvider } from "@@/context/FilterProvider";
 import "@@/index.css";
 import App from "@@/App";
+import toast, { Toaster } from 'react-hot-toast';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+      <Toaster />
+      <BrowserRouter>
       <AuthProvider>
         <FilterProvider>
           <Routes>

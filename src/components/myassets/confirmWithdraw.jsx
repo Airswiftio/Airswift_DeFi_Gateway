@@ -10,7 +10,7 @@ import {GetPaymentList} from "@@/utils/request/api";
 import {svg_icon} from "@@/utils/config";
 import Verified from "@@/assets/verified.svg";
 import Alert from "@@/components/PopUp/Alert";
-import {conversionUtcDate} from "@@/utils/function";
+import {conversionUtcDate, getVCsCanWithdraw} from "@@/utils/function";
 
 const ConfirmWithdraw = ({Currency, setStep, setState}) => {
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -66,6 +66,8 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
     const [dataTotal, setDataTotal] = useState(0);
 
     const getList = async () => {
+        const list_data = await getVCsCanWithdraw()
+        console.log('list_data',list_data);
         let params = {
             // app_id:0,
             page:1,
@@ -107,7 +109,7 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
                     <span style={{width:'10%'}}><div className="checkBox" onClick={()=>selectAll()}>{isAll && svg_icon('selected')}</div></span>
                     <span>Trans ID</span>
                     <span>Currency</span>
-                    <span>Amount(USD)</span>
+                    <span>Amount</span>
                     <span>Time</span>
                     <span>VCs</span>
                 </div>

@@ -4,13 +4,18 @@ import Refresh from "@@/assets/refresh.svg";
 import "./apiKeys.scss";
 import { ModifyApplicationApiKey } from "@@/utils/request/api";
 import { conversionUtcDate } from "@@/utils/function";
+import toast from 'react-hot-toast';
 
-const ApiKeys = ({ apiKeys, setApiKeys }) => {
+const ApiKeys = ({ apiKeys, setApiKeys,setOpenAlert,setAlertData }) => {
   const renewApiKeys = async () => {
     const res = await ModifyApplicationApiKey({ app_id: 0 });
     console.log("res", res);
     if (res?.code === 1000) {
-      setApiKeys({ api_key: res?.data?.key, api_key_created_at: res?.data?.created_at });
+        setApiKeys({ api_key: res?.data?.key, api_key_created_at: res?.data?.created_at });
+        toast.success('Renew succeeded!')
+    }
+    else {
+        toast.error(res?.msg)
     }
   };
 
@@ -24,7 +29,9 @@ const ApiKeys = ({ apiKeys, setApiKeys }) => {
             alt="copy"
             onClick={async () => {
               await navigator.clipboard.writeText(apiKeys.api_key);
-              alert("Copied the text: " + apiKeys.api_key);
+                toast.success('Copy succeeded!')
+                // setOpenAlert(true)
+                // setAlertData({msg:'Copied! '})
             }}
           />
         </div>
