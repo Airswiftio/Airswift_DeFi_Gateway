@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Popup from "reactjs-popup";
 import AuthContext from "@@/context/AuthProvider";
+import { useNavigate } from "react-router";
 import Logo from "@@/assets/management/logo.svg";
 import { ProfileModal } from "@@/components";
 import "./managementHeader.scss";
@@ -12,6 +13,7 @@ const ManagementHeader = ({ url, setUrl }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [privs, setPrivs] = useState([]);
+  const navigate = useNavigate();
 
   const authCtx = useContext(AuthContext);
 
@@ -26,6 +28,12 @@ const ManagementHeader = ({ url, setUrl }) => {
   useEffect(() => {
     setUrl(window.location.pathname);
     console.log(Cookies.get());
+  }, []);
+
+  useEffect(() => {
+    if (!authCtx.auth) {
+      navigate("/management/login");
+    }
   }, []);
 
   useEffect(() => {
