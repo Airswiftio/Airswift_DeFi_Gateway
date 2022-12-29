@@ -14,23 +14,26 @@ import { GetWithdrawList} from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
 import {select_currency} from "@@/utils/config";
-import {conversionUtcDate} from "@@/utils/function";
+import {conversionUtcDate, copy_text} from "@@/utils/function";
+import toast from "react-hot-toast";
 
-const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
+const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
     const [page, setPage] = useState(1);
     const [modalIsOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
+    const [itemData, setItemData] = useState({});
     const pageSize = 10;
     const WithdrawStatus = [
         {key:'all',title:'All'},
         {key:'complete',title:'Complete'},
-        {key:'pending',title:'Pending'},
+        {key:'created',title:'Pending'},
     ];
 
-    const ViewMore = () => {
+    const ViewMore = (item) => {
         setIsOpen(true);
+        setItemData(item)
     };
 
     const closeModal = () => {
@@ -63,7 +66,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
 
     useEffect(() => {
         getList();
-    }, [search,selectStatus,selectCurrency,date]);
+    }, [searchTransID,selectStatus,selectCurrency,date]);
     useEffect(() => {
         getList();
         // getWithdrawTotal();
@@ -72,24 +75,29 @@ const Withdraw = ({search,selectStatus,selectCurrency,date}) => {
     return (
         <div className="withdrawWrapper">
             <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
-                <ProcessModal click={closeModal} />
+                <ProcessModal click={closeModal} itemData={itemData} />
             </Popup>
             <HistoryTable vc={false}>
                 {dataList.map(
                     (item, index) => (
                         <div key={index} className="historyElementWrapper">
-                            <span>{item?.withdraw_num}</span>
-                            <span>{item?.status}</span>
+                            <span
+                                className="over_play cursor_pointer"
+                                onClick={ () => {
+                                    copy_text(item.payment_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
+                                }}
+                            >{item?.withdraw_num}</span>
+                            <span>{item?.status === 'created' ? 'pending':item?.status}</span>
                             <span>{item?.currency_symbol}</span>
                             <span>{item?.amount}</span>
                             <span>{conversionUtcDate(item.created_at)}</span>
                             {item?.status === 'complete'
-                                ? (
-                                    <div className="onChainStatus" onClick={()=>viewChainTx(item)} >
+                                ? (<div className="onChainStatus2" onClick={()=>viewChainTx(item)} ><img src={Doc} alt="View more" /></div>)
+                                : (
+                                    <div className="onChainStatus" onClick={()=>ViewMore(item)}>
                                         <div>On Chain Status</div>
                                     </div>
-                                )
-                                : (<span onClick={ViewMore}><img src={Doc} alt="View more" /></span>)}
+                                )}
                         </div>
                     )
                 )}

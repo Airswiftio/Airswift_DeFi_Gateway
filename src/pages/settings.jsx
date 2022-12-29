@@ -69,9 +69,9 @@ const Settings = () => {
           <button className={currentPage === 2 ? "selected" : ""} onClick={() => setCurrentPage(2)}>
             IPN Keys
           </button>
-          <button className={currentPage === 3 ? "selected" : ""} onClick={() => setCurrentPage(3)}>
-            App Configuration
-          </button>
+          {/*<button className={currentPage === 3 ? "selected" : ""} onClick={() => setCurrentPage(3)}>*/}
+          {/*  App Configuration*/}
+          {/*</button>*/}
         </div>
         <div className="mainContent">
           <span className="title">{titles[currentPage]}</span>

@@ -227,7 +227,7 @@ const Login = () => {
     const res = await UserLogin(data);
     if (res?.code !== 1000 || res.success !== true) {
       setOpenAlert(true);
-      setAlertData({ msg: "Failed to Login!" });
+      setAlertData({ msg:res?.msg});
       return false;
     }
 
@@ -394,7 +394,10 @@ const Login = () => {
                 </div>
               ))}
             </div>
-            <DefaultButton title="Create a new store" type={1} click={() => setStep("set_store")} />
+            {stores.filter((vv)=>vv?.role === 'admin')?.length <= 0
+                && (
+                    <DefaultButton title="Create a new store" type={1} click={() => setStep("set_store")} />
+                )}
           </div>
         </div>
       )}

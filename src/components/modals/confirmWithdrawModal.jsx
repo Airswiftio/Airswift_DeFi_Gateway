@@ -6,7 +6,7 @@ import "./confirmWithdrawModal.scss";
 import USDC from "../../assets/usdc_icon.svg";
 import { MerchantWithdraw } from "@@/utils/request/api";
 import { createVP } from "@@/utils/chain/did";
-import { array_column, dbGetUserWallet } from "@@/utils/function";
+import {addAllVCs, array_column, dbGetUserWallet} from "@@/utils/function";
 import Popup from "reactjs-popup";
 import Alert from "@@/components/PopUp/Alert";
 
@@ -15,6 +15,11 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState 
   const [alertData, setAlertData] = useState({});
   const withdraw = async () => {
     const VCids = data.map((vv) => vv?.vc_id);
+    const VC_list = data.map((vv) => {
+      vv.vc_status = 'Withdraw';
+      return vv;
+    });
+
     const res = await createVP(VCids);
     console.log('res',res)
     if (res?.code !== 1000) {
@@ -33,6 +38,7 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState 
       return false;
     }
 
+    await addAllVCs(VC_list);
     setState(1);
     navigate("/assets",{
       state: {status:1},

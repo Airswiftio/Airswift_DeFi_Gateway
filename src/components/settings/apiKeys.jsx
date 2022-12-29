@@ -3,7 +3,7 @@ import Copy from "@@/assets/copy.svg";
 import Refresh from "@@/assets/refresh.svg";
 import "./apiKeys.scss";
 import { ModifyApplicationApiKey } from "@@/utils/request/api";
-import { conversionUtcDate } from "@@/utils/function";
+import {conversionUtcDate, copy_text} from "@@/utils/function";
 import toast from 'react-hot-toast';
 
 const ApiKeys = ({ apiKeys, setApiKeys,setOpenAlert,setAlertData }) => {
@@ -28,8 +28,8 @@ const ApiKeys = ({ apiKeys, setApiKeys,setOpenAlert,setAlertData }) => {
             src={Copy}
             alt="copy"
             onClick={async () => {
-              await navigator.clipboard.writeText(apiKeys.api_key);
-                toast.success('Copy succeeded!')
+                const cope_res = copy_text(apiKeys.api_key);
+                cope_res === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
                 // setOpenAlert(true)
                 // setAlertData({msg:'Copied! '})
             }}

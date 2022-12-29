@@ -2,7 +2,7 @@ import React from "react";
 import { DefaultButton } from "@@/components";
 import "./ipnKeys.scss";
 import { ModifyApplicationIpnKey} from "@@/utils/request/api";
-import {conversionUtcDate} from "@@/utils/function";
+import {conversionUtcDate, copy_text} from "@@/utils/function";
 import Refresh from "@@/assets/refresh.svg";
 import Copy from "@@/assets/copy.svg";
 import toast from "react-hot-toast";
@@ -26,8 +26,8 @@ const IpnKeys = ({ipnKeys,setIpnKeys}) => {
                         src={Copy}
                         alt="copy"
                         onClick={async () => {
-                            await navigator.clipboard.writeText(ipnKeys.ipn_key);
-                            toast.success('Copy succeeded!')
+                            const cope_res = copy_text(ipnKeys.ipn_key);
+                            cope_res === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
                             // setOpenAlert(true)
                             // setAlertData({msg:'Copied! '})
                         }}
@@ -41,10 +41,10 @@ const IpnKeys = ({ipnKeys,setIpnKeys}) => {
             </div>
 
             <div className="row">
-                <span>Renew</span>
-                <div className="img" onClick={() => renewIpnKeys()}>
-                    <img src={Refresh} alt="refresh" />
-                </div>
+                {/*<span>Renew</span>*/}
+                {/*<div className="img" onClick={() => renewIpnKeys()}>*/}
+                {/*    <img src={Refresh} alt="refresh" />*/}
+                {/*</div>*/}
             </div>
         </div>
     );

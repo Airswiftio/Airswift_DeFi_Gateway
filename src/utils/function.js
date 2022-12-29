@@ -147,6 +147,35 @@ export function fullClose(n, m) {
   return Math.ceil(result);
 }
 
+export function copy_text (content) {
+  content = content === null ? '':content;
+  if(typeof (navigator?.clipboard) !== 'undefined' && window?.isSecureContext){
+    navigator?.clipboard?.writeText(content);
+    if(content === ''){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+  else{
+    const input = document.createElement('input');
+    input.setAttribute('readonly', 'readonly');
+    input.setAttribute('value',content );
+    document.body.appendChild(input);
+    input.select();
+    let re = document.execCommand('copy');
+    document.body.removeChild(input);
+    if (re) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+}
+
+
 export function dbClearAccount() {
   return dbStore.clear();
 }

@@ -9,14 +9,23 @@
   font-family: "Poppins";
   background: rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  cursor: pointer;
 
   span {
     width: 100px;
     font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    //display: flex;
+    //align-items: center;
+    //justify-content: center;
+  }
+
+  .over_play{
+    overflow:hidden;/*内容超出后隐藏*/
+    text-overflow:ellipsis;/*超出内容显示为省略号*/
+    white-space:nowrap;/*文本不进行换行*/
+    //justify-content: flex-start;
+  }
+  .cursor_pointer{
+    cursor: pointer;
   }
 
   .checkBox {
@@ -27,7 +36,9 @@
     border: 1px solid rgba(255, 255, 255, 0.7);
   }
 
+
   .onChainStatus{
+    width: 114px;
     padding: 2px 8px;
     color: rgba(255, 255, 255, 0.7);
     border: 1px solid transparent;
@@ -35,5 +46,13 @@
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
     background-image: linear-gradient(to right, #2f2f2f, #2f2f2f), linear-gradient(98.48deg, #8DFE59 -3.85%, #3ACBF6 35.75%, #6055FF 69.61%);
+    cursor: pointer;
+  }
+
+  .onChainStatus2{
+    width: 114px;
+    padding: 2px 8px;
+    cursor: pointer;
+
   }
 }

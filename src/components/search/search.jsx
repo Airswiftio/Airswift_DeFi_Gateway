@@ -21,6 +21,7 @@ const Search = ({ title = "Trans ID", search, setSearch }) => {
       <input
         className="input"
         placeholder={title}
+        value={(search === null) ? '' : search}
         onChange={(event) => {
           setSearch(event.target.value);
         }}

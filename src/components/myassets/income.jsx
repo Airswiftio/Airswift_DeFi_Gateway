@@ -7,12 +7,21 @@ import "./income.scss";
 import { GetPaymentDetail, GetPaymentList, MarkVCInvalid } from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
-import {addAllVCs, array_column, array_column2, array_values, conversionUtcDate, getVCsByIDS} from "@@/utils/function";
+import {
+  addAllVCs,
+  array_column,
+  array_column2,
+  array_values,
+  conversionUtcDate,
+  copy_text,
+  getVCsByIDS
+} from "@@/utils/function";
 import { getVCs } from "@@/utils/chain/did";
 import Alert from "@@/components/PopUp/Alert";
 import { select_currency } from "@@/utils/config";
+import toast from "react-hot-toast";
 
-const Income = ({ search, selectStatus, selectCurrency, date }) => {
+const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) => {
   const [refreshNum, setRefreshNum] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -159,7 +168,7 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
       getList();
     }
     setPage(1)
-  }, [search, selectStatus, selectCurrency, date]);
+  }, [searchTransID, selectStatus, selectCurrency, date]);
 
   useEffect(() => {
     getVCs();
@@ -187,12 +196,16 @@ const Income = ({ search, selectStatus, selectCurrency, date }) => {
       <HistoryTable>
         {dataList.map((item, index) => (
           <div key={index} className="historyElementWrapper">
-            <span>{item.payment_num}</span>
+            <span className="over_play cursor_pointer"
+                  onClick={ () => {
+                    copy_text(item.payment_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
+                  }}
+            >{item.payment_num}</span>
             <span>{item.status}</span>
             <span>{item.currency_symbol}</span>
             <span>{item.amount}</span>
             <span>{conversionUtcDate(item.created_at)}</span>
-            <span onClick={() => openViewMore(item)}>
+            <span className="cursor_pointer" onClick={() => openViewMore(item)}>
               <img src={Doc} alt="View more" />
             </span>
             {item?.vc_status === 'lose' &&

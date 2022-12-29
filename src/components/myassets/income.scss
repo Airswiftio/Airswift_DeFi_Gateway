@@ -5,6 +5,10 @@
   align-items: center;
   gap: 1em;
 
+  .cursor_pointer{
+    cursor: pointer;
+  }
+
   .RestoreVC{
     padding: 2px 8px;
     color: rgba(255, 255, 255, 0.7);
@@ -13,6 +17,8 @@
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
     background-image: linear-gradient(to right, #2f2f2f, #2f2f2f), linear-gradient(98.48deg, #8DFE59 -3.85%, #3ACBF6 35.75%, #6055FF 69.61%);
+    cursor: pointer;
+
   }
 
 }

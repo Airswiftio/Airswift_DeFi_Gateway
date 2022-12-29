@@ -70,8 +70,8 @@ const Assets = ({state, setState}) => {
     setSelectCurrency(null);
     setDate(null);
     setInitial(true);
-    setSearch("");
     setSearchTransID('');
+    setSearch("");
   }
 
   useEffect(() => {
@@ -134,6 +134,7 @@ const Assets = ({state, setState}) => {
               selectCurrency={selectCurrency}
               date={date}
               search={search}
+              searchTransID={searchTransID}
             />
           ) : (
             <Withdraw
@@ -141,6 +142,7 @@ const Assets = ({state, setState}) => {
               selectCurrency={selectCurrency}
               date={date}
               search={search}
+              searchTransID={searchTransID}
             />
           )}
         </div>

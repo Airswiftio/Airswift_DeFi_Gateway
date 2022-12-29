@@ -26,7 +26,7 @@ const Invite = ({ setAddUser,refreshNum,setRefreshNum }) => {
             setAlertData({msg:"Please select the user's role."})
             return false;
         }
-        const res = await GrantUserMerchantRole({ user_did:did, role:select_role()?.[selectRole]?.key });
+        const res = await GrantUserMerchantRole({ target_user:did, role:select_role()?.[selectRole]?.key });
         if(res?.code === 1000){
             setAddUser(false);
             setRefreshNum(refreshNum + 1);

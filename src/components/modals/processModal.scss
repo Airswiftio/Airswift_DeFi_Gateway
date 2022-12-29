@@ -36,6 +36,10 @@
       justify-content: center;
       gap: 2em;
 
+      .cursor{
+        cursor: pointer;
+      }
+
       .path {
         display: flex;
         flex-direction: column;
@@ -53,6 +57,14 @@
             border-radius: 50%;
             z-index: 2;
           }
+          .marker_done{
+            background: #5FFFA9;
+            border: 2px solid #5FFFA9;
+          }
+
+          .marker_doing{
+            border: 2px solid #5FFFA9;
+          }
 
           .chain {
             border-left: 3px solid rgba(255, 255, 255, 0.3);
@@ -60,10 +72,14 @@
             height: 190%;
             left: 8px;
           }
+          .chain_done {
+            border-left: 3px solid #5FFFA9;
+          }
 
           .chain-top {
             top: 100%;
           }
+
         }
       }
 

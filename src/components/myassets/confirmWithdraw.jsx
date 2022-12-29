@@ -166,7 +166,7 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
                 align={1}
                 click={() => confirmWithdraw()}
             />
-            <div className="help">How can I use VP?</div>
+            {/*<div className="help">How can I use VP?</div>*/}
         </div>
     );
 };

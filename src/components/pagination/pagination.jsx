@@ -6,17 +6,13 @@ import RightArrow from "../../assets/small_arrow_right.svg";
 import "./pagination.scss";
 
 const Pagination = ({ pages, page, setPage }) => {
-  const decrementPage = () => {
-    if (page > 0) {
-      setPage(page - 1);
-    }
-  };
+    const decrementPage = () => {
+        setPage( page <= 1 ? 1:page - 1);
+    };
 
-  const incrementPage = () => {
-    if (page < pages - 1) {
-      setPage(page + 1);
-    }
-  };
+    const incrementPage = () => {
+        setPage(page >= pages ? pages:page + 1);
+    };
 
   return (
     <div className="pagination">
