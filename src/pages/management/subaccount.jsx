@@ -28,7 +28,8 @@ const SubAccount = () => {
   }, [selected]);
 
   useEffect(() => {
-    setPages(Math.ceil(subAccounts?.managers.length / 5));
+
+    setPages(Math.ceil(subAccounts?.managers||[].length||1 / 5));
   }, [subAccounts]);
 
   return (
@@ -38,7 +39,7 @@ const SubAccount = () => {
           click={() => setDeleteOpen(false)}
           setValue={setSubAccounts}
           title="Are you sure 
-you want to delete these accounts?"
+          you want to delete these accounts?"
           type={2}
           selected={selected}
           setSelected={setSelected}

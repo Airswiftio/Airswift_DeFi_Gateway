@@ -61,8 +61,9 @@ const ManagementLogin = () => {
     if (a.name === "AxiosError") {
       onRefresh();
       setError("Manager not found or password not correct.");
-    } else if (a.privileges.includes("sub-account")) {
+    } else if (a?.privileges.length>0) {
       authCtx.setPrivs(a.privileges);
+      Cookies.set("privs", a.privileges);
       Cookies.set("auth", true);
       authCtx.setAuth(true);
       navigate("/management/dashboard");

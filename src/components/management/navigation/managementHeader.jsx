@@ -10,12 +10,16 @@ import { ProfileModal } from "@@/components";
 import "./managementHeader.scss";
 
 const ManagementHeader = ({ url, setUrl }) => {
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [privs, setPrivs] = useState([]);
-  const navigate = useNavigate();
 
   const authCtx = useContext(AuthContext);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [privs, setPrivs] = useState(authCtx.privs);
+  const navigate = useNavigate();
+
+
+  
 
   const closeModal = () => {
     setIsOpen(false);
@@ -36,16 +40,18 @@ const ManagementHeader = ({ url, setUrl }) => {
     }
   }, []);
 
-  useEffect(() => {
-    let temp = [];
-    axios.get("/api/admin/permission/all").then((res) => {
-      res.data.msg.permissions.forEach((p) => {
-        temp.push(p.identity);
-      });
-      setPrivs(temp);
-    });
-    console.log("Privs: ", privs);
-  }, []);
+  // useEffect(() => {
+  //   let temp = [];
+  //   axios.get("/api/admin/permission/all").then((res) => {
+  //     console.log("res =",res)
+  //     res.data.msg.permissions.forEach((p) => {
+  //       temp.push(p.identity);
+  //     });
+  //     setPrivs(temp);
+  //   });
+  //   console.log("Privs: ", authCtx.privs);
+
+  // }, []);
 
   return (
     <div className="managementNavWrapper" onClick={() => setUrl(window.location.pathname)}>

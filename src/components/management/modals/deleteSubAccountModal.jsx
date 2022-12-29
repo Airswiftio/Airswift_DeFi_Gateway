@@ -28,7 +28,7 @@ const DeleteSubAccountModal = ({ click, setValue, title, type, selected, setSele
           <DefaultButton
             title="Cancel"
             click={() => {
-              setValue("Cancel");
+              //setValue("Cancel");
               click();
             }}
             type={2}
