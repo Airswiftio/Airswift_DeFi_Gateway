@@ -29,7 +29,7 @@ const SubAccount = () => {
 
   useEffect(() => {
 
-    setPages(Math.ceil(subAccounts?.managers||[].length||1 / 5));
+    setPages(Math.ceil(subAccounts?.managers.length / 5));
   }, [subAccounts]);
 
   return (
