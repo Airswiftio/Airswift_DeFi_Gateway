@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { get, post } from "@@/pages/management/requests";
 import { DefaultButton } from "../..";
 import "./confirmationModal.scss";
+import { RiCloseFill } from "react-icons/ri";
 
 const ConfirmationModal = ({ click, setValue, title, type, id }) => {
   useEffect(() => {
@@ -16,6 +17,7 @@ const ConfirmationModal = ({ click, setValue, title, type, id }) => {
   return (
     <div className="confirmationModal">
       <div className="modalContent">
+      <RiCloseFill size={20} className="closeIcon" onClick={() => {click()}}/>
         <div className="tip">{title}</div>
         <div className="btns">
           {type === 2 ? (

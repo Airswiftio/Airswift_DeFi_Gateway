@@ -26,6 +26,13 @@
     gap: 1em;
     font-size: 12px;
     font-family: "Poppins";
+    position: relative;
+
+  .closeIcon{
+    position: absolute;
+    top: 15px;;
+    right: 15px;
+  }
 
     @include md {
       padding: 0;
