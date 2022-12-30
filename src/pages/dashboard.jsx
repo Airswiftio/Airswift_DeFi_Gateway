@@ -25,11 +25,11 @@ const Dashboard = () => {
   const local_tz = new Date().getTimezoneOffset() / -60
 
   const getTotal = async () => {
-    const res = await GetMerchantBaseSummary();
+    const res = await GetMerchantBaseSummary({ tz: local_tz });
     let currency_symbol = await get_shop_currency_symbol();
     let exchange_rate = await get_exchange_rate();
-    let total_balance = ((res?.data?.total_balance ?? 0) * exchange_rate).toFixed(2);
-    let today_income = ((res?.data?.today_total_payment ?? 0) * exchange_rate).toFixed(2);
+    let total_balance = ((res?.data?.total_balance ?? 0) * exchange_rate)/*.toFixed(2)*/;
+    let today_income = ((res?.data?.today_total_payment ?? 0) * exchange_rate)/*.toFixed(2)*/;
     console.log("income total",res)
     setTotalBalance(currency_symbol + ' ' + total_balance);
     setTodayIncome(currency_symbol + ' ' + today_income);
@@ -72,8 +72,8 @@ const Dashboard = () => {
     <div>
       <div className="dashboardContent">
         <div className="cardRow">
-          <InfoCard title="Total Balance" value={totalBalance} type={0} />
-          <InfoCard title="Today's Income" value={todayIncome} type={0} />
+          <InfoCard title="Total Balance" value={totalBalance} type={0} key_index={1} />
+          <InfoCard title="Today's Income" value={todayIncome} type={0} key_index={2}/>
         </div>
         <div className="balanceOverview">
           <span className="title">Balance Overview</span>

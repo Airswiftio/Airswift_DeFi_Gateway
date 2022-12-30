@@ -33,7 +33,7 @@ const ProcessModal = ({ click,itemData }) => {
               <div className="chain chain-top chain_done"></div>
               <div className="marker marker_done" />
             </div>
-            <div className="section cursor"  onClick={()=>viewChainTx(itemData)}>
+            <div className="section cursor" >
               <div className="marker marker_doing" />
             </div>
           </div>
@@ -41,7 +41,7 @@ const ProcessModal = ({ click,itemData }) => {
             <div className="label">VP Created</div>
             <div className="label">VP Start</div>
             <div className="label">VP Verified</div>
-            <div className="label cursor"  onClick={()=>viewChainTx(itemData)}>Transaction On Chain</div>
+            <div className="label cursor">Transaction On Chain</div>
           </div>
         </div>
       </div>

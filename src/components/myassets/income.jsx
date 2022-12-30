@@ -20,6 +20,8 @@ import { getVCs } from "@@/utils/chain/did";
 import Alert from "@@/components/PopUp/Alert";
 import { select_currency } from "@@/utils/config";
 import toast from "react-hot-toast";
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) => {
   const [refreshNum, setRefreshNum] = useState(0);
@@ -38,7 +40,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
     { key: "pending", title: "Pending" },
   ];
 
-  const pageSize=3;
+  const pageSize = 10;
 
   const openViewMore = async (item) => {
     const res = await GetPaymentDetail(item?.payment_num);
@@ -196,10 +198,17 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
       <HistoryTable>
         {dataList.map((item, index) => (
           <div key={index} className="historyElementWrapper">
-            <span className="over_play cursor_pointer"
-                  onClick={ () => {
-                    copy_text(item.payment_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
-                  }}
+            <ReactTooltip
+                anchorId={'app-item'+index}
+                place="bottom"
+                content={item?.payment_num}
+            />
+            <span
+                id={'app-item'+index}
+                className="over_play cursor_pointer"
+                onClick={ () => {
+                  copy_text(item.payment_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
+                }}
             >{item.payment_num}</span>
             <span>{item.status}</span>
             <span>{item.currency_symbol}</span>

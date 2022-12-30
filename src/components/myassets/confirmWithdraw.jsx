@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
 import {
     DefaultButton,
@@ -10,7 +9,7 @@ import {BatchGetVcStatus, GetPaymentList} from "@@/utils/request/api";
 import {svg_icon} from "@@/utils/config";
 import Verified from "@@/assets/verified.svg";
 import Alert from "@@/components/PopUp/Alert";
-import {addAllVCs, array_column, array_column2, conversionUtcDate, getVCsCanWithdraw} from "@@/utils/function";
+import {addAllVCs, addNum, array_column, array_column2, conversionUtcDate, getVCsCanWithdraw} from "@@/utils/function";
 
 const ConfirmWithdraw = ({Currency, setStep, setState}) => {
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -30,10 +29,12 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
         let data = [];
         let total = 0;
         checkedList.map((item,index)=>{
-            total = total + dataList?.[item]?.amount;
+            total = addNum(total,dataList?.[item]?.amount)
+            // total = total + dataList?.[item]?.amount;
             data = [...data,dataList?.[item]]
             return item;
         })
+
         setSelectData(data);
         setTotalAmount(total);
         setIsOpen(true);
@@ -135,7 +136,7 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
             <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
                 <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
             </Popup>
-            <button  className="back" onClick={() => setStep()}>back</button>
+            <button  className="back" onClick={() => setStep()}>Back</button>
             <div className="title">Select available transactions</div>
             <div className="historyTableWrapper">
                 <div className="columnLabels">
@@ -150,7 +151,7 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
                     {dataList.map(
                         (item, index) => (
                             <div key={index} className="historyElementWrapper" onClick={()=>selectRow(index)}>
-                                <span style={{width:'10%'}}><div className="checkBox">{checkedList?.includes(index) ? svg_icon('selected'):null}</div></span>
+                                <span className="text_center" style={{width:'10%'}}><div className="checkBox">{checkedList?.includes(index) ? svg_icon('selected'):null}</div></span>
                                 <span>{item?.trans_id}</span>
                                 <span>{item?.currency}</span>
                                 <span>{item?.amount}</span>

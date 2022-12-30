@@ -62,7 +62,7 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState 
       </Popup>
     
       <div className="modalContent">
-      <button  className="back" onClick={() => click()}>back</button>
+      <button  className="back" onClick={() => click()}>Back</button>
         <div className="title">Withdraw Confirmation </div>
         <div className="withdrawTotal">
           <div className="total">{`${total} `}</div>

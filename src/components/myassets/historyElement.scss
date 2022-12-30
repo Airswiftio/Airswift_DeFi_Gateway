@@ -18,6 +18,12 @@
     //justify-content: center;
   }
 
+  .center_text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .over_play{
     overflow:hidden;/*内容超出后隐藏*/
     text-overflow:ellipsis;/*超出内容显示为省略号*/

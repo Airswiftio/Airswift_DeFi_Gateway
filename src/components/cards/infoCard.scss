@@ -27,8 +27,14 @@
     }
 
     .balance {
+      width: 150px;
       opacity: 1;
       font-size: 22px;
+      //word-wrap:break-all;
+      overflow:hidden;/*内容超出后隐藏*/
+      text-overflow:ellipsis;/*超出内容显示为省略号*/
+      white-space:nowrap;/*文本不进行换行*/
+      cursor: default;
     }
   }
 }

@@ -16,6 +16,8 @@ import Verified from "@@/assets/verified.svg";
 import {select_currency} from "@@/utils/config";
 import {conversionUtcDate, copy_text} from "@@/utils/function";
 import toast from "react-hot-toast";
+import "react-tooltip/dist/react-tooltip.css";
+import {Tooltip as ReactTooltip} from "react-tooltip";
 
 const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
     const [page, setPage] = useState(1);
@@ -81,20 +83,26 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
                 {dataList.map(
                     (item, index) => (
                         <div key={index} className="historyElementWrapper">
+                            <ReactTooltip
+                                anchorId={'app-withdraw'+index}
+                                place="bottom"
+                                content={item.withdraw_num}
+                            />
                             <span
+                                id={'app-withdraw'+index}
                                 className="over_play cursor_pointer"
                                 onClick={ () => {
-                                    copy_text(item.payment_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
+                                    copy_text(item.withdraw_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
                                 }}
                             >{item?.withdraw_num}</span>
-                            <span>{item?.status === 'created' ? 'pending':item?.status}</span>
-                            <span>{item?.currency_symbol}</span>
-                            <span>{item?.amount}</span>
-                            <span>{conversionUtcDate(item.created_at)}</span>
+                            <span className="center_text">{item?.status === 'created' ? 'pending':item?.status}</span>
+                            <span className="center_text">{item?.currency_symbol}</span>
+                            <span className="center_text">{item?.amount}</span>
+                            <span className="center_text">{conversionUtcDate(item.created_at)}</span>
                             {item?.status === 'complete'
-                                ? (<div className="onChainStatus2" onClick={()=>viewChainTx(item)} ><img src={Doc} alt="View more" /></div>)
+                                ? (<div className="onChainStatus2 center_text" onClick={()=>viewChainTx(item)} ><img src={Doc} alt="View more" /></div>)
                                 : (
-                                    <div className="onChainStatus" onClick={()=>ViewMore(item)}>
+                                    <div className="onChainStatus center_text" onClick={()=>ViewMore(item)}>
                                         <div>On Chain Status</div>
                                     </div>
                                 )}
