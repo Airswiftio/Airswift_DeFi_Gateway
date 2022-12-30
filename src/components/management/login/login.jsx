@@ -25,7 +25,7 @@ const ManagementLogin = () => {
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
-    if (authCtx.auth) {
+    if (authCtx.auth&&authCtx.privs!==undefined) {
       navigate("/management/dashboard");
     }
   }, []);
@@ -35,7 +35,8 @@ const ManagementLogin = () => {
     // execute function on it. you can use other functions as
     // documented here:
     // https://docs.hcaptcha.com/configuration#jsapi
-    captchaRef.current.execute();
+    // console.log("recap loading")
+    // // captchaRef.current.execute();
   };
     const onRefresh = () => {
     // this reaches out to the hCaptcha JS API and runs the

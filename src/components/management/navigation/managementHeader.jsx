@@ -35,7 +35,7 @@ const ManagementHeader = ({ url, setUrl }) => {
   }, []);
 
   useEffect(() => {
-    if (!authCtx.auth) {
+    if (!authCtx.auth || privs===undefined) {
       navigate("/management/login");
     }
   }, []);
@@ -69,7 +69,7 @@ const ManagementHeader = ({ url, setUrl }) => {
         >
           Dashboard
         </Link>
-        {privs.includes("sub-account") ? (
+        {authCtx.privs?.includes("sub-account") ? (
           <Link
             to="/management/subaccount"
             className={url.includes("/management/subaccount") ? "underline" : ""}
@@ -78,7 +78,7 @@ const ManagementHeader = ({ url, setUrl }) => {
           </Link>
         ) : null}
 
-        {privs.includes("merchant") ? (
+        {authCtx.privs?.includes("merchant") ? (
           <Link
             to="/management/merchant"
             className={url.includes("/management/merchant") ? "underline" : ""}
@@ -87,7 +87,7 @@ const ManagementHeader = ({ url, setUrl }) => {
           </Link>
         ) : null}
 
-        {privs.includes("liquidity-pool") ? (
+        {authCtx.privs?.includes("liquidity-pool") ? (
           <Link
             to="/management/liquidity"
             className={url.includes("/management/liquidity") ? "underline" : ""}

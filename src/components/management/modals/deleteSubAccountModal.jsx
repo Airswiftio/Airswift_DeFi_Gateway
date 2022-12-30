@@ -3,7 +3,7 @@ import { get, post } from "@@/pages/management/requests";
 import { DefaultButton } from "../..";
 import "./confirmationModal.scss";
 
-const DeleteSubAccountModal = ({ click, setValue, title, type, selected, setSelected }) => {
+const DeleteSubAccountModal = ({ click, setValue, setRefresh, title, type, selected, setSelected }) => {
   useEffect(() => {
     const modal = document.getElementsByClassName("confirmationModal");
     modal[0].addEventListener("click", (e) => {
@@ -29,6 +29,7 @@ const DeleteSubAccountModal = ({ click, setValue, title, type, selected, setSele
             title="Cancel"
             click={() => {
               //setValue("Cancel");
+              setRefresh(true);
               click();
             }}
             type={2}
@@ -37,10 +38,11 @@ const DeleteSubAccountModal = ({ click, setValue, title, type, selected, setSele
           <DefaultButton
             title="Delete"
             click={() => {
-              setValue("Confirm");
+              // setValue("Confirm");
               deleteAccount();
+              setRefresh(true);
               click();
-              get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
+              //get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
             }}
             alternateBg={type === 2 ? true : false}
             type={2}

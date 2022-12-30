@@ -13,6 +13,7 @@ import "./styles/subaccount.scss";
 
 const SubAccount = () => {
   const [subAccounts, setSubAccounts] = useState();
+  const [refresh, setRefresh] = useState(false);
   const [deleteIsOpen, setDeleteOpen] = useState(false);
   const [createIsOpen, setCreateOpen] = useState(false);
   const [selected, setSelected] = useState([]);
@@ -21,7 +22,11 @@ const SubAccount = () => {
 
   useEffect(() => {
     get(setSubAccounts, "/api/admin/manager/list?page=1&size=1000&status=all");
-  }, [currPage]);
+    if(refresh){
+      setCurrPage(0);
+    }
+    setRefresh(false);
+  }, [currPage,refresh]);
 
   useEffect(() => {
     console.log("Selected: ", selected);
@@ -38,6 +43,7 @@ const SubAccount = () => {
         <DeleteSubAccountModal
           click={() => setDeleteOpen(false)}
           setValue={setSubAccounts}
+          setRefresh={setRefresh}
           title="Are you sure 
           you want to delete these accounts?"
           type={2}
@@ -49,6 +55,7 @@ const SubAccount = () => {
         <CreateSubAccountModal
           click={() => setCreateOpen(false)}
           setValue={setSubAccounts}
+          setRefresh={setRefresh}
           title="Create Subaccount"
           type={2}
         />

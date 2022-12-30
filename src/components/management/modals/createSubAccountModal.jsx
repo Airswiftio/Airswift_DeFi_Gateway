@@ -17,7 +17,7 @@ const formSchema = yup.object().shape({
     .required("Please confirm your password"),
 });
 
-const CreateSubAccountModal = ({ click, setValue, title }) => {
+const CreateSubAccountModal = ({ click, setValue, setRefresh , title }) => {
   const [privs, setPrivs] = useState([]);
   const [showErrors, setShowErrors] = useState(false);
 
@@ -54,6 +54,7 @@ const CreateSubAccountModal = ({ click, setValue, title }) => {
     console.log("Privs", privs);
     createSubaccount(values.name, values.email, values.password, privs);
     click();
+    setRefresh(true);
     get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
   };
 
