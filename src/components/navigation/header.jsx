@@ -6,6 +6,7 @@ import { ProfileModal } from "../";
 import "./header.scss";
 
 import ProfilePhoto from "../../assets/sample_profile.svg";
+import {dbGetUserWallet} from "@@/utils/function";
 
 const Header = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -19,6 +20,7 @@ const Header = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
+  console.log('dbGetUserWallet',dbGetUserWallet());
   return (
     <div className="navWrapper">
       <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
@@ -43,9 +45,12 @@ const Header = () => {
         >
           SETTINGS
         </Link>
-        <Link to="/admin" className={url.includes("admin") ? "underline" : ""}>
-          ADMIN
-        </Link>
+        {dbGetUserWallet()?.roles === "admin" &&
+            <Link to="/admin" className={url.includes("admin") ? "underline" : ""}>
+              ADMIN
+            </Link>
+        }
+
       </div>
       <div className="profileContainer">
         <div className="imageContainer">

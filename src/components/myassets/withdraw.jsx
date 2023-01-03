@@ -14,7 +14,7 @@ import { GetWithdrawList} from "@@/utils/request/api";
 import Doc from "@@/assets/document.svg";
 import Verified from "@@/assets/verified.svg";
 import {select_currency} from "@@/utils/config";
-import {conversionUtcDate, copy_text} from "@@/utils/function";
+import {conversionUtcDate, copy_text, dbGetUserWallet} from "@@/utils/function";
 import toast from "react-hot-toast";
 import "react-tooltip/dist/react-tooltip.css";
 import {Tooltip as ReactTooltip} from "react-tooltip";
@@ -115,11 +115,14 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
                 page={page}
                 setPage={setPage}
             />
-            <DefaultButton
-                title="Withdraw"
-                align={1}
-                click={() => navigate("/withdraw")}
-            />
+            {dbGetUserWallet()?.roles === "admin" &&
+                <DefaultButton
+                    title="Withdraw"
+                    align={1}
+                    click={() => navigate("/withdraw")}
+                />
+            }
+
             {/*<div className="help">How can I use VP?</div>*/}
         </div>
     );
