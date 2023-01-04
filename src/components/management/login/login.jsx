@@ -80,7 +80,7 @@ const ManagementLogin = () => {
         captcha_code: values.captcha,
         
       },
-      "/api/admin/login?"+"h-captcha-response="+token,
+        process.env.REACT_APP_API_URL +"/admin/login?"+"h-captcha-response="+token,
       checkAuth
     );
     console.log("Err: ", error);
