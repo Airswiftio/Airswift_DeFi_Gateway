@@ -100,7 +100,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
       //Only success status can have vc
       let VCids = [];
       payments_data.map((item, index) => {
-        if(item.status === 'success' && item?.vcs?.[0]?.vcid){
+        if((item.status === 'success' || item.status === 'closed') && item?.vcs?.[0]?.vcid){
           VCids = [...VCids, item?.vcs?.[0]?.vcid];
         }
         return item;
@@ -119,7 +119,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
 
       payments_data.map((item, index) => {
         item.vc_status = 'none';
-        if(item.status === 'success'){
+        if(item.status === 'success' || (item.status === 'closed' && item?.vcs?.length > 0)){
           if(item?.vcs?.[0]?.vc_status === 'Invalid'){
             item.vc_status = 'none';
           }

@@ -28,8 +28,8 @@ const Dashboard = () => {
     const res = await GetMerchantBaseSummary({ tz: local_tz });
     let currency_symbol = await get_shop_currency_symbol();
     let exchange_rate = await get_exchange_rate();
-    let total_balance = ((res?.data?.total_balance ?? 0) * exchange_rate)/*.toFixed(2)*/;
-    let today_income = ((res?.data?.today_total_payment ?? 0) * exchange_rate)/*.toFixed(2)*/;
+    let total_balance = ((res?.data?.total_balance ?? 0) * exchange_rate).toFixed(2);
+    let today_income = ((res?.data?.today_total_payment ?? 0) * exchange_rate).toFixed(2);
     console.log("income total",res)
     setTotalBalance(currency_symbol + ' ' + total_balance);
     setTodayIncome(currency_symbol + ' ' + today_income);

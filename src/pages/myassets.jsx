@@ -41,8 +41,8 @@ const Assets = ({state, setState}) => {
     console.log("income total",res)
     let currency_symbol = await get_shop_currency_symbol();
     let exchange_rate = await get_exchange_rate();
-    let total = ((res?.data?.latest_90_days_total_payment ?? incomeTotal?.total) * exchange_rate)/*.toFixed(2)*/;
-    let today = ((res?.data?.today_total_payment ?? incomeTotal?.today) * exchange_rate)/*.toFixed(2)*/;
+    let total = ((res?.data?.latest_90_days_total_payment ?? incomeTotal?.total) * exchange_rate).toFixed(2);
+    let today = ((res?.data?.today_total_payment ?? incomeTotal?.today) * exchange_rate).toFixed(2);
     console.log("income total",res)
     setIncomeTotal({
       total: currency_symbol + ' ' + total,
@@ -53,8 +53,8 @@ const Assets = ({state, setState}) => {
     const res = await GetWithdrawSummary({ tz: local_tz });
     let currency_symbol = await get_shop_currency_symbol();
     let exchange_rate = await get_exchange_rate();
-    let total = ((res?.data?.latest_90_days_total_withdraw ?? withdrawTotal?.total) * exchange_rate)/*.toFixed(2)*/;
-    let today = ((res?.data?.today_total_withdraw ?? withdrawTotal?.today) * exchange_rate)/*.toFixed(2)*/;
+    let total = ((res?.data?.latest_90_days_total_withdraw ?? withdrawTotal?.total) * exchange_rate).toFixed(2);
+    let today = ((res?.data?.today_total_withdraw ?? withdrawTotal?.today) * exchange_rate).toFixed(2);
     setWithdrawTotal({
       total: currency_symbol + ' ' + total,
       today: currency_symbol + ' ' + today,
