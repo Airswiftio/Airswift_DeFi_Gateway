@@ -42,7 +42,7 @@ const ManagementHeader = ({ url, setUrl }) => {
 
   // useEffect(() => {
   //   let temp = [];
-  //   axios.get("/api/admin/permission/all").then((res) => {
+  //   axios.get(process.env.REACT_APP_API_URL+"/admin/permission/all").then((res) => {
   //     console.log("res =",res)
   //     res.data.msg.permissions.forEach((p) => {
   //       temp.push(p.identity);

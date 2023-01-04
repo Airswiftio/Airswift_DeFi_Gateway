@@ -29,7 +29,7 @@ const CreateSubAccountModal = ({ click, setValue, setRefresh , title }) => {
         password: password,
         privileges: privileges,
       },
-      "/api/admin/manager/create"
+        process.env.REACT_APP_API_URL+"/admin/manager/create"
     );
   };
 
@@ -55,7 +55,7 @@ const CreateSubAccountModal = ({ click, setValue, setRefresh , title }) => {
     createSubaccount(values.name, values.email, values.password, privs);
     click();
     setRefresh(true);
-    get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
+    get(setValue, process.env.REACT_APP_API_URL+"/admin/manager/list?page=1&size=10&status=all");
   };
 
   const { values, handleChange, handleSubmit, errors } = useFormik({

@@ -8,7 +8,7 @@ const Dashboard = () => {
   const [overviewData, setOverviewData] = useState();
 
   useEffect(() => {
-    setOverviewData(get(setOverviewData, "/api/admin/dashboard/overview"));
+    setOverviewData(get(setOverviewData, process.env.REACT_APP_API_URL+"/admin/dashboard/overview"));
   }, []);
 
   return (

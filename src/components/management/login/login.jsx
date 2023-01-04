@@ -51,7 +51,7 @@ const ManagementLogin = () => {
   // }, []);
 
   // const fetchCaptcha = () => {
-  //   axios.get("/api/admin/login/captcha/create").then((response) => {
+  //   axios.get(process.env.REACT_APP_API_URL+"/admin/login/captcha/create").then((response) => {
   //     console.log(response.data.msg);
   //     setCaptcha(response.data.msg);
   //   });

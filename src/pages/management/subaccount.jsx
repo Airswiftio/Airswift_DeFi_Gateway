@@ -21,7 +21,7 @@ const SubAccount = () => {
   const [pages, setPages] = useState(0);
 
   useEffect(() => {
-    get(setSubAccounts, "/api/admin/manager/list?page=1&size=1000&status=all");
+    get(setSubAccounts, process.env.REACT_APP_API_URL+"/admin/manager/list?page=1&size=1000&status=all");
     if(refresh){
       setCurrPage(0);
     }

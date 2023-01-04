@@ -15,7 +15,7 @@ const DeleteSubAccountModal = ({ click, setValue, setRefresh, title, type, selec
 
   const deleteAccount = () => {
     selected.forEach((id) => {
-      post({ manager_id: id }, "/api/admin/manager/delete");
+      post({ manager_id: id }, process.env.REACT_APP_API_URL+"/admin/manager/delete");
     });
     setSelected([]);
   };
@@ -42,7 +42,7 @@ const DeleteSubAccountModal = ({ click, setValue, setRefresh, title, type, selec
               deleteAccount();
               setRefresh(true);
               click();
-              //get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
+              //get(setValue, process.env.REACT_APP_API_URL+"/admin/manager/list?page=1&size=10&status=all");
             }}
             alternateBg={type === 2 ? true : false}
             type={2}

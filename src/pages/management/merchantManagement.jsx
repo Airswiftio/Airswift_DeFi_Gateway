@@ -12,7 +12,7 @@ const MerchantManagement = () => {
   const [pages, setPages] = useState(0);
 
   useEffect(() => {
-    get(setMerchants, `/api/admin/merchant/list?page=${1}&size=1000&status=all`);
+    get(setMerchants, process.env.REACT_APP_API_URL+`/admin/merchant/list?page=${1}&size=1000&status=all`);
   }, [currPage]);
 
   const search = (val) => {

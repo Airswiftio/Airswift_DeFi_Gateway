@@ -22,9 +22,9 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
   const handleToggle = () => {
     if (toggleState === "unavailable") {
       if (type === TABLETYPE.MERCHANT) {
-        post({ merchant_id: data?.id, new_status: "available" }, "/api/admin/merchant/status");
+        post({ merchant_id: data?.id, new_status: "available" }, process.env.REACT_APP_API_URL+"/admin/merchant/status");
       } else if (type === TABLETYPE.LIQUIDITY) {
-        post({ pool_id: data?.id, new_status: "available" }, "/api/admin/pool/status");
+        post({ pool_id: data?.id, new_status: "available" }, process.env.REACT_APP_API_URL+"/admin/pool/status");
       }
     }
     

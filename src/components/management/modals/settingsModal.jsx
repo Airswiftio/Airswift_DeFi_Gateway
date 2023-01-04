@@ -17,7 +17,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
         password: password,
         privileges: privileges,
       },
-      "/api/admin/manager/create"
+        process.env.REACT_APP_API_URL+"/admin/manager/create"
     );
   };
 
@@ -30,7 +30,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
         password: password,
         email: email,
       },
-      "/api/admin/manager/change"
+        process.env.REACT_APP_API_URL+"/admin/manager/change"
     );
   };
 
@@ -124,7 +124,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
           onClick={() => {
             editSubaccount();
             click();
-            get(setValue, "/api/admin/manager/list?page=1&size=10&status=all");
+            get(setValue, process.env.REACT_APP_API_URL+"/admin/manager/list?page=1&size=10&status=all");
           }}
         >
           Save

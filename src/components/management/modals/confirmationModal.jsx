@@ -35,7 +35,7 @@ const ConfirmationModal = ({ click, setValue, title, type, id }) => {
             click={() => {
               setValue("Confirm");
               click();
-              post({ merchant_id: id, new_status: "unavailable" }, "/api/admin/merchant/status");
+              post({ merchant_id: id, new_status: "unavailable" }, process.env.REACT_APP_API_URL+"/admin/merchant/status");
             }}
             alternateBg={type === 2 ? true : false}
             type={2}
