@@ -91,7 +91,7 @@ export function select_currency(type = "list") {
 export function base_currency() {
   return [
     { key: "usd", title: "USD",symbol:"$" },
-    { key: "cad", title: "CAD" ,symbol:"C$"},
+    { key: "cad", title: "CAD" ,symbol:"$ CA"},
   ];
 }
 

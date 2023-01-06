@@ -11,7 +11,7 @@ const HistoryTable = ({ children, vc = true, select }) => {
           <ReactTooltip
               anchorId="app-amount1"
               place="bottom"
-              content="platform fee 0.25%"
+              content="service fee 0.25%"
           />
         {select ? <span>Selected</span> : null}
         <span>Trans ID</span>
