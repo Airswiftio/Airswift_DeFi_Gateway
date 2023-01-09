@@ -96,7 +96,7 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
             setValue={setToggleState}
             title="Are you sure you want to disable this DID?"
             id={data?.id}
-            type={1}
+            type={type}
           />
         )}
       </Popup>
@@ -112,7 +112,7 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
               open={openModal}
             />
             <span style={{ minWidth: "80px", textAlign: "right" }}>
-              {type === TABLETYPE.MERCHANT ? toggleState==="available"? "enable" : "disable" : toggleState}
+              { toggleState==="available"? "enable": "disable" }
               </span>
           </div>
         ) : (

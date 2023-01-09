@@ -3,6 +3,7 @@ import { get, post } from "@@/pages/management/requests";
 import { DefaultButton } from "../..";
 import "./confirmationModal.scss";
 import { RiCloseFill } from "react-icons/ri";
+import { TABLETYPE } from "@@/components/types";
 
 const ConfirmationModal = ({ click, setValue, title, type, id }) => {
   useEffect(() => {
@@ -35,7 +36,11 @@ const ConfirmationModal = ({ click, setValue, title, type, id }) => {
             click={() => {
               setValue("Confirm");
               click();
-              post({ merchant_id: id, new_status: "unavailable" }, process.env.REACT_APP_API_URL+"/admin/merchant/status");
+              if (type === TABLETYPE.MERCHANT) {
+                post({ merchant_id: id, new_status: "unavailable" }, process.env.REACT_APP_API_URL+"/admin/merchant/status");
+              } else if (type === TABLETYPE.LIQUIDITY) {
+                post({ pool_id: id, new_status: "unavailable" }, process.env.REACT_APP_API_URL+"/admin/pool/status");
+              }
             }}
             alternateBg={type === 2 ? true : false}
             type={2}
