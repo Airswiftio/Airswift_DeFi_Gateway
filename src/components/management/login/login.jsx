@@ -133,15 +133,6 @@ const ManagementLogin = () => {
 
         </div>
 
-        <div className="row">
-          <label>
-            <input type="checkbox" name="agreeTerms" />
-            Remember me
-          </label>
-          <span className="forgot" onClick={() => navigate("/management/pw")}>
-            Forgot password?
-          </span>
-        </div>
         <span className="errorMessage">{error}</span>
 
         <button className="btn" type="submit">

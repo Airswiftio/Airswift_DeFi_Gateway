@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { get } from "./requests";
 import { SmallCard } from "../../components";
+import {ethers, signer} from '@@/utils/chain/chainBase';
 
 import "./styles/dashboard.scss";
 
@@ -8,7 +9,8 @@ const Dashboard = () => {
   const [overviewData, setOverviewData] = useState();
 
   useEffect(() => {
-    setOverviewData(get(setOverviewData, process.env.REACT_APP_API_URL+"/admin/dashboard/overview"));
+    const timeZone = new Date().getTimezoneOffset() / -60;
+    setOverviewData(get(setOverviewData, `${process.env.REACT_APP_API_URL}/admin/dashboard/overview?tz=${timeZone}`));
   }, []);
 
   return (

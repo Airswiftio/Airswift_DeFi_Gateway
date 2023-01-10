@@ -5,6 +5,7 @@ import SettingsSVG from "@@/assets/settings.svg";
 import Check from "@@/assets/check.svg";
 import Popup from "reactjs-popup";
 import { TABLETYPE } from "@@/components/types";
+import { Tooltip } from "react-tooltip";
 import "./managementTable.scss";
 
 const TableRow = ({ data, type, modify, selected, setSelected }) => {
@@ -20,14 +21,20 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
   };
 
   const handleToggle = () => {
-    if (toggleState === "unavailable") {
+    if (toggleState === "unavailable" || toggleState === "Confirm") {
       if (type === TABLETYPE.MERCHANT) {
-        post({ merchant_id: data?.id, new_status: "available" }, process.env.REACT_APP_API_URL+"/admin/merchant/status");
+        post(
+          { merchant_id: data?.id, new_status: "available" },
+          process.env.REACT_APP_API_URL + "/admin/merchant/status"
+        );
       } else if (type === TABLETYPE.LIQUIDITY) {
-        post({ pool_id: data?.id, new_status: "available" }, process.env.REACT_APP_API_URL+"/admin/pool/status");
+        post(
+          { pool_id: data?.id, new_status: "available" },
+          process.env.REACT_APP_API_URL + "/admin/pool/status"
+        );
       }
     }
-    
+
     setToggleState(toggleState === "available" ? "unavailable" : "available");
   };
 
@@ -81,16 +88,8 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
 
   return (
     <div className="mTableRow">
-      <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
-        {type === TABLETYPE.SUBACCOUNT ? (
-          <SettingsModal
-            click={closeModal}
-            title="Settings"
-            type={1}
-            data={data}
-            setValue={modify}
-          />
-        ) : (
+      {type !== TABLETYPE.SUBACCOUNT && (
+        <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
           <ConfirmationModal
             click={closeModal}
             setValue={setToggleState}
@@ -98,8 +97,8 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
             id={data?.id}
             type={type}
           />
-        )}
-      </Popup>
+        </Popup>
+      )}
       <div>{renderRow(type)}</div>
 
       <span className="col status checkboxColumn">
@@ -112,13 +111,14 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
               open={openModal}
             />
             <span style={{ minWidth: "80px", textAlign: "right" }}>
-              { toggleState==="available"? "enable": "disable" }
-              </span>
+              {toggleState === "available" ? "enable" : "disable"}
+            </span>
           </div>
         ) : (
-          <img src={SettingsSVG} alt="settings" onClick={() => setIsOpen(true)} />
-        )}
+          <img id={"setting-" + data?.id} src={SettingsSVG} alt="settings" style={{filter: "invert(50%)"}} />
+          )}
       </span>
+      <Tooltip anchorId={"setting-" + data?.id} content="Only super administrator can perform this action" place="bottom"/>
     </div>
   );
 };
