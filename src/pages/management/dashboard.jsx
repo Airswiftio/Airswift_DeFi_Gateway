@@ -1,16 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { get } from "./requests";
 import { SmallCard } from "../../components";
-import {ethers, signer} from '@@/utils/chain/chainBase';
+import { get as httpGet} from '@@/utils/request/http'
+import { ethers, signer } from '@@/utils/chain/chainBase';
 
 import "./styles/dashboard.scss";
 
 const Dashboard = () => {
   const [overviewData, setOverviewData] = useState();
+  const [tokens, setTokens] = useState();
+  
+  const getLiquidityPoolData = async () => {
+    // pool balance from smart contract
+    const jsonAbi = `[
+      {
+         "inputs":[
+            {
+               "internalType":"address",
+               "name":"token",
+               "type":"address"
+            }
+         ],
+         "name":"getPoolBalanceViaToken",
+         "outputs":[
+            {
+               "internalType":"uint256",
+               "name":"balance",
+               "type":"uint256"
+            }
+         ],
+         "stateMutability":"view",
+         "type":"function"
+      }
+    ]`
+    const Contract = new ethers.Contract("0x33e69a4630654CD6cA7104a7C696cc0065426f68", jsonAbi, signer);
+    const balance = {};
+    balance.USDC =  ethers.utils.formatEther(await Contract.getPoolBalanceViaToken("0x4600029b3b2426d627dFde7d57AbCFdC96aEC147"));
+    balance.DAI = ethers.utils.formatEther(await Contract.getPoolBalanceViaToken("0x581857409579161Dabd2C4994f78b2F1B3671bc2"));
+
+    // exchange rate
+    const rate = {};
+    rate.USDC = (await httpGet('https://api.exchangerate.host/convert', {from:"USDC", to:"USD"}, {withCredentials: false})).result;
+    rate.DAI = (await httpGet('https://api.exchangerate.host/convert', {from:"DAI", to:"USD"}, {withCredentials: false})).result;
+
+    // convert to usd
+    setTokens([{ USDC: balance.USDC * rate.USDC }, { DAI: balance.DAI * rate.DAI }]);
+  }
 
   useEffect(() => {
     const timeZone = new Date().getTimezoneOffset() / -60;
-    setOverviewData(get(setOverviewData, `${process.env.REACT_APP_API_URL}/admin/dashboard/overview?tz=${timeZone}`));
+    get(setOverviewData, `${process.env.REACT_APP_API_URL}/admin/dashboard/overview?tz=${timeZone}`);
+    getLiquidityPoolData();
   }, []);
 
   return (
@@ -56,7 +96,10 @@ const Dashboard = () => {
               <div className="title">Total Value Locked</div>
               <div className="stat">
                 <span className="curr">$</span>
-                3.47b
+                {tokens && (tokens.reduce((acc, cur) => 
+                  Object.values(acc)[0] + Object.values(cur)[0]))
+                  .toFixed(2)
+                }
               </div>
             </div>
 
@@ -64,12 +107,9 @@ const Dashboard = () => {
               <div className="title">Top Tokens</div>
               <div className="tokens">
                 <TokenRow id="#" name="Name" tvl="TVL" />
-                <TokenRow id="1" name="Ether (ETH)" tvl="$928.85m" />
-                <TokenRow id="2" name="TRC 20 - USDC" tvl="$846.80m" />
-                <TokenRow id="3" name="ERC 20 - USDC" tvl="$218.26m" />
-                <TokenRow id="4" name="Wrapped Bitcoin (WBTC)" tvl="$150.03m" />
-                <TokenRow id="5" name="TRC 20 - USDT" tvl="$120.15m" />
-                <TokenRow id="6" name="ERC 20 - USDT" tvl="$110.53m" />
+                {tokens && tokens.map((token, index) => 
+                  <TokenRow id={index + 1} key={index} name={Object.keys(token)[0]} tvl={`$${Object.values(token)[0].toFixed(2)}`} />)
+                }
               </div>
             </div>
           </div>
