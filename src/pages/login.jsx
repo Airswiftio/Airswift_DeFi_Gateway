@@ -345,7 +345,7 @@ const Login = () => {
                 />
               </div>
 
-              <div className="row">
+              {/* <div className="row">
                 <div className="label">Store link</div>
                 <input
                   type="text"
@@ -365,7 +365,7 @@ const Login = () => {
                     changeStoreInfo("callback_url", event.target.value);
                   }}
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="buttonRow">
