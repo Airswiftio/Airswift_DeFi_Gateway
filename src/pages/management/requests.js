@@ -10,7 +10,11 @@ const get = (setData, url) => {
       setData(response.data.msg);
       return response.data.msg;
     })
-    .catch(function (error) {});
+    .catch(function (error) {
+      if (error.response.status === 403 && url.includes("/api/admin")) {
+        window.location.reload();
+      }
+    });
 };
 
 const post = (data, url, cb) => {

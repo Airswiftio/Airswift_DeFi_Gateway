@@ -37,12 +37,14 @@ const Dashboard = () => {
     const balance = {};
     balance.USDC =  ethers.utils.formatEther(await Contract.getPoolBalanceViaToken("0x4600029b3b2426d627dFde7d57AbCFdC96aEC147"));
     balance.DAI = ethers.utils.formatEther(await Contract.getPoolBalanceViaToken("0x581857409579161Dabd2C4994f78b2F1B3671bc2"));
+    console.log("balace", balance);
 
     // exchange rate
     const rate = {};
     rate.USDC = (await httpGet('https://api.exchangerate.host/convert', {from:"USDC", to:"USD"}, {withCredentials: false})).result;
     rate.DAI = (await httpGet('https://api.exchangerate.host/convert', {from:"DAI", to:"USD"}, {withCredentials: false})).result;
-
+    console.log("rate", rate);
+    
     // convert to usd
     setTokens([{ USDC: balance.USDC * rate.USDC }, { DAI: balance.DAI * rate.DAI }]);
   }

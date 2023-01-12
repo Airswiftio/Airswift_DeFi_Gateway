@@ -102,6 +102,8 @@ const ManagementHeader = ({ url, setUrl }) => {
             onClick={() => {
               authCtx.setAuth(false);
               Cookies.set("auth", "false");
+              authCtx.setAdmin(false);
+              Cookies.set("admin", "false");
             }}
           >
             Logout

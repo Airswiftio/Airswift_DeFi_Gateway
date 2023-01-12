@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { SwitchToggle, ConfirmationModal, SettingsModal } from "@@/components";
 import { post } from "@@/pages/management/requests";
 import SettingsSVG from "@@/assets/settings.svg";
@@ -6,12 +6,15 @@ import Check from "@@/assets/check.svg";
 import Popup from "reactjs-popup";
 import { TABLETYPE } from "@@/components/types";
 import { Tooltip } from "react-tooltip";
+import AuthContext from "@@/context/AuthProvider";
 import "./managementTable.scss";
 
 const TableRow = ({ data, type, modify, selected, setSelected }) => {
   const [toggleState, setToggleState] = useState(data?.status);
   const [modalIsOpen, setIsOpen] = useState(false);
 
+  const authCtx = useContext(AuthContext);
+  
   const openModal = () => {
     setIsOpen(true);
   };
@@ -88,17 +91,25 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
 
   return (
     <div className="mTableRow">
-      {type !== TABLETYPE.SUBACCOUNT && (
-        <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
-          <ConfirmationModal
-            click={closeModal}
-            setValue={setToggleState}
-            title="Are you sure you want to disable this DID?"
-            id={data?.id}
-            type={type}
-          />
-        </Popup>
-      )}
+      <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
+        {type !== TABLETYPE.SUBACCOUNT ? 
+        <ConfirmationModal
+          click={closeModal}
+          setValue={setToggleState}
+          title="Are you sure you want to disable this DID?"
+          id={data?.id}
+          type={type}
+        /> :
+        (authCtx.admin && data?.username !== "admin") &&
+        <SettingsModal
+          click={closeModal}
+          title="Settings"
+          type={1}
+          data={data}
+          setValue={modify}
+        />
+        }
+      </Popup>
       <div>{renderRow(type)}</div>
 
       <span className="col status checkboxColumn">
@@ -115,10 +126,12 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
             </span>
           </div>
         ) : (
-          <img id={"setting-" + data?.id} src={SettingsSVG} alt="settings" style={{filter: "invert(50%)"}} />
+          (authCtx.admin && data?.username !== "admin") ?
+          <img src={SettingsSVG} alt="settings" onClick={() => setIsOpen(true)} /> :
+          <img src={SettingsSVG} alt="settings" style={{filter: "invert(50%)"}} id={"setting-" + data?.id} />
           )}
       </span>
-      <Tooltip anchorId={"setting-" + data?.id} content="Only super administrator can perform this action" place="bottom"/>
+      <Tooltip anchorId={"setting-" + data?.id} content="Operation not permitted" place="bottom"/>
     </div>
   );
 };
