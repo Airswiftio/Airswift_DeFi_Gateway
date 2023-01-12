@@ -3,7 +3,11 @@ import React from "react";
 import "./modal.scss";
 import closeX from "@@/assets/close.png";
 
-const Modal = ({ click,data }) => {
+const Modal = ({ click, data }) => {
+  const viewChainTx = (item) => {
+    window.open(`${process.env.REACT_APP_EXPLORER_URL}/tx/${item.payment_hash}`);
+}
+
   return (
     <div className="modal">
       <div className="modalContent0">
@@ -31,7 +35,9 @@ const Modal = ({ click,data }) => {
             <div className="label">Payout address :</div>
             <div className="item">{data?.pay_out_address}</div>
             <div className="label"> Payment Hash :</div>
-            <div className="item">{data?.payment_hash?.[0]}</div>
+            {data?.payment_hash?.[0] && 
+              <div className="item cursor_pointer" onClick={() => viewChainTx(data)}>{data?.payment_hash?.[0]}</div> 
+            }
           </div>
         </div>
       </div>

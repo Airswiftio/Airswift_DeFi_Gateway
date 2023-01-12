@@ -12,7 +12,7 @@ const get = (setData, url) => {
     })
     .catch(function (error) {
       if (error.response.status === 403 && url.includes("/api/admin")) {
-        window.location.reload();
+        window.location.href = "/management/login";
       }
     });
 };

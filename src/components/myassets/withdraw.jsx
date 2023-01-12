@@ -43,7 +43,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
     };
 
     const viewChainTx = (item) => {
-        window.open(`https://goerli.etherscan.io/tx/${item.tx_hash}`)
+        window.open(`${process.env.REACT_APP_EXPLORER_URL}/tx/${item.tx_hash}`)
     }
 
     const getList = async () => {

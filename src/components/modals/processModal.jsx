@@ -4,7 +4,7 @@ import "./processModal.scss";
 const ProcessModal = ({ click,itemData }) => {
 
   const viewChainTx = (item) => {
-    window.open(`https://goerli.etherscan.io/tx/${item.tx_hash}`)
+    window.open(`${process.env.REACT_APP_EXPLORER_URL}/tx/${item.tx_hash}`)
   }
   useEffect(() => {
     const modal = document.getElementsByClassName("processModal");
