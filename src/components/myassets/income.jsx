@@ -100,6 +100,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
       //Only success status can have vc
       let VCids = [];
       payments_data.map((item, index) => {
+        item.status_name = item.status;
         if((item.status === 'success' || item.status === 'closed') && item?.vcs?.[0]?.vcid){
           VCids = [...VCids, item?.vcs?.[0]?.vcid];
         }
@@ -120,6 +121,14 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
       payments_data.map((item, index) => {
         item.vc_status = 'none';
         if(item.status === 'success' || (item.status === 'closed' && item?.vcs?.length > 0)){
+
+          if(item?.collection_amount > item?.order_amount){
+            item.status_name = 'overpay';
+          }
+          else if(item?.collection_amount < item?.order_amount) {
+            item.status_name = 'underpay';
+          }
+
           if(item?.vcs?.[0]?.vc_status === 'Invalid'){
             item.vc_status = 'none';
           }
@@ -141,6 +150,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
             VCList1[item?.vcs?.[0]?.vcid] = this_vc;
           }
         }
+
         item.vc_exist = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? true : false;
         return item;
       });
@@ -210,7 +220,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
                   copy_text(item.payment_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
                 }}
             >{item.payment_num}</span>
-            <span>{item.status}</span>
+            <span>{item.status_name}</span>
             <span>{item.currency_symbol}</span>
             <span>{item.amount}</span>
             <span>{conversionUtcDate(item.created_at)}</span>
