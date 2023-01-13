@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import "./processModal.scss";
 
-const ProcessModal = ({ click,itemData }) => {
-
+const ProcessModal = ({ click, itemData }) => {
   const viewChainTx = (item) => {
     window.open(`${process.env.REACT_APP_EXPLORER_URL}/tx/${item.tx_hash}`)
   }
@@ -41,7 +40,10 @@ const ProcessModal = ({ click,itemData }) => {
             <div className="label">VP Created</div>
             <div className="label">VP Start</div>
             <div className="label">VP Verified</div>
-            <div className="label cursor">Transaction On Chain</div>
+            {itemData?.tx_hash ? 
+              <div className="label cursor" onClick={() => viewChainTx(itemData)}>Transaction On Chain</div> :
+              <div className="label">Transaction On Chain</div>
+            }
           </div>
         </div>
       </div>

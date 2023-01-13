@@ -21,7 +21,6 @@ const Assets = ({state, setState}) => {
   const local_tz = new Date().getTimezoneOffset() / -60
   const [initial, setInitial] = useState(true);
 
-
   const statusOptions = [
     { key: "all", title: "All"},
     { key:'closed',title:'Closed'},
