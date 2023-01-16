@@ -40,13 +40,13 @@ const Dashboard = () => {
     console.log("balace", balance);
 
     // exchange rate
-    const rate = {};
-    rate.USDC = (await httpGet('https://api.exchangerate.host/convert', {from:"USDC", to:"USD"}, {withCredentials: false})).result;
-    rate.DAI = (await httpGet('https://api.exchangerate.host/convert', {from:"DAI", to:"USD"}, {withCredentials: false})).result;
-    console.log("rate", rate);
+    const rates = await fetch("https://api.coinbase.com/v2/exchange-rates")
+                        .then(res => res.json())
+                        .then(resJson => resJson.data.rates);
+    console.log("rates", {USDC: rates.USDC, DAI: rates.DAI});
     
     // convert to usd
-    setTokens([{ USDC: balance.USDC * rate.USDC }, { DAI: balance.DAI * rate.DAI }]);
+    setTokens([{ USDC: balance.USDC * rates.USDC }, { DAI: balance.DAI * rates.DAI }]);
   }
 
   useEffect(() => {
