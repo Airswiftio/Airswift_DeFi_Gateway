@@ -95,7 +95,7 @@ const Dashboard = () => {
           <div className="sectionTitle">Liquidity Pool Overview</div>
           <div className="cards">
             <div className="tvl">
-              <div className="title">Total Value Locked</div>
+              <div className="title">Pool Balance</div>
               <div className="stat">
                 <span className="curr">$</span>
                 {tokens && (tokens.reduce((acc, cur) => 
@@ -108,7 +108,7 @@ const Dashboard = () => {
             <div className="topTokens">
               <div className="title">Top Tokens</div>
               <div className="tokens">
-                <TokenRow id="#" name="Name" tvl="TVL" />
+                <TokenRow id="#" name="Name" tvl="Pool Balance" />
                 {tokens && tokens.map((token, index) => 
                   <TokenRow id={index + 1} key={index} name={Object.keys(token)[0]} tvl={`$${Object.values(token)[0].toFixed(2)}`} />)
                 }
