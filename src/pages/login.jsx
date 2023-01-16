@@ -140,14 +140,20 @@ const Login = () => {
       return false;
     }
     if (storeInfo?.store_link?.length <= 0) {
-      setOpenAlert(true);
-      setAlertData({ msg: "Please enter your store link!" });
-      return false;
+      // set default value and temporarily disable this input
+      changeStoreInfo("store_link", storeInfo?.store_name);
+
+      // setOpenAlert(true);
+      // setAlertData({ msg: "Please enter your store link!" });
+      // return false;
     }
     if (storeInfo?.callback_url?.length <= 0) {
-      setOpenAlert(true);
-      setAlertData({ msg: "Please enter your callback url!" });
-      return false;
+      // set default value and temporarily disable this input
+      changeStoreInfo("callback_url", storeInfo?.store_name);
+
+      // setOpenAlert(true);
+      // setAlertData({ msg: "Please enter your callback url!" });
+      // return false;
     }
 
     let res1 = beforeSend(false);
@@ -264,7 +270,7 @@ const Login = () => {
       <Popup open={openAlert} closeOnDocumentClick onClose={() => setOpenAlert(false)}>
         <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
       </Popup>
-      {step === "0" && (
+      {step === "0" && percentage !== 100 && (
         <div className="loginWrapper">
           <div className="loginForm">
             <div className="formHeader">
@@ -345,6 +351,7 @@ const Login = () => {
                 />
               </div>
 
+              {/* temporarily disable this input */}
               {/* <div className="row">
                 <div className="label">Store link</div>
                 <input
