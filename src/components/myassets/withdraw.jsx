@@ -20,12 +20,13 @@ import "react-tooltip/dist/react-tooltip.css";
 import {Tooltip as ReactTooltip} from "react-tooltip";
 
 const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
+    const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [modalIsOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
     const [dataList, setDataList] = useState([]);
     const [dataTotal, setDataTotal] = useState(0);
     const [itemData, setItemData] = useState({});
+
     const pageSize = 10;
     const WithdrawStatus = [
         {key:'all',title:'All'},
@@ -68,11 +69,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
 
     useEffect(() => {
         getList();
-    }, [searchTransID,selectStatus,selectCurrency,date]);
-    useEffect(() => {
-        getList();
-        // getWithdrawTotal();
-    }, []);
+    }, [searchTransID,selectStatus,selectCurrency,date, modalIsOpen]);
 
     return (
         <div className="withdrawWrapper">

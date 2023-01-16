@@ -18,7 +18,7 @@ const ConfirmationModal = ({ click, setValue, title, type, id }) => {
   return (
     <div className="confirmationModal">
       <div className="modalContent">
-      <RiCloseFill size={20} className="closeIcon" onClick={() => {click()}}/>
+        <RiCloseFill size={20} className="closeIcon" onClick={() => {click()}}/>
         <div className="tip">{title}</div>
         <div className="btns">
           {type === 2 ? (

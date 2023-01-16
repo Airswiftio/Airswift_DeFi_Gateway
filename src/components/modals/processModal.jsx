@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "./processModal.scss";
+import { RiCloseFill } from "react-icons/ri";
 
 const ProcessModal = ({ click, itemData }) => {
   const viewChainTx = (item) => {
@@ -17,6 +18,7 @@ const ProcessModal = ({ click, itemData }) => {
   return (
     <div className="processModal">
       <div className="modalContent">
+        <RiCloseFill size={20} className="closeIcon" onClick={() => {click()}}/>
         <div className="title">View Process</div>
         <div className="process">
           <div className="path">
