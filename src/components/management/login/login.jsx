@@ -65,12 +65,12 @@ const ManagementLogin = () => {
     } else if (a?.privileges.length>0) {
       // set the cookies that expres 1 day from now to match the httpOnly cookie admin-auth-token
       // whihc is used for authentication
-      Cookies.set("privs", a.privileges, { expires: 1 });
-      Cookies.set("auth", true, { expires: 1 });
+      Cookies.set("privs", a.privileges, { expires: 0.5 });
+      Cookies.set("auth", true, { expires: 0.5 });
       authCtx.setPrivs(a.privileges);
       authCtx.setAuth(true);
       if (a.username === 'admin') {
-        Cookies.set("admin", true, { expires: 1});
+        Cookies.set("admin", true, { expires: 0.5});
         authCtx.setAdmin(true); 
       }
       navigate("/management/dashboard");
