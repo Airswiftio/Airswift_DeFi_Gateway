@@ -63,7 +63,7 @@ const ManagementLogin = () => {
       onRefresh();
       setError("Manager not found or password not correct.");
     } else if (a?.privileges.length>0) {
-      // set the cookies that expres 1 day from now to match the httpOnly cookie admin-auth-token
+      // set the cookies that expires 12 hours from now to match the httpOnly cookie admin-auth-token
       // whihc is used for authentication
       Cookies.set("privs", a.privileges, { expires: 0.5 });
       Cookies.set("auth", true, { expires: 0.5 });

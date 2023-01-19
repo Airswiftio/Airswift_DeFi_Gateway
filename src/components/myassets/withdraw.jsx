@@ -33,22 +33,8 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
         {key:'complete',title:'Complete'},
         {key:'created',title:'Pending'},
     ];
-
-    const ViewMore = (item) => {
-        setIsOpen(true);
-        setItemData(item)
-    };
-
-    const closeModal = () => {
-        setIsOpen(false);
-    };
-
-    const viewChainTx = (item) => {
-        window.open(`${process.env.REACT_APP_EXPLORER_URL}/tx/${item.tx_hash}`)
-    }
-
-    const getList = async () => {
-        console.log(WithdrawStatus?.[selectStatus]?.key??'complete')
+    
+    const getWithdrawHistory = async () => {
         let params = {
             // app_id:0,
             page:page,
@@ -60,15 +46,33 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
         if(selectCurrency !== null){
             params.currency_id = select_currency()?.[selectCurrency]?.id
         }
-        const res = await GetWithdrawList(params)
-        if(res?.code === 1000){
-            setDataList(res?.data?.withdraws ?? [])
-            setDataTotal(res?.data?.total)
-        }
+        return await GetWithdrawList(params);
+    }
+
+    const ViewMore = (item) => {
+        setItemData(item);
+        setIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
+    };
+
+    const viewChainTx = (item) => {
+        window.open(`${process.env.REACT_APP_EXPLORER_URL}/tx/${item.tx_hash}`)
     }
 
     useEffect(() => {
-        getList();
+        (async () => {
+            const res = await getWithdrawHistory();
+            if(res?.code === 1000){
+                setDataList(res?.data?.withdraws ?? []);
+                setDataTotal(res?.data?.total);
+                if (modalIsOpen) {
+                    setItemData(res?.data?.withdraws.find(el => el.withdraw_num === itemData.withdraw_num));
+                }
+            }
+        })()
     }, [searchTransID,selectStatus,selectCurrency,date, modalIsOpen]);
 
     return (

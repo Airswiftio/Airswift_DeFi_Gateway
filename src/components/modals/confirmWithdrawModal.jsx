@@ -40,9 +40,12 @@ const ConfirmWithdrawModal = ({ click, data = [], total = 0, currency, setState 
 
     await addAllVCs(VC_list);
     setState(1);
-    navigate("/assets",{
-      state: {status:1},
-    });
+    // wait for server processing
+    setTimeout(() => {
+      navigate("/assets",{
+        state: {status:1},
+      });
+    }, 500);
   };
 
   useEffect(() => {
