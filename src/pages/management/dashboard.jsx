@@ -1,58 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { get } from "./requests";
 import { SmallCard } from "../../components";
-import { get as httpGet} from '@@/utils/request/http'
-import { ethers, signer } from '@@/utils/chain/chainBase';
+import useLiquidityPoolTokens from "@@/hooks/useLiquidityPoolTokens";
 
 import "./styles/dashboard.scss";
 
 const Dashboard = () => {
   const [overviewData, setOverviewData] = useState();
-  const [tokens, setTokens] = useState();
-  
-  const getLiquidityPoolData = async () => {
-    // pool balance from smart contract
-    const jsonAbi = `[
-      {
-         "inputs":[
-            {
-               "internalType":"address",
-               "name":"token",
-               "type":"address"
-            }
-         ],
-         "name":"getPoolBalanceViaToken",
-         "outputs":[
-            {
-               "internalType":"uint256",
-               "name":"balance",
-               "type":"uint256"
-            }
-         ],
-         "stateMutability":"view",
-         "type":"function"
-      }
-    ]`
-    const Contract = new ethers.Contract("0x33e69a4630654CD6cA7104a7C696cc0065426f68", jsonAbi, signer);
-    const balance = {};
-    balance.USDC =  ethers.utils.formatEther(await Contract.getPoolBalanceViaToken("0x4600029b3b2426d627dFde7d57AbCFdC96aEC147"));
-    balance.DAI = ethers.utils.formatEther(await Contract.getPoolBalanceViaToken("0x581857409579161Dabd2C4994f78b2F1B3671bc2"));
-    console.log("balace", balance);
-
-    // exchange rate
-    const rates = await fetch("https://api.coinbase.com/v2/exchange-rates")
-                        .then(res => res.json())
-                        .then(resJson => resJson.data.rates);
-    console.log("rates", {USDC: rates.USDC, DAI: rates.DAI});
-    
-    // convert to usd
-    setTokens([{ USDC: balance.USDC * rates.USDC }, { DAI: balance.DAI * rates.DAI }]);
-  }
+  const tokens = useLiquidityPoolTokens();
 
   useEffect(() => {
     const timeZone = new Date().getTimezoneOffset() / -60;
-    get(setOverviewData, `${process.env.REACT_APP_API_URL}/admin/dashboard/overview?tz=${timeZone}`);
-    getLiquidityPoolData();
+    get(
+      setOverviewData,
+      `${process.env.REACT_APP_API_URL}/admin/dashboard/overview?tz=${timeZone}`
+    );
   }, []);
 
   return (
@@ -98,10 +60,11 @@ const Dashboard = () => {
               <div className="title">Pool Balance</div>
               <div className="stat">
                 <span className="curr">$</span>
-                {tokens && (tokens.reduce((acc, cur) => 
-                  Object.values(acc)[0] + Object.values(cur)[0]))
-                  .toFixed(2)
-                }
+                {tokens.length > 0 &&
+                  tokens
+                    .map((token) => token.balance)
+                    .reduce((acc, cur) => acc + cur)
+                    .toFixed(2)}
               </div>
             </div>
 
@@ -109,9 +72,15 @@ const Dashboard = () => {
               <div className="title">Top Tokens</div>
               <div className="tokens">
                 <TokenRow id="#" name="Name" tvl="Pool Balance" />
-                {tokens && tokens.map((token, index) => 
-                  <TokenRow id={index + 1} key={index} name={Object.keys(token)[0]} tvl={`$${Object.values(token)[0].toFixed(2)}`} />)
-                }
+                {tokens.length > 0 &&
+                  tokens.map((token, index) => (
+                    <TokenRow
+                      id={index + 1}
+                      key={index}
+                      name={token.name}
+                      tvl={`$${token.balance.toFixed(2)}`}
+                    />
+                  ))}
               </div>
             </div>
           </div>
