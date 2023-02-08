@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Check from "@@/assets/check.svg";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { ManagementPagination, TableRow } from "../..";
 import { TABLETYPE } from "../../types";
 
 import "./managementTable.scss";
-import { useEffect } from "react";
+import Check from "@@/assets/check.svg";
 
 const ManagementTable = ({
   data,
@@ -18,8 +18,66 @@ const ManagementTable = ({
 }) => {
   const [items, setItems] = useState(0);
   const [allSelected, setAllSelected] = useState(false);
+  const { pathname, state } = useLocation();
 
-  console.log(data)
+  const navigate = useNavigate();
+
+  const selectAll = () => {
+    console.log(data);
+    if (allSelected) {
+      setAllSelected(false);
+      setSelected([]);
+    } else {
+      setAllSelected(true);
+      let all = [];
+      data.forEach((d) => {
+        all.push(d.id);
+      });
+      setSelected(all);
+    }
+  };
+
+  const tableHeader = state?.console;
+
+  const renderHeader = () =>
+    type !== TABLETYPE.SUBACCOUNT ? (
+      <>
+        {type === TABLETYPE.MERCHANT && <span className="col">ID</span>}
+        <span className="col">{tableHeader}</span>
+        <span className="status">Status</span>
+      </>
+    ) : (
+      <>
+        <div>
+          <span className="col checkboxColumn">
+            <div className="checkBox" onClick={selectAll}>
+              {allSelected ? <img src={Check} alt="Check" /> : null}
+            </div>
+          </span>
+          <span className="col">Account</span>
+          <span className="col">Privileges</span>
+        </div>
+        <span className="status">Setting</span>
+      </>
+    );
+
+  // const renderRowsTop = () =>
+  //   type !== TABLETYPE.NETWORK &&
+  //   type !== TABLETYPE.SUBACCOUNT &&
+  //   type !== TABLETYPE.CURRENCY && (
+  //     <TableRow
+  //       data={{
+  //         name: `ALL ${title?.toUpperCase()}S`,
+  //         status: "available",
+  //       }}
+  //       key="all"
+  //       type={type}
+  //       modify={modify}
+  //       selected={selected}
+  //       setSelected={setSelected}
+  //       title={`ALL ${title?.toUpperCase()}S`}
+  //     />
+  //   );
 
   const renderRows = (num) => {
     const rows = [];
@@ -38,6 +96,7 @@ const ManagementTable = ({
           modify={modify}
           selected={selected}
           setSelected={setSelected}
+          title={tableHeader}
         />
       );
     }
@@ -45,72 +104,19 @@ const ManagementTable = ({
     return rows;
   };
 
-  const selectAll = () => {
-    console.log(data);
-    if (allSelected) {
-      setAllSelected(false);
-      setSelected([]);
-    } else {
-      setAllSelected(true);
-      let all = [];
-      data.forEach((d) => {
-        all.push(d.id);
-      });
-      setSelected(all);
-    }
-  };
-
-  const renderHeader = (t) => {
-    switch (t) {
-      case TABLETYPE.MERCHANT:
-        return (
-          <>
-            <span className="col">ID</span>
-            <span className="col">DID</span>
-          </>
-        );
-      case TABLETYPE.LIQUIDITY:
-        return (
-          <>
-            <span className="col">Pool</span>
-          </>
-        );
-
-      case TABLETYPE.SUBACCOUNT:
-        return (
-          <>
-            <span className="col checkboxColumn">
-              <div className="checkBox" onClick={selectAll}>
-                {allSelected ? <img src={Check} alt="Check" /> : null}
-              </div>
-            </span>
-            <span className="col checkboxColumn">Account</span>
-            <span className="col">Privileges</span>
-          </>
-        );
-
-      default:
-        return null;
-    }
-  };
-
   useEffect(() => {
     setItems(data?.length);
+    if (pathname.includes("console") && !state) navigate("/management/console");
   }, [data]);
 
   return (
     <div className="managementTableWrapper">
       <div className="row">
-        <div className="mTableHeader">
-          <div>{renderHeader(type)}</div>
-          {type === TABLETYPE.SUBACCOUNT ? (
-            <span className="status">Setting</span>
-          ) : (
-            <span className="status">Status</span>
-          )}
+        <div className="mTableHeader">{renderHeader()}</div>
+        <div>
+          {/* {renderRowsTop()} */}
+          {renderRows(items)[currPage]}
         </div>
-
-        <div>{renderRows(items)[currPage]}</div>
       </div>
 
       <ManagementPagination pages={pages} currPage={currPage} setCurrPage={setCurrPage} />

@@ -9,12 +9,12 @@ import { Tooltip } from "react-tooltip";
 import AuthContext from "@@/context/AuthProvider";
 import "./managementTable.scss";
 
-const TableRow = ({ data, type, modify, selected, setSelected }) => {
+const TableRow = ({ data, type, modify, selected, setSelected, title }) => {
   const [toggleState, setToggleState] = useState(data?.status);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const authCtx = useContext(AuthContext);
-  
+
   const openModal = () => {
     setIsOpen(true);
   };
@@ -35,6 +35,16 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
           { pool_id: data?.id, new_status: "available" },
           process.env.REACT_APP_API_URL + "/admin/pool/status"
         );
+      } else if (type === TABLETYPE.CURRENCY) {
+        post(
+          { currency_id: data?.id, new_status: "available" },
+          process.env.REACT_APP_API_URL + "/admin/currency/status"
+        );
+      } else if (type === TABLETYPE.NETWORK) {
+        post(
+          { chain_id: data?.id, new_status: "available" },
+          process.env.REACT_APP_API_URL + "/admin/blockchain/status"
+        );
       }
     }
 
@@ -43,11 +53,19 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
 
   const renderRow = (t) => {
     switch (t) {
+      case TABLETYPE.NETWORK:
+        return <span className="col">{data?.name}</span>;
+      case TABLETYPE.CURRENCY:
+        return (
+          <>
+            <span className="col">{data?.symbol}</span>
+          </>
+        );
       case TABLETYPE.MERCHANT:
         return (
           <>
             <span className="col">{data?.id}</span>
-            <span className="col">{data?.did || "No DID Address Found"}</span>
+            <span className="col">{data?.did || "ALL DIDS"}</span>
           </>
         );
       case TABLETYPE.LIQUIDITY:
@@ -71,7 +89,7 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
                 {selected.includes(data?.id) ? <img src={Check} alt="Check" /> : null}
               </div>
             </span>
-            <span className="col checkboxColumn">{data?.username}</span>
+            <span className="col">{data?.username}</span>
             <span className="col">
               {data?.permissions.map((d) => (
                 <div key={d.id}>
@@ -92,27 +110,30 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
   return (
     <div className="mTableRow">
       <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
-        {type !== TABLETYPE.SUBACCOUNT ? 
-        <ConfirmationModal
-          click={closeModal}
-          setValue={setToggleState}
-          title="Are you sure you want to disable this DID?"
-          id={data?.id}
-          type={type}
-        /> :
-        (authCtx.admin && data?.username !== "admin") &&
-        <SettingsModal
-          click={closeModal}
-          title="Settings"
-          type={1}
-          data={data}
-          setValue={modify}
-        />
-        }
+        {type !== TABLETYPE.SUBACCOUNT ? (
+          <ConfirmationModal
+            click={closeModal}
+            setValue={setToggleState}
+            title={`Are you sure you want to disable ${title?.includes("ALL") ? title : "this ".concat(title?.toLowerCase())}?`}
+            id={data?.id}
+            type={type}
+          />
+        ) : (
+          authCtx.admin &&
+          data?.username !== "admin" && (
+            <SettingsModal
+              click={closeModal}
+              title="Settings"
+              type={1}
+              data={data}
+              setValue={modify}
+            />
+          )
+        )}
       </Popup>
       <div>{renderRow(type)}</div>
 
-      <span className="col status checkboxColumn">
+      <span className="col status">
         {type !== TABLETYPE.SUBACCOUNT ? (
           <div className="col">
             <SwitchToggle
@@ -125,13 +146,18 @@ const TableRow = ({ data, type, modify, selected, setSelected }) => {
               {toggleState === "available" ? "enable" : "disable"}
             </span>
           </div>
+        ) : authCtx.admin && data?.username !== "admin" ? (
+          <img src={SettingsSVG} alt="settings" onClick={() => setIsOpen(true)} />
         ) : (
-          (authCtx.admin && data?.username !== "admin") ?
-          <img src={SettingsSVG} alt="settings" onClick={() => setIsOpen(true)} /> :
-          <img src={SettingsSVG} alt="settings" style={{filter: "invert(50%)"}} id={"setting-" + data?.id} />
-          )}
+          <img
+            src={SettingsSVG}
+            alt="settings"
+            style={{ filter: "invert(50%)" }}
+            id={"setting-" + data?.id}
+          />
+        )}
       </span>
-      <Tooltip anchorId={"setting-" + data?.id} content="Operation not permitted" place="bottom"/>
+      <Tooltip anchorId={"setting-" + data?.id} content="Operation not permitted" place="bottom" />
     </div>
   );
 };

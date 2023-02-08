@@ -10,16 +10,12 @@ import { ProfileModal } from "@@/components";
 import "./managementHeader.scss";
 
 const ManagementHeader = ({ url, setUrl }) => {
-
   const authCtx = useContext(AuthContext);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [privs, setPrivs] = useState(authCtx.privs);
   const navigate = useNavigate();
-
-
-  
 
   const closeModal = () => {
     setIsOpen(false);
@@ -35,7 +31,7 @@ const ManagementHeader = ({ url, setUrl }) => {
   }, []);
 
   useEffect(() => {
-    if (!authCtx.auth || privs===undefined) {
+    if (!authCtx.auth || privs === undefined) {
       navigate("/management/login");
     }
   }, []);
@@ -69,6 +65,14 @@ const ManagementHeader = ({ url, setUrl }) => {
         >
           Dashboard
         </Link>
+
+        <Link
+          to="/management/expense"
+          className={url.includes("/management/expense") ? "underline" : ""}
+        >
+          Expense
+        </Link>
+
         {authCtx.privs?.includes("sub-account") ? (
           <Link
             to="/management/subaccount"
@@ -78,15 +82,16 @@ const ManagementHeader = ({ url, setUrl }) => {
           </Link>
         ) : null}
 
-        {authCtx.privs?.includes("merchant") ? (
+        {/* {authCtx.privs?.includes("merchant") ? (
           <Link
             to="/management/merchant"
             className={url.includes("/management/merchant") ? "underline" : ""}
           >
             Merchant
           </Link>
-        ) : null}
+        ) : null} */}
 
+        {/* 
         {authCtx.privs?.includes("liquidity-pool") ? (
           <Link
             to="/management/liquidity"
@@ -94,7 +99,21 @@ const ManagementHeader = ({ url, setUrl }) => {
           >
             Liquidity
           </Link>
-        ) : null}
+        ) : null} */}
+
+        <Link
+          to="/management/console"
+          className={url.includes("/management/console") ? "underline" : ""}
+        >
+          Console
+        </Link>
+
+        <Link
+          to="/management/qrcode"
+          className={url.includes("/management/qrcode") ? "underline" : ""}
+        >
+          QR Code
+        </Link>
 
         {authCtx.auth ? (
           <Link

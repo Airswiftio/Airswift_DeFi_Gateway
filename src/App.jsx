@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Dashboard,
@@ -12,8 +12,13 @@ import {
   ManagementLogin,
   ManagementForgotPassword,
   ManagementDashboard,
-  MerchantManagement,
-  LiquidityManagement,
+  ExpenseManagement,
+  NetworkManagement,
+  GatewayManagement,
+  DIDManagement,
+  LiquidityPoolManagement,
+  Console,
+  QRCode,
   ManagementSubAccount,
 } from "@@/pages";
 import {
@@ -50,9 +55,18 @@ function App() {
           <Route path="login" element={<ManagementLogin />} />
           <Route path="pw" element={<ManagementForgotPassword />} />
           <Route path="dashboard" element={<ManagementDashboard />} />
-          <Route path="merchant" element={<MerchantManagement />} />
-          <Route path="liquidity" element={<LiquidityManagement />} />
+          <Route path="expense" element={<ExpenseManagement state={state} setState={setState} />} />
           <Route path="subaccount" element={<ManagementSubAccount />} />
+          <Route path="console">
+            <Route index element={<Console />} />
+            <Route path="network" element={<NetworkManagement />} />
+            <Route path="gateway" element={<GatewayManagement />} />
+            <Route path="did" element={<DIDManagement />} />
+            <Route path="liquidity-pool" element={<LiquidityPoolManagement />} />
+          </Route>
+          <Route path="qrcode">
+            <Route index element={<QRCode />} />
+          </Route>
         </Route>
 
         {/* Liquidity Pools & Farms */}
@@ -70,7 +84,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="assets" element={<MyAssets state={state} setState={setState} />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="withdraw" element={<Withdraw setState={setState}/>} />
+          <Route path="withdraw" element={<Withdraw setState={setState} />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>

@@ -14,9 +14,14 @@ import Pools from "./liquidity/pools";
 import ManagementLogin from "./management/login";
 import ManagementForgotPassword from "./management/forgotPassword";
 import ManagementDashboard from "./management/dashboard";
-import MerchantManagement from "./management/merchantManagement";
-import LiquidityManagement from "./management/liquidityManagement";
+import ExpenseManagement from "./management/expenseManagement";
+import DIDManagement from "./management/didManagement";
+import GatewayManagement from "./management/gatewayManagement";
+import NetworkManagement from "./management/networkManagement";
+import LiquidityPoolManagement from "./management/liquidityPoolManagement";
 import ManagementSubAccount from "./management/subaccount";
+import Console from "./management/console";
+import QRCode from "./management/qrcode";
 
 export {
   Admin,
@@ -30,7 +35,12 @@ export {
   ManagementLogin,
   ManagementForgotPassword,
   ManagementDashboard,
-  MerchantManagement,
-  LiquidityManagement,
+  ExpenseManagement,
+  DIDManagement,
+  NetworkManagement,
+  GatewayManagement,
+  LiquidityPoolManagement,
   ManagementSubAccount,
+  Console,
+  QRCode
 };

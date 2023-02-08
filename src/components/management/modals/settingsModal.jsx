@@ -7,7 +7,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
   const [name, setName] = useState(data?.username || "");
   const [email, setEmail] = useState(data?.email || "");
   const [password, setPassword] = useState(data?.password || "");
-  const [privileges, setPrivileges] = useState([0, 0, 0, 0]);
+  const [privileges, setPrivileges] = useState([0, 0, 0, 0, 0, 0]);
 
   const createSubaccount = (name, email, password, privileges) => {
     post(
@@ -117,6 +117,21 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
               </span>
               <span>Withdraw</span>
             </div>
+
+            <div className="selector">
+              <span className="privilege" onClick={() => changePrivilege(5)}>
+                {privileges.includes(5) ? <div className="selectedPrivilege" /> : null}
+              </span>
+              <span>Currency</span>
+            </div>
+
+            <div className="selector">
+              <span className="privilege" onClick={() => changePrivilege(6)}>
+                {privileges.includes(6) ? <div className="selectedPrivilege" /> : null}
+              </span>
+              <span>Expense</span>
+            </div>
+
           </div>
         </div>
         <button
