@@ -1,40 +1,42 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-import {Dropdown, ConfirmWithdraw, TipsModal, DefaultButton, DropdownNew} from "@@/components";
+import { ConfirmWithdraw, DefaultButton, DropdownNew } from "@@/components";
+import { select_currency } from "@@/utils/config";
 
 import "./withdraw.scss";
-import ETH from "@@/assets/eth_icon.svg";
-import {GetWithdrawList} from "@@/utils/request/api";
-import {select_currency} from "@@/utils/config";
 
-const Withdraw = ({setState}) => {
+const Withdraw = ({ setState }) => {
   const [confirm, setConfirm] = useState(false);
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const [selectNetwork, setSelectNetwork] = useState(0);
   const [selectCurrency, setSelectCurrency] = useState(0);
-  const Options = select_currency('tree');
-  const [Options1, setOptions1] = useState(Options?.[0]?._child ??[]);
+  const Options = select_currency("tree");
+  console.log(Options);
+  const [Options1, setOptions1] = useState(Options?.[0]?._child ?? []);
 
   const [Currency, setCurrency] = useState(Options?.[0]?._child?.[0]?.key);
 
-
   useEffect(() => {
-    setOptions1(Options?.[selectNetwork]?._child)
+    setOptions1(Options?.[selectNetwork]?._child);
   }, [selectNetwork]);
 
   const back = () => {
     setStep(0);
-};
+  };
 
-    return (
+  return (
     <div className="withdrawPageWrapper">
       {step === 0 && (
         <div className="controls">
-          <button className="backButton" onClick={() => navigate("/assets",{
-            state: {status:1},
-          })}>
+          <button
+            className="backButton"
+            onClick={() =>
+              navigate("/assets", {
+                state: { status: 1 },
+              })
+            }
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -60,53 +62,47 @@ const Withdraw = ({setState}) => {
             <div className="tip">
               <span className="title">TIPS:</span>
               <span className="text">
-                ETH is the currency for making transaction on Ethereum chain,
-                please make sure you have enough ETH to support your transaction
+                ETH is the currency for making transaction on Ethereum chain, please make sure you
+                have enough ETH to support your transaction
               </span>
             </div>
             <div className="selectors">
               <div className="select">
                 <span>Network</span>
                 <DropdownNew
-                    buttonStyle={{width:'180px'}}
-                    options={Options}
-                    defaultTitle="Network"
-                    selected={selectNetwork}
-                    setSelected={setSelectNetwork}
+                  buttonStyle={{ width: "180px" }}
+                  options={Options}
+                  defaultTitle="Network"
+                  selected={selectNetwork}
+                  setSelected={setSelectNetwork}
                 />
-
               </div>
               <div className="select">
                 <span>Currency</span>
                 <DropdownNew
-                    buttonStyle={{width:'180px'}}
-                    options={Options1}
-                    defaultTitle="Currency"
-                    selected={selectCurrency}
-                    setSelected={setSelectCurrency}
+                  buttonStyle={{ width: "180px" }}
+                  options={Options1}
+                  defaultTitle="Currency"
+                  selected={selectCurrency}
+                  setSelected={setSelectCurrency}
                 />
-
               </div>
             </div>
 
             <div className="buttonRow">
               <DefaultButton
-                  title="Next"
-                  type={2}
-                  click={() => {
-                    setCurrency(Options?.[selectNetwork]?._child?.[selectCurrency]);
-                    setStep(1)
-                  }
-              }
+                title="Next"
+                type={2}
+                click={() => {
+                  setCurrency(Options?.[selectNetwork]?._child?.[selectCurrency]);
+                  setStep(1);
+                }}
               />
             </div>
           </>
-        ) }
+        )}
 
-        {step === 1 &&  (
-          <ConfirmWithdraw Currency={Currency} setStep={back} setState={setState} />
-          )
-        }
+        {step === 1 && <ConfirmWithdraw Currency={Currency} setStep={back} setState={setState} />}
       </div>
     </div>
   );

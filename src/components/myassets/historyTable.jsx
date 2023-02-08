@@ -16,6 +16,7 @@ const HistoryTable = ({ children, vc = true, select }) => {
         {select ? <span>Selected</span> : null}
         <span>Trans ID</span>
         <span>Status</span>
+        <span></span>
         <span>Currency</span>
           {vc ?
               <span id='app-amount1' className="help">Amount <div>?</div></span>

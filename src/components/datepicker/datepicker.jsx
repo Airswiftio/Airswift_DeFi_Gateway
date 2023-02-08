@@ -28,7 +28,7 @@ const Datepicker = ({date,setDate,initial, setInitial}) => {
           </svg>
         </>
       ) : (
-        `${pickedDate.getDate()}/${pickedDate.getMonth()}/${pickedDate.getFullYear()}`
+        `${pickedDate.getDate()}/${pickedDate.getMonth() + 1}/${pickedDate.getFullYear()}`
       )}
     </div>
   ));

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { ApiKeys, IpnKeys, AppConfig, MyStore } from "@@/components";
+import { ApiKeys, IpnKeys, AppConfig, MyStore, SippageTolerance } from "@@/components";
 
 import "./settings.scss";
 import { GetApplicationDetail } from "@@/utils/request/api";
 import Popup from "reactjs-popup";
 import Alert from "@@/components/PopUp/Alert";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const Settings = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -16,12 +17,18 @@ const Settings = () => {
   const [alertData, setAlertData] = useState({});
 
   const pages = [
-    <MyStore myStore={myStore} setMyStore={setMyStore}  />,
-    <ApiKeys apiKeys={apiKeys} setApiKeys={setApiKeys} setOpenAlert={setOpenAlert} setAlertData={setAlertData}/>,
+    <MyStore myStore={myStore} setMyStore={setMyStore} />,
+    <ApiKeys
+      apiKeys={apiKeys}
+      setApiKeys={setApiKeys}
+      setOpenAlert={setOpenAlert}
+      setAlertData={setAlertData}
+    />,
     <IpnKeys ipnKeys={ipnKeys} setIpnKeys={setIpnKeys} />,
     <AppConfig appConfig={appConfig} setAppConfig={setAppConfig} />,
+    <SippageTolerance />,
   ];
-  const titles = ["My Store", "API Keys", "IPN Keys", "App Configuration"];
+  const titles = ["My Store", "API Keys", "IPN Keys", "App Configuration", "Slippage Tolerance"];
 
   const getAppDetail = async () => {
     const res = await GetApplicationDetail({ app_id: 0 });
@@ -55,7 +62,7 @@ const Settings = () => {
 
   return (
     <div>
-      <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
+      <Popup open={openAlert} closeOnDocumentClick onClose={() => setOpenAlert(false)}>
         <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
       </Popup>
       <div className="settingsWrapper">
@@ -72,9 +79,22 @@ const Settings = () => {
           {/*<button className={currentPage === 3 ? "selected" : ""} onClick={() => setCurrentPage(3)}>*/}
           {/*  App Configuration*/}
           {/*</button>*/}
+          <button className={currentPage === 4 ? "selected" : ""} onClick={() => setCurrentPage(4)}>
+            Slippage Tolerance
+          </button>
         </div>
         <div className="mainContent">
-          <span className="title">{titles[currentPage]}</span>
+          <span className="title">
+            {titles[currentPage]}
+
+            {/* {currentPage === 4 && (
+              <>
+                <ReactTooltip style={{fontSize: "11px"}} anchorId="app-slippage1" place="bottom" content={`The slippage tolerance(floating range) allowing merchants' customers to pay under its customized floating range. E.g The slippage tolerance is set to 1% with order amount "100 USDC", then orders paid by customers ranging from 99USDC to 101USDC would be successful.`} />
+                <span id='app-slippage1' className="help">?</span>
+              </>
+            )} */}
+          </span>
+
           {pages[currentPage]}
         </div>
       </div>

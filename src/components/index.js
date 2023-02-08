@@ -33,6 +33,7 @@ import ApiKeys from "./settings/apiKeys";
 import AppConfig from "./settings/appConfig";
 import IpnKeys from "./settings/ipnKeys";
 import MyStore from "./settings/mystore";
+import SippageTolerance from "./settings/sippageTolerance"
 
 // Dropdown
 import Dropdown from "./dropdown/dropdown";
@@ -98,6 +99,7 @@ export {
   AppConfig,
   IpnKeys,
   MyStore,
+  SippageTolerance,
   Dropdown,
   DropdownNew,
   Income,

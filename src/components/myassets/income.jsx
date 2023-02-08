@@ -220,7 +220,8 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
                   copy_text(item.payment_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
                 }}
             >{item.payment_num}</span>
-            <span>{item.status_name}</span>
+            <span>{item.status}</span>
+            <span className="statusName">{item.status_name}</span>
             <span>{item.currency_symbol}</span>
             <span>{item.amount}</span>
             <span>{conversionUtcDate(item.created_at)}</span>
