@@ -29,11 +29,6 @@ const SubAccount = () => {
   }, [currPage,refresh]);
 
   useEffect(() => {
-    console.log("Selected: ", selected);
-  }, [selected]);
-
-  useEffect(() => {
-
     setPages(Math.ceil(subAccounts?.managers.length / 5));
   }, [subAccounts]);
 

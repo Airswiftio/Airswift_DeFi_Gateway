@@ -66,12 +66,14 @@ const ManagementHeader = ({ url, setUrl }) => {
           Dashboard
         </Link>
 
-        <Link
-          to="/management/expense"
-          className={url.includes("/management/expense") ? "underline" : ""}
-        >
-          Expense
-        </Link>
+        {authCtx.privs?.includes("expense") ? (
+          <Link
+            to="/management/expense"
+            className={url.includes("/management/expense") ? "underline" : ""}
+          >
+            Expense
+          </Link>
+        ) : null}
 
         {authCtx.privs?.includes("sub-account") ? (
           <Link
@@ -82,38 +84,16 @@ const ManagementHeader = ({ url, setUrl }) => {
           </Link>
         ) : null}
 
-        {/* {authCtx.privs?.includes("merchant") ? (
+        {authCtx.privs?.includes("currency") ||
+        authCtx.privs?.includes("merchant") ||
+        authCtx.privs?.includes("liquidity-pool") ? (
           <Link
-            to="/management/merchant"
-            className={url.includes("/management/merchant") ? "underline" : ""}
+            to="/management/console"
+            className={url.includes("/management/console") ? "underline" : ""}
           >
-            Merchant
+            Console
           </Link>
-        ) : null} */}
-
-        {/* 
-        {authCtx.privs?.includes("liquidity-pool") ? (
-          <Link
-            to="/management/liquidity"
-            className={url.includes("/management/liquidity") ? "underline" : ""}
-          >
-            Liquidity
-          </Link>
-        ) : null} */}
-
-        <Link
-          to="/management/console"
-          className={url.includes("/management/console") ? "underline" : ""}
-        >
-          Console
-        </Link>
-
-        <Link
-          to="/management/qrcode"
-          className={url.includes("/management/qrcode") ? "underline" : ""}
-        >
-          QR Code
-        </Link>
+        ) : null}
 
         {authCtx.auth ? (
           <Link

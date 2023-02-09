@@ -15,12 +15,10 @@ const GatewayManagement = () => {
       process.env.REACT_APP_API_URL + `/admin/currency/list?page=${1}&size=1000&status=all`
     );
   }, [currPage]);
-  console.log(currencies, "currencies");
 
   useEffect(() => {
     setPages(Math.ceil(currencies?.total / 5));
   }, [currencies]);
-  console.log(search);
 
   return (
     <div className="merchantManagementWrapper">

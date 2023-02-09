@@ -29,6 +29,7 @@ export {
   Login,
   MyAssets,
   Settings,
+  QRCode,
   Withdraw,
   Farms,
   Pools,
@@ -42,5 +43,4 @@ export {
   LiquidityPoolManagement,
   ManagementSubAccount,
   Console,
-  QRCode
 };

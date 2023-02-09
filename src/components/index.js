@@ -1,6 +1,7 @@
 // Layout
 import Layout from "./Layout";
 import RequireAuth from "./RequireAuth";
+import RequirePriv from "./RequirePriv";
 import LiquidityLayout from "./LiquidityLayout";
 
 // Navigation
@@ -135,6 +136,7 @@ export {
   ManagementLayout,
   Layout,
   RequireAuth,
+  RequirePriv,
   SmallCard,
   ManagementTable,
   SwitchToggle,

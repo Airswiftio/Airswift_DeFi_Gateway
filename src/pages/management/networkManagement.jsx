@@ -20,16 +20,11 @@ const NetworkManagement = () => {
       setNetworks(res.data.blockchains);
     })()
   }, [currPage]);
-  console.log(networks, "networks");
 
   useEffect(() => {
     setPages(Math.ceil(networks.length / 5));
   }, [networks]);
 
-  console.log(networks?.filter((el) =>
-  el.name.toUpperCase().includes(search.toUpperCase())
-));
-console.log(search);
   return (
     <div className="merchantManagementWrapper">
       <div className="management">

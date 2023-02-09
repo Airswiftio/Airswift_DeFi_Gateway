@@ -22,8 +22,6 @@ const DIDManagement = () => {
     setPages(Math.ceil(merchants.total / 5));
   }, [merchants]);
 
-  console.log(merchants);
-
   return (
     <div className="merchantManagementWrapper">
       <div className="management">

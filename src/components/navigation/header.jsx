@@ -45,6 +45,12 @@ const Header = () => {
         >
           SETTINGS
         </Link>
+        <Link
+          to="/qrcode"
+          className={url.includes("qrcode") ? "underline" : ""}
+        >
+          QR Code
+        </Link>
         {dbGetUserWallet()?.roles === "admin" &&
             <Link to="/admin" className={url.includes("admin") ? "underline" : ""}>
               ADMIN

@@ -18,7 +18,6 @@ const LiquidityManagement = () => {
         "&size=10&status=all"
     );
   }, [currPage]);
-  console.log(pools, "pools");
 
   useEffect(() => {
     setPages(Math.ceil(pools?.pools.length / 5));

@@ -11,18 +11,6 @@ export default function useLiquidityPoolTokens() {
 
   useEffect(() => {
     (async () => {
-      // available tokens
-      const poolList = await httpGet("admin/pool/list", {
-        page: 1,
-        size: 10,
-        status: "unavailable",
-      });
-      if (poolList.data.total > 0) {
-        poolList.data.pools.forEach((pool) => {
-          liquidityTokenList = liquidityTokenList.filter((token) => token.address !== pool.currency.contract_address);
-        });
-      }
-
       // pools balance
       await Promise.all(
         liquidityTokenList.map(async (token) => {

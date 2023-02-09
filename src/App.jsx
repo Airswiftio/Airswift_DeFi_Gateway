@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { Routes, Route, Navigate } from "react-router-dom";
 import {
   Dashboard,
   Login,
@@ -26,16 +26,26 @@ import {
   Layout,
   Unauthorized,
   RequireAuth,
+  RequirePriv,
   LiquidityLayout,
 } from "@@/components";
-import { Routes, Route } from "react-router-dom";
-import "@@/App.scss";
 import { listenWallet } from "@@/utils/chain/wallet";
+import "@@/App.scss";
+
 /* Protected route codes -> user: 2000, merchant: 3000, admin: 5000 */
 const ROLES = {
   Contributor: "contributor",
   ShopManager: "shop_manager",
   Admin: "admin",
+};
+
+const PRIVILEGES = {
+  EXPENSE: ["expense"],
+  CONSOLE: ["currency", "merchant", "liquidity-pool"],
+  NETWORK: ["currency"],
+  GATEWAY: ["currency"],
+  DID: ["merchant"],
+  LIQUIDITY: ["liquidity-pool"],
 };
 
 function App() {
@@ -51,22 +61,51 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
 
         {/* Dev - Unprotected Management */}
-        <Route path="/management" element={<ManagementLayout title="Airswift Management" />}>
+        <Route path="management" element={<ManagementLayout title="Airswift Management" />}>
+          <Route index element={<Navigate to="dashboard" />} />
           <Route path="login" element={<ManagementLogin />} />
           <Route path="pw" element={<ManagementForgotPassword />} />
           <Route path="dashboard" element={<ManagementDashboard />} />
-          <Route path="expense" element={<ExpenseManagement state={state} setState={setState} />} />
+          <Route
+            path="expense"
+            element={
+              <RequirePriv component={<ExpenseManagement />} requiredPrivs={PRIVILEGES.EXPENSE} />
+            }
+          />
           <Route path="subaccount" element={<ManagementSubAccount />} />
           <Route path="console">
-            <Route index element={<Console />} />
-            <Route path="network" element={<NetworkManagement />} />
-            <Route path="gateway" element={<GatewayManagement />} />
-            <Route path="did" element={<DIDManagement />} />
-            <Route path="liquidity-pool" element={<LiquidityPoolManagement />} />
+            <Route
+              index
+              element={<RequirePriv component={<Console />} requiredPrivs={PRIVILEGES.CONSOLE} />}
+            />
+            <Route
+              path="network"
+              element={
+                <RequirePriv component={<NetworkManagement />} requiredPrivs={PRIVILEGES.NETWORK} />
+              }
+            />
+            <Route
+              path="gateway"
+              element={
+                <RequirePriv component={<GatewayManagement />} requiredPrivs={PRIVILEGES.GATEWAY} />
+              }
+            />
+            <Route
+              path="did"
+              element={<RequirePriv component={<DIDManagement />} requiredPrivs={PRIVILEGES.DID} />}
+            />
+            <Route
+              path="liquidity-pool"
+              element={
+                <RequirePriv
+                  component={<LiquidityPoolManagement />}
+                  requiredPrivs={PRIVILEGES.LIQUIDITY}
+                />
+              }
+            />
           </Route>
-          <Route path="qrcode">
-            <Route index element={<QRCode />} />
-          </Route>
+          {/* Catch other management routes */}
+          <Route path="*" element={<ManagementDashboard />} />
         </Route>
 
         {/* Liquidity Pools & Farms */}
@@ -84,6 +123,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="assets" element={<MyAssets state={state} setState={setState} />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="qrcode" element={<QRCode />} />
           <Route path="withdraw" element={<Withdraw setState={setState} />} />
         </Route>
 
