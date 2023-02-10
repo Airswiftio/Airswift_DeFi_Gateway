@@ -27,7 +27,7 @@ const LiquidityManagement = () => {
     <div className="merchantManagementWrapper">
       <div className="management">
         <div className="managementSearchWrapper">
-          <Search title="Search Pools or Token" search={search} setSearch={setSearch} />
+          <Search title="Search Pools or Token" search={search} setSearch={setSearch} back={true}/>
         </div>
         <ManagementTable
           data={
@@ -40,6 +40,7 @@ const LiquidityManagement = () => {
           currPage={currPage}
           setCurrPage={setCurrPage}
           pages={pages}
+          title="Pool"
         />
       </div>
     </div>

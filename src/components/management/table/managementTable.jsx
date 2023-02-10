@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+
 import { ManagementPagination, TableRow } from "../..";
 import { TABLETYPE } from "../../types";
-
-import "./managementTable.scss";
 import Check from "@@/assets/check.svg";
+import "./managementTable.scss";
 
 const ManagementTable = ({
   data,
@@ -15,12 +14,10 @@ const ManagementTable = ({
   currPage,
   setCurrPage,
   pages,
+  title
 }) => {
   const [items, setItems] = useState(0);
   const [allSelected, setAllSelected] = useState(false);
-  const { pathname, state } = useLocation();
-
-  const navigate = useNavigate();
 
   const selectAll = () => {
     console.log(data);
@@ -37,13 +34,11 @@ const ManagementTable = ({
     }
   };
 
-  const tableHeader = state?.console;
-
   const renderHeader = () =>
     type !== TABLETYPE.SUBACCOUNT ? (
       <>
         {type === TABLETYPE.MERCHANT && <span className="col">ID</span>}
-        <span className="col">{tableHeader}</span>
+        <span className="col">{title}</span>
         <span className="status">Status</span>
       </>
     ) : (
@@ -96,7 +91,7 @@ const ManagementTable = ({
           modify={modify}
           selected={selected}
           setSelected={setSelected}
-          title={tableHeader}
+          title={title}
         />
       );
     }
@@ -106,7 +101,6 @@ const ManagementTable = ({
 
   useEffect(() => {
     setItems(data?.length);
-    if (pathname.includes("console") && !state) navigate("/management/console");
   }, [data]);
 
   return (

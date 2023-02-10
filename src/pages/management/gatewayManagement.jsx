@@ -24,7 +24,7 @@ const GatewayManagement = () => {
     <div className="merchantManagementWrapper">
       <div className="management">
         <div className="managementSearchWrapper">
-          <Search title="Search Token" search={search} setSearch={setSearch} />
+          <Search title="Search Token" search={search} setSearch={setSearch} back={true} />
         </div>
         <ManagementTable
           data={
@@ -39,6 +39,7 @@ const GatewayManagement = () => {
           currPage={currPage}
           setCurrPage={setCurrPage}
           pages={pages}
+          title="Token"
         />
       </div>
     </div>

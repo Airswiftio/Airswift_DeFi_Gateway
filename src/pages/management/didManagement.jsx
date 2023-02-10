@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { get, post } from "./requests";
 import { TABLETYPE } from "@@/components/types";
 import { Search, ManagementTable } from "@@/components";
@@ -26,7 +25,7 @@ const DIDManagement = () => {
     <div className="merchantManagementWrapper">
       <div className="management">
         <div className="managementSearchWrapper">
-          <Search title="Search by ID" search={search} setSearch={setSearch} />
+          <Search title="Search by ID" search={search} setSearch={setSearch} back={true}/>
         </div>
         <ManagementTable
           data={
@@ -41,6 +40,7 @@ const DIDManagement = () => {
           currPage={currPage}
           setCurrPage={setCurrPage}
           pages={pages}
+          title="DID"
         />
       </div>
     </div>

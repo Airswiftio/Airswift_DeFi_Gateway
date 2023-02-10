@@ -1,15 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { DefaultButton, DropdownNew } from "@@/components";
 import AuthContext from "@@/context/AuthProvider";
+
 import "./styles/console.scss";
 
 function Console() {
   const [selectedNetwork, setSelectedNetwork] = useState(0);
   const [selectedConsole, setSelectedConsole] = useState(0);
-
-  const authCtx = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const networks = [
     {
@@ -19,6 +18,7 @@ function Console() {
     },
   ];
   
+  const authCtx = useContext(AuthContext);
   const consoles = [
     { title: "All", path: "network", tableHeader: "Network", priv: "currency" },
     { title: "Gateway", path: "gateway", tableHeader: "Token", priv: "currency" },
@@ -29,16 +29,11 @@ function Console() {
       tableHeader: "Pool",
       priv: "liquidity-pool",
     },
-  ].filter((el) => authCtx.privs?.includes(el.priv));
-  console.log(authCtx);
+  ].filter((console) => authCtx.privs?.includes(console.priv));
   
+  const navigate = useNavigate();
   const handleClick = () => {
-    navigate(consoles[selectedConsole].path, {
-      state: {
-        network: networks[selectedNetwork].tableHeader,
-        console: consoles[selectedConsole].tableHeader,
-      },
-    });
+    navigate(consoles[selectedConsole].path);
   };
   
   return (

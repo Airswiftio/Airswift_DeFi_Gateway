@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { get, post } from "./requests";
+import { post } from "./requests";
 import { get as httpGet } from "@@/utils/request/http";
 import { TABLETYPE } from "@@/components/types";
 import { Search, ManagementTable } from "@@/components";
@@ -29,7 +29,7 @@ const NetworkManagement = () => {
     <div className="merchantManagementWrapper">
       <div className="management">
         <div className="managementSearchWrapper">
-          <Search title="Search by ID" search={search} setSearch={setSearch} />
+          <Search title="Search by ID" search={search} setSearch={setSearch} back={true} />
         </div>
         <ManagementTable
           data={
@@ -44,6 +44,7 @@ const NetworkManagement = () => {
           currPage={currPage}
           setCurrPage={setCurrPage}
           pages={pages}
+          title="Network"
         />
       </div>
     </div>

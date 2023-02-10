@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { get } from "./requests";
 import Popup from "reactjs-popup";
-import { TABLETYPE } from "@@/components/types";
+
+import { get } from "./requests";
 import {
   ManagementTable,
   DefaultButton,
   CreateSubAccountModal,
   DeleteSubAccountModal,
 } from "@@/components";
-
+import { TABLETYPE } from "@@/components/types";
 import "./styles/subaccount.scss";
 
 const SubAccount = () => {
@@ -27,6 +27,15 @@ const SubAccount = () => {
     }
     setRefresh(false);
   }, [currPage,refresh]);
+
+  if (subAccounts?.managers) {
+    subAccounts.managers.forEach(manager => {
+     manager.permissions.forEach(permission => {
+        if (permission.name === "Currency") permission.name = "Gateway";
+        if (permission.name === "Merchant") permission.name = "DID"
+      })
+    })
+  }
 
   useEffect(() => {
     setPages(Math.ceil(subAccounts?.managers.length / 5));

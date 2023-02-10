@@ -29,7 +29,7 @@ const DeleteSubAccountModal = ({ click, setValue, setRefresh, title, type, selec
             title="Cancel"
             click={() => {
               //setValue("Cancel");
-              setRefresh(true);
+              // setRefresh(true);
               click();
             }}
             type={2}

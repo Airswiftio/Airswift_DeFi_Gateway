@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+
 import { get, post } from "@@/pages/management/requests";
-import { DefaultButton } from "@@/components";
 import "./settingsModal.scss";
 
 const SettingsModal = ({ click, setValue, title, type, data }) => {
@@ -101,7 +101,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
               <span className="privilege" onClick={() => changePrivilege(2)}>
                 {privileges.includes(2) ? <div className="selectedPrivilege" /> : null}
               </span>
-              <span>Merchant</span>
+              <span>DID</span>
             </div>
 
             <div className="selector">
@@ -122,7 +122,7 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
               <span className="privilege" onClick={() => changePrivilege(5)}>
                 {privileges.includes(5) ? <div className="selectedPrivilege" /> : null}
               </span>
-              <span>Currency</span>
+              <span>Gateway</span>
             </div>
 
             <div className="selector">

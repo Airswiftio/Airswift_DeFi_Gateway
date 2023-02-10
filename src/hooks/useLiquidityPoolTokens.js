@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { ethers, signer } from "@@/utils/chain/chainBase";
-import { get as httpGet } from "@@/utils/request/http";
 import contractConfig from "@@/contract.config";
 
 export default function useLiquidityPoolTokens() {

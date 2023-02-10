@@ -127,7 +127,7 @@ const CreateSubAccountModal = ({ click, setValue, setRefresh , title }) => {
               <span className="privilege" onClick={() => changePrivilege(2)}>
                 {privs.includes(2) ? <div className="selectedPrivilege" /> : null}
               </span>
-              <span>Merchant</span>
+              <span>DID</span>
             </div>
 
             <div className="selector">
@@ -142,6 +142,21 @@ const CreateSubAccountModal = ({ click, setValue, setRefresh , title }) => {
                 {privs.includes(4) ? <div className="selectedPrivilege" /> : null}
               </span>
               <span>Withdraw</span>
+            </div>
+
+            <div className="selector">
+              <span className="privilege" onClick={() => changePrivilege(5)}>
+                {privs.includes(5) ? <div className="selectedPrivilege" /> : null}
+              </span>
+              <span>Gatewary</span>
+            </div>
+
+
+            <div className="selector">
+              <span className="privilege" onClick={() => changePrivilege(6)}>
+                {privs.includes(6) ? <div className="selectedPrivilege" /> : null}
+              </span>
+              <span>Expense</span>
             </div>
           </div>
         </div>

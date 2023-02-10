@@ -1,8 +1,8 @@
 import React from "react";
-
-import "./styles/expenseHistoryTable.scss";
-import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+
+import "react-tooltip/dist/react-tooltip.css";
+import "./styles/expenseHistoryTable.scss";
 
 const ExpenseHistoryTable = ({ children, vc = true, select }) => {
   return (
