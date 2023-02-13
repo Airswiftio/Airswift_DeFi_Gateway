@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import toast from "react-hot-toast";
 import Popup from "reactjs-popup";
 
-import { HistoryTable, Modal, Pagination } from "../";
-
-import "./income.scss";
 import { GetPaymentDetail, GetPaymentList, MarkVCInvalid } from "@@/utils/request/api";
-import Doc from "@@/assets/document.svg";
-import Verified from "@@/assets/verified.svg";
+import { HistoryTable, Modal, Pagination } from "../";
+import { select_currency } from "@@/utils/config";
+import Alert from "@@/components/PopUp/Alert";
+import { getVCs } from "@@/utils/chain/did";
 import {
   addAllVCs,
   array_column,
@@ -14,16 +15,14 @@ import {
   array_values,
   conversionUtcDate,
   copy_text,
-  getVCsByIDS
+  getVCsByIDS,
 } from "@@/utils/function";
-import { getVCs } from "@@/utils/chain/did";
-import Alert from "@@/components/PopUp/Alert";
-import { select_currency } from "@@/utils/config";
-import toast from "react-hot-toast";
+import Verified from "@@/assets/verified.svg";
+import Doc from "@@/assets/document.svg";
 import "react-tooltip/dist/react-tooltip.css";
-import { Tooltip as ReactTooltip } from "react-tooltip";
+import "./income.scss";
 
-const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) => {
+const Income = ({ search, selectStatus, selectCurrency, date, searchTransID }) => {
   const [refreshNum, setRefreshNum] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -35,7 +34,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
   const [alertData, setAlertData] = useState({});
   const statusOptions = [
     { key: "all", title: "All" },
-    {key:'closed',title:'Closed'},
+    { key: "closed", title: "Closed" },
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
   ];
@@ -76,7 +75,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
   };
 
   const getList = async () => {
-    console.log(statusOptions?.[selectStatus]?.key ?? "all")
+    console.log(statusOptions?.[selectStatus]?.key ?? "all");
     let params = {
       // app_id:0,
       page: page,
@@ -86,7 +85,7 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
       date: date ?? "",
     };
     const currencyOptions = select_currency();
-    currencyOptions.unshift({ key: "all", title: "All"});
+    currencyOptions.unshift({ key: "all", title: "All" });
     if (selectCurrency !== null) {
       params.currency_id = currencyOptions?.[selectCurrency]?.id;
     }
@@ -95,52 +94,54 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
     if (res?.code === 1000) {
       let payments_data = res?.data?.payments ?? [];
 
-      console.log("1",payments_data )
+      console.log("1", payments_data);
 
       //Only success status can have vc
       let VCids = [];
       payments_data.map((item, index) => {
-        item.status_name = item.status;
-        if((item.status === 'success' || item.status === 'closed') && item?.vcs?.[0]?.vcid){
+        if ((item.status === "success" || item.status === "closed") && item?.vcs?.[0]?.vcid) {
           VCids = [...VCids, item?.vcs?.[0]?.vcid];
         }
         return item;
       });
 
-      console.log("VC", VCids )
+      console.log("VC", VCids);
 
-      console.log("2",payments_data )
+      console.log("2", payments_data);
       // VCids=VCids.filter(Boolean);
       let VCList = await getVCsByIDS(VCids);
-      console.log("VC", VCList )
+      console.log("VC", VCList);
       let VCExistIDS = array_column(VCList, "vc_id");
       let VCList1 = array_column2(VCList, "vc_id");
 
-      console.log("3",payments_data )
+      console.log("3", payments_data);
 
       payments_data.map((item, index) => {
-        item.vc_status = 'none';
-        if(item.status === 'success' || (item.status === 'closed' && item?.vcs?.length > 0)){
+        item.vc_status = "none";
+        if (item.status === "success" || (item.status === "closed" && item?.vcs?.length > 0)) {
+          if (item?.collection_amount * 1 > item?.order_amount * (1 + item.slippage / 100)) {
+            item.status_name = "overpay";
+          }
+          if (item?.collection_amount * 1 < item?.order_amount * (1 - item.slippage / 100)) {
+            item.status_name = "underpay";
+          }
 
-          if(item?.collection_amount > item?.order_amount){
-            item.status_name = 'overpay';
-          }
-          else if(item?.collection_amount < item?.order_amount) {
-            item.status_name = 'underpay';
-          }
-
-          if(item?.vcs?.[0]?.vc_status === 'Invalid'){
-            item.vc_status = 'none';
-          }
-          else if(item?.vcs?.[0]?.vc_status === 'Withdraw' || item?.vcs?.[0]?.vc_status === 'Processing'){
-            item.vc_status = 'yes';
-          }
-          else if(item?.vcs?.[0]?.vc_status === 'Created' || item?.vcs?.[0]?.vc_status === 'Active'){
-            item.vc_status = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? 'yes' : 'lose';
+          if (item?.vcs?.[0]?.vc_status === "Invalid") {
+            item.vc_status = "none";
+          } else if (
+            item?.vcs?.[0]?.vc_status === "Withdraw" ||
+            item?.vcs?.[0]?.vc_status === "Processing"
+          ) {
+            item.vc_status = "yes";
+          } else if (
+            item?.vcs?.[0]?.vc_status === "Created" ||
+            item?.vcs?.[0]?.vc_status === "Active"
+          ) {
+            item.vc_status = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? "yes" : "lose";
           }
 
           let this_vc = VCList1?.[item?.vcs?.[0]?.vcid];
-          if(this_vc){
+          if (this_vc) {
             this_vc.is_get = 1;
             this_vc.trans_id = item?.payment_num;
             this_vc.currency = item?.currency_symbol;
@@ -156,14 +157,14 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
       });
 
       const vc_data = array_values(VCList1);
-      if(vc_data?.length > 0){
+      if (vc_data?.length > 0) {
         await addAllVCs(vc_data);
       }
-      console.log('VCList1',VCList1);
-      console.log('aa',array_values(VCList1));
+      console.log("VCList1", VCList1);
+      console.log("aa", array_values(VCList1));
 
       // console.log('rrd',rrd);
-      console.log("4",payments_data )
+      console.log("4", payments_data);
       setDataList(payments_data);
       setDataTotal(res?.data?.total);
     }
@@ -172,14 +173,14 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
   useEffect(() => {
     // alert(page+1);
     getList();
-    console.log( "total page", parseInt(dataTotal / 10))
-  }, [ page, refreshNum]);
+    console.log("total page", parseInt(dataTotal / 10));
+  }, [page, refreshNum]);
 
   useEffect(() => {
-    if(page === 1){
+    if (page === 1) {
       getList();
     }
-    setPage(1)
+    setPage(1);
   }, [searchTransID, selectStatus, selectCurrency, date]);
 
   useEffect(() => {
@@ -198,10 +199,10 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
       </Popup>
 
       <Popup
-          open={openLoading}
-          closeOnDocumentClick={false}
-          onClose={() => setOpenLoading(false)}
-          overlayStyle = {{ background: 'rgba(0,0,0,0.8)' }}
+        open={openLoading}
+        closeOnDocumentClick={false}
+        onClose={() => setOpenLoading(false)}
+        overlayStyle={{ background: "rgba(0,0,0,0.8)" }}
       >
         <div className="loading"> Waiting ... </div>
       </Popup>
@@ -209,42 +210,42 @@ const Income = ({ search, selectStatus, selectCurrency, date,searchTransID }) =>
         {dataList.map((item, index) => (
           <div key={index} className="historyElementWrapper">
             <ReactTooltip
-                anchorId={'app-item'+index}
-                place="bottom"
-                content={item?.payment_num}
+              anchorId={"app-item" + index}
+              place="bottom"
+              content={item?.payment_num}
             />
             <span
-                id={'app-item'+index}
-                className="over_play cursor_pointer"
-                onClick={ () => {
-                  copy_text(item.payment_num) === true ? toast.success('Copy succeeded!') : toast.error('Copy failed!')
-                }}
-            >{item.payment_num}</span>
-            <span>{item.status}</span>
-            <span className="statusName">{item.status_name}</span>
+              id={"app-item" + index}
+              className="over_play cursor_pointer"
+              onClick={() => {
+                copy_text(item.payment_num) === true
+                  ? toast.success("Copy succeeded!")
+                  : toast.error("Copy failed!");
+              }}
+            >
+              {item.payment_num}
+            </span>
+            <span className="status">
+              {item.status}
+              {item.status_name && <div className="status__tag">{item.status_name}</div>}
+            </span>
             <span>{item.currency_symbol}</span>
             <span>{item.amount}</span>
             <span>{conversionUtcDate(item.created_at)}</span>
             <span className="cursor_pointer" onClick={() => openViewMore(item)}>
               <img src={Doc} alt="View more" />
             </span>
-            {item?.vc_status === 'lose' &&
-                (
-                    <div className="RestoreVC" onClick={() => RestoreVC(item?.vcs?.[0]?.vcid)}>
-                      <div>Restore VC</div>
-                    </div>
-                )
-            }
-            {item?.vc_status === 'yes' &&
-                (
-                    <span><img src={Verified} alt="Verified" /></span>
-                )
-            }
-            {item?.vc_status === 'none' &&
-                (
-                    <span>None</span>
-                )
-            }
+            {item?.vc_status === "lose" && (
+              <div className="RestoreVC" onClick={() => RestoreVC(item?.vcs?.[0]?.vcid)}>
+                <div>Restore VC</div>
+              </div>
+            )}
+            {item?.vc_status === "yes" && (
+              <span>
+                <img src={Verified} alt="Verified" />
+              </span>
+            )}
+            {item?.vc_status === "none" && <span>None</span>}
           </div>
         ))}
       </HistoryTable>

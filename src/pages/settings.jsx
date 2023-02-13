@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { ApiKeys, IpnKeys, AppConfig, MyStore, SippageTolerance } from "@@/components";
-
-import "./settings.scss";
-import { GetApplicationDetail } from "@@/utils/request/api";
+import { Tooltip } from "react-tooltip";
 import Popup from "reactjs-popup";
+
+import { GetApplicationDetail } from "@@/utils/request/api";
+import { ApiKeys, IpnKeys, AppConfig, MyStore, SlippageTolerance } from "@@/components";
 import Alert from "@@/components/PopUp/Alert";
-import { Tooltip as ReactTooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+import "./settings.scss";
 
 const Settings = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -26,7 +27,7 @@ const Settings = () => {
     />,
     <IpnKeys ipnKeys={ipnKeys} setIpnKeys={setIpnKeys} />,
     <AppConfig appConfig={appConfig} setAppConfig={setAppConfig} />,
-    <SippageTolerance />,
+    <SlippageTolerance />,
   ];
   const titles = ["My Store", "API Keys", "IPN Keys", "App Configuration", "Slippage Tolerance"];
 
@@ -86,15 +87,18 @@ const Settings = () => {
         <div className="mainContent">
           <span className="title">
             {titles[currentPage]}
-
-            {/* {currentPage === 4 && (
-              <>
-                <ReactTooltip style={{fontSize: "11px"}} anchorId="app-slippage1" place="bottom" content={`The slippage tolerance(floating range) allowing merchants' customers to pay under its customized floating range. E.g The slippage tolerance is set to 1% with order amount "100 USDC", then orders paid by customers ranging from 99USDC to 101USDC would be successful.`} />
-                <span id='app-slippage1' className="help">?</span>
-              </>
-            )} */}
+            {currentPage === 4 && (
+              <span id="app-slippage" className="help">
+                ?
+                <Tooltip
+                  className="tooltip"
+                  anchorId="app-slippage"
+                  place="right"
+                  html={`The slippage tolerance(floating range) allowing merchants' customers to pay under its customized floating range.<br /><br />E.g The slippage tolerance is set to 1% with order amount "100 USDC", then orders paid by customers ranging from 99 USDC to 101 USDC would be successful.`}
+                />
+              </span>
+            )}
           </span>
-
           {pages[currentPage]}
         </div>
       </div>

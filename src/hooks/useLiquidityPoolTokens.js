@@ -24,7 +24,6 @@ export default function useLiquidityPoolTokens() {
           }
         })
       );
-      console.log(liquidityTokenList, "poolsBalance");
 
       // exchange rate
       const rates = await fetch("https://api.coinbase.com/v2/exchange-rates")
@@ -33,12 +32,11 @@ export default function useLiquidityPoolTokens() {
 
       // convert to usd
       liquidityTokenList.forEach((token) => {
-        token.balance = token.balance * rates[token.name];
-        console.log("rate:", rates[token.name]);
+        token.balance = token.balance / rates[token.name];
+        console.log(`USD to ${token.name}:`, rates[token.name]);
       });
 
       setTokens(liquidityTokenList);
-      console.log(tokens, "poolsBalance * rate");
     })();
   }, []);
 

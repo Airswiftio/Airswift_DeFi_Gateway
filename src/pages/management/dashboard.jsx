@@ -8,6 +8,7 @@ import "./styles/dashboard.scss";
 const Dashboard = () => {
   const [overviewData, setOverviewData] = useState();
   const tokens = useLiquidityPoolTokens();
+  console.log(tokens, "Balance");
 
   useEffect(() => {
     const timeZone = new Date().getTimezoneOffset() / -60;

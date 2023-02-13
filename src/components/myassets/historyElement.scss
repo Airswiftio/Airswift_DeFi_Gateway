@@ -18,25 +18,20 @@
     //justify-content: center;
   }
 
-  .statusName {
-    background: #337ab7;
-    border-radius: 60px;
-    color:black;
-  }
-
-  .center_text{
+  .center_text {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .over_play{
-    overflow:hidden;/*内容超出后隐藏*/
-    text-overflow:ellipsis;/*超出内容显示为省略号*/
-    white-space:nowrap;/*文本不进行换行*/
+  .over_play {
+    overflow: hidden; /*内容超出后隐藏*/
+    text-overflow: ellipsis; /*超出内容显示为省略号*/
+    white-space: nowrap; /*文本不进行换行*/
     //justify-content: flex-start;
   }
-  .cursor_pointer{
+
+  .cursor_pointer {
     cursor: pointer;
   }
 
@@ -48,8 +43,7 @@
     border: 1px solid rgba(255, 255, 255, 0.7);
   }
 
-
-  .onChainStatus{
+  .onChainStatus {
     width: 114px;
     padding: 2px 8px;
     color: rgba(255, 255, 255, 0.7);
@@ -57,14 +51,33 @@
     border-radius: 13px;
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
-    background-image: linear-gradient(to right, #2f2f2f, #2f2f2f), linear-gradient(98.48deg, #8DFE59 -3.85%, #3ACBF6 35.75%, #6055FF 69.61%);
+    background-image: linear-gradient(to right, #2f2f2f, #2f2f2f),
+      linear-gradient(98.48deg, #8dfe59 -3.85%, #3acbf6 35.75%, #6055ff 69.61%);
     cursor: pointer;
   }
 
-  .onChainStatus2{
+  .onChainStatus2 {
     width: 114px;
     padding: 2px 8px;
     cursor: pointer;
+  }
 
+  .status {
+    position: relative;
+
+    &__tag {
+      position: absolute;
+      bottom: 18px;
+      right: -15px;
+      font-size: 75%;
+      background-clip: padding-box, border-box;
+      background-image: linear-gradient(90deg, #2f2f2f, #2f2f2f),
+        linear-gradient(98.48deg, #8dfe59 -3.85%, #3acbf6 35.75%, #6055ff 69.61%);
+      background-origin: padding-box, border-box;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      color: hsla(0, 0%, 100%, 0.7);
+      padding: 0 5px;
+    }
   }
 }

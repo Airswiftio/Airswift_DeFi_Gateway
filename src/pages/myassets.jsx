@@ -29,7 +29,6 @@ const Assets = ({state, setState}) => {
   ];
   const currencyOptions = select_currency();
   currencyOptions.unshift({ key: "all", title: "All"});
-  console.log(currencyOptions);
   const WithdrawStatus = [
     { key: "all", title: "All"},
     { key: "complete", title: "Complete" },
@@ -76,11 +75,12 @@ const Assets = ({state, setState}) => {
   useEffect(() => {
     ClearSearch()
   }, [state]);
+
   useEffect(() => {
     getIncomeTotal();
     getWithdrawTotal();
     getVCs();
-    setState(state_data?.status ?? 0)
+    setState(state_data?.status ?? 0);
   }, []);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const Assets = ({state, setState}) => {
   return (
     <div>
       <div className="assetsContent">
-        <Toggle toggle={setState} state={state} />
+        <Toggle setState={setState} state={state} />
         <div className="cardRow">
           <InfoCard
             title={state === 0 ? "Total Income" : "Total Withdraw"}

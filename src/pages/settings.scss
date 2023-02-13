@@ -32,7 +32,7 @@
     background: rgba(24, 30, 54, 0.9);
     backdrop-filter: blur(25px);
     border-radius: 16px;
-    border: 6px solid #D0CDFF17;
+    border: 6px solid #d0cdff17;
     padding: 2em;
 
     .title {
@@ -48,16 +48,27 @@
 
   .help {
     margin-left: 5px;
+    display: inline-block;
     width: 18px;
     height: 18px;
-    background: rgba(255, 255, 255, 0.3);
-    color: rgba(255, 255, 255, 0.8);
+    background: hsla(0, 0%, 100%, 0.5);
+    color: hsla(0, 0%, 100%, 0.8);
     cursor: help;
     border-radius: 50%;
-    font-size: 14px;
-    display: inline-block;
+    font-size: 15px;
     text-align: center;
     position: relative;
     bottom: 10px;
+
+    .tooltip {
+      font-family: Poppins;
+      font-size: 12px;
+      width: 318px;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      background: rgba(24, 30, 54, 0.9);
+      backdrop-filter: blur(2.5px);
+    }
   }
 }

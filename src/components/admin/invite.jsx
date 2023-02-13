@@ -45,7 +45,7 @@ const Invite = ({ setAddUser,refreshNum,setRefreshNum }) => {
       <div className="title">Invite your colleague</div>
       <div className="addUser">
           <div>
-              <input  onChange={(event)=>{setDid(event.target.value)}} />
+              <input placeholder="Wallet address" onChange={(event)=>{setDid(event.target.value)}} />
           </div>
           <DropdownNew
               dropStyle={{maxHeight:'60px',height:'60px'}}

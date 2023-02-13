@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { ConfirmWithdraw, DefaultButton, DropdownNew } from "@@/components";
 import { select_currency } from "@@/utils/config";
-
 import "./withdraw.scss";
 
 const Withdraw = ({ setState }) => {

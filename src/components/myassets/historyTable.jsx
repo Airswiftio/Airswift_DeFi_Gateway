@@ -1,8 +1,8 @@
 import React from "react";
-
-import "./historyTable.scss";
-import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+
+import "react-tooltip/dist/react-tooltip.css";
+import "./historyTable.scss";
 
 const HistoryTable = ({ children, vc = true, select }) => {
   return (
@@ -11,12 +11,11 @@ const HistoryTable = ({ children, vc = true, select }) => {
           <ReactTooltip
               anchorId="app-amount1"
               place="bottom"
-              content="service fee 0.25%"
+              content="service fee 0.3%"
           />
         {select ? <span>Selected</span> : null}
         <span>Trans ID</span>
         <span>Status</span>
-        <span></span>
         <span>Currency</span>
           {vc ?
               <span id='app-amount1' className="help">Amount <div>?</div></span>
