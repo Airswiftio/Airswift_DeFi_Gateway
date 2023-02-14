@@ -56,24 +56,6 @@ const ManagementTable = ({
       </>
     );
 
-  // const renderRowsTop = () =>
-  //   type !== TABLETYPE.NETWORK &&
-  //   type !== TABLETYPE.SUBACCOUNT &&
-  //   type !== TABLETYPE.CURRENCY && (
-  //     <TableRow
-  //       data={{
-  //         name: `ALL ${title?.toUpperCase()}S`,
-  //         status: "available",
-  //       }}
-  //       key="all"
-  //       type={type}
-  //       modify={modify}
-  //       selected={selected}
-  //       setSelected={setSelected}
-  //       title={`ALL ${title?.toUpperCase()}S`}
-  //     />
-  //   );
-
   const renderRows = (num) => {
     const rows = [];
     let temp = [];
@@ -108,7 +90,6 @@ const ManagementTable = ({
       <div className="row">
         <div className="mTableHeader">{renderHeader()}</div>
         <div>
-          {/* {renderRowsTop()} */}
           {renderRows(items)[currPage]}
         </div>
       </div>

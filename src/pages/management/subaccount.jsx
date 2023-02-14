@@ -21,20 +21,24 @@ const SubAccount = () => {
   const [pages, setPages] = useState(0);
 
   useEffect(() => {
-    get(setSubAccounts, process.env.REACT_APP_API_URL+"/admin/manager/list?page=1&size=1000&status=all");
-    if(refresh){
+    get(
+      setSubAccounts,
+      process.env.REACT_APP_API_URL + "/admin/manager/list?page=1&size=1000&status=all"
+    );
+    if (refresh) {
       setCurrPage(0);
     }
     setRefresh(false);
-  }, [currPage,refresh]);
+  }, [currPage, refresh]);
 
   if (subAccounts?.managers) {
-    subAccounts.managers.forEach(manager => {
-     manager.permissions.forEach(permission => {
+    subAccounts.managers.forEach((manager) => {
+      manager.permissions.forEach((permission, index) => {
         if (permission.name === "Currency") permission.name = "Gateway";
-        if (permission.name === "Merchant") permission.name = "DID"
-      })
-    })
+        if (permission.name === "Merchant") permission.name = "DID";
+        if (permission.name === "Withdraw") delete manager.permissions[index];
+      });
+    });
   }
 
   useEffect(() => {
@@ -48,8 +52,7 @@ const SubAccount = () => {
           click={() => setDeleteOpen(false)}
           setValue={setSubAccounts}
           setRefresh={setRefresh}
-          title="Are you sure 
-          you want to delete these accounts?"
+          title="Are you sure you want to delete these accounts?"
           type={2}
           selected={selected}
           setSelected={setSelected}

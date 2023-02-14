@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { get, post } from "@@/pages/management/requests";
+import { post as httpPost } from "@@/utils/request/http";
 import "./settingsModal.scss";
 
 const SettingsModal = ({ click, setValue, title, type, data }) => {
@@ -17,21 +18,25 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
         password: password,
         privileges: privileges,
       },
-        process.env.REACT_APP_API_URL+"/admin/manager/create"
+      process.env.REACT_APP_API_URL + "/admin/manager/create"
     );
   };
 
-  const editSubaccount = () => {
-    post(
-      {
-        manager_id: data.id,
-        name: name,
-        privileges: privileges,
-        password: password,
-        email: email,
-      },
-        process.env.REACT_APP_API_URL+"/admin/manager/change"
-    );
+  const editSubaccount = async () => {
+    const res = await httpPost("/admin/manager/change", {
+      manager_id: data.id,
+      name: name,
+      privileges: privileges,
+      password: password,
+      email: email,
+    });
+    if (res.code === 1000) {
+      click();
+      get(
+        setValue,
+        process.env.REACT_APP_API_URL + "/admin/manager/list?page=1&size=10&status=all"
+      );
+    }
   };
 
   useEffect(() => {
@@ -111,12 +116,12 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
               <span>Liquidity Pool</span>
             </div>
 
-            <div className="selector">
+            {/* <div className="selector">
               <span className="privilege" onClick={() => changePrivilege(4)}>
                 {privileges.includes(4) ? <div className="selectedPrivilege" /> : null}
               </span>
               <span>Withdraw</span>
-            </div>
+            </div> */}
 
             <div className="selector">
               <span className="privilege" onClick={() => changePrivilege(5)}>
@@ -131,15 +136,12 @@ const SettingsModal = ({ click, setValue, title, type, data }) => {
               </span>
               <span>Expense</span>
             </div>
-
           </div>
         </div>
         <button
           className="btn"
           onClick={() => {
             editSubaccount();
-            click();
-            get(setValue, process.env.REACT_APP_API_URL+"/admin/manager/list?page=1&size=10&status=all");
           }}
         >
           Save

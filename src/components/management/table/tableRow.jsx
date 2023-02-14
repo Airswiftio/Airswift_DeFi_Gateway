@@ -65,7 +65,7 @@ const TableRow = ({ data, type, modify, selected, setSelected, title }) => {
         return (
           <>
             <span className="col">{data?.id}</span>
-            <span className="col">{data?.did || "ALL DIDS"}</span>
+            <span className="col">{data?.did || "No DID Address Found"}</span>
           </>
         );
       case TABLETYPE.LIQUIDITY:
@@ -114,7 +114,7 @@ const TableRow = ({ data, type, modify, selected, setSelected, title }) => {
           <ConfirmationModal
             click={closeModal}
             setValue={setToggleState}
-            title={`Are you sure you want to disable ${title?.includes("ALL") ? title : "this ".concat(title?.toLowerCase())}?`}
+            title={`Are you sure you want to disable this ${title.toLowerCase()}?`}
             id={data?.id}
             type={type}
           />
