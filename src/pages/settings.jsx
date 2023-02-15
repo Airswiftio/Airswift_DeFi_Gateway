@@ -28,7 +28,7 @@ const Settings = () => {
     />,
     <IpnKeys ipnKeys={ipnKeys} setIpnKeys={setIpnKeys} />,
     <AppConfig appConfig={appConfig} setAppConfig={setAppConfig} />,
-    <SlippageTolerance slippageInit={slippageInit} />,
+    <SlippageTolerance slippageInit={slippageInit} setSlippageInit={setSlippageInit} />,
   ];
   const titles = ["My Store", "API Keys", "IPN Keys", "App Configuration", "Slippage Tolerance"];
 

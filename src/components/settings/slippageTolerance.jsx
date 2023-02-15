@@ -1,11 +1,11 @@
+import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import toast from "react-hot-toast";
 
 import { post as httpPost } from "@@/utils/request/http";
 import "./slippageTolerance.scss";
 
-const SlippageTolerance = ({ slippageInit }) => {
+const SlippageTolerance = ({ slippageInit, setSlippageInit }) => {
   const onSubmit = async () => {
     const res = await httpPost("merchant/application/slippage", {
       app_id: 0,
@@ -13,6 +13,7 @@ const SlippageTolerance = ({ slippageInit }) => {
     });
     if (res.code === 1000) {
       toast.success("Update succeeded!");
+      setSlippageInit(parseInt(values.slippage));
     } else {
       toast.error("Update failed!");
     }
