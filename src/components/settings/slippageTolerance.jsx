@@ -1,16 +1,21 @@
-import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import toast from "react-hot-toast";
 
 import { post as httpPost } from "@@/utils/request/http";
 import "./slippageTolerance.scss";
 
-const SlippageTolerance = () => {
-  const onSubmit = () => {
-    httpPost("merchant/application/slippage", {
+const SlippageTolerance = ({ slippageInit }) => {
+  const onSubmit = async () => {
+    const res = await httpPost("merchant/application/slippage", {
       app_id: 0,
       slippage: parseInt(values.slippage),
     });
+    if (res.code === 1000) {
+      toast.success("Update succeeded!");
+    } else {
+      toast.error("Update failed!");
+    }
   };
 
   const formSchema = yup.object().shape({
@@ -24,7 +29,7 @@ const SlippageTolerance = () => {
 
   const { values, handleChange, handleSubmit, errors } = useFormik({
     initialValues: {
-      slippage: 1,
+      slippage: slippageInit,
     },
     validationSchema: formSchema,
     validateOnChange: false,

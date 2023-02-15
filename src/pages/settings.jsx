@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import Popup from "reactjs-popup";
 
-import { GetApplicationDetail } from "@@/utils/request/api";
 import { ApiKeys, IpnKeys, AppConfig, MyStore, SlippageTolerance } from "@@/components";
+import { GetApplicationDetail } from "@@/utils/request/api";
 import Alert from "@@/components/PopUp/Alert";
 import "react-tooltip/dist/react-tooltip.css";
 import "./settings.scss";
@@ -16,6 +16,7 @@ const Settings = () => {
   const [appConfig, setAppConfig] = useState({});
   const [openAlert, setOpenAlert] = useState(false);
   const [alertData, setAlertData] = useState({});
+  const [slippageInit, setSlippageInit] = useState();
 
   const pages = [
     <MyStore myStore={myStore} setMyStore={setMyStore} />,
@@ -27,7 +28,7 @@ const Settings = () => {
     />,
     <IpnKeys ipnKeys={ipnKeys} setIpnKeys={setIpnKeys} />,
     <AppConfig appConfig={appConfig} setAppConfig={setAppConfig} />,
-    <SlippageTolerance />,
+    <SlippageTolerance slippageInit={slippageInit} />,
   ];
   const titles = ["My Store", "API Keys", "IPN Keys", "App Configuration", "Slippage Tolerance"];
 
@@ -54,6 +55,7 @@ const Settings = () => {
         link: res?.data?.link,
         callbackUrl: res?.data?.callbackUrl,
       });
+      setSlippageInit(res?.data?.slippage);
     }
   };
 
