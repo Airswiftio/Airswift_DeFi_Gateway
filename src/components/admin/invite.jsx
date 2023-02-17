@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 import {DefaultButton, ProgressModal} from "../";
 import "./invite.scss";
@@ -37,6 +39,30 @@ const Invite = ({ setAddUser,refreshNum,setRefreshNum }) => {
         }
     }
 
+    const onSubmit = () => {
+      addUser();
+    };
+  
+    const formSchema = yup.object().shape({
+      address: yup
+        .string()
+        .trim()
+        .typeError("Please enter a number between 0 and 100")
+        .min(0, "Saddresse must betwen 0% and 100%")
+        .max(100, "Slippagaddresse must betwen 0% and 100%")
+        .required("This field is requried"),
+    });
+  
+    const { values, handleChange, handleSubmit, errors } = useFormik({
+      initialValues: {
+        address: "",
+      },
+      validationSchema: formSchema,
+      validateOnChange: false,
+      validateOnBlur: false,
+      onSubmit: onSubmit,
+    });
+
   return (
     <div className="inviteUserWrapper">
         <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
@@ -45,7 +71,7 @@ const Invite = ({ setAddUser,refreshNum,setRefreshNum }) => {
       <div className="title">Invite your colleague</div>
       <div className="addUser">
           <div>
-              <input placeholder="Wallet address" onChange={(event)=>{setDid(event.target.value)}} />
+              <input id="address" placeholder="Wallet address" onChange={(event)=>{setDid(event.target.value)}} />
           </div>
           <DropdownNew
               dropStyle={{maxHeight:'60px',height:'60px'}}

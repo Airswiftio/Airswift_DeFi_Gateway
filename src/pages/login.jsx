@@ -278,7 +278,7 @@ const Login = () => {
             </div>
             <div className="formTitle">
               <span>Welcome to</span>
-              <span className="logoTitle" style={{ fontSize: "200%" }}>Pelago Pay</span>
+              <span className="logoTitle" style={{ fontSize: "200%" }}>Pelago</span>
             </div>
 
             <div className="buttons">
