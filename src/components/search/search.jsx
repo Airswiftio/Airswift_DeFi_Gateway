@@ -1,20 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router";
 
-import Back from "@@/assets/back.svg";
+import BackButton from "../buttons/BackButton";
 import "./search.scss";
 
 const Search = ({ title = "Trans ID", search, setSearch, back = false }) => {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("../");
-  };
 
   return (
     <div className="searchWrapper">
-      <div className="back" onClick={handleClick}>
-        {back && <><img src={Back} alt="Back" /> back</>}
-      </div>
+      {back && <BackButton style={{ position: "absolute", left: 0 }}/>}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

@@ -21,7 +21,9 @@ import NetworkManagement from "./management/networkManagement";
 import LiquidityPoolManagement from "./management/liquidityPoolManagement";
 import ManagementSubAccount from "./management/subaccount";
 import Console from "./management/console";
-import QRCode from "./management/qrcode";
+import QRCodeGenerate from "./management/qrcodeGenerate";
+import QRCodeScan from "./management/qrcodeScan";
+import TransactionManagement from "./management/qrcodeManagement";
 
 export {
   Admin,
@@ -29,7 +31,6 @@ export {
   Login,
   MyAssets,
   Settings,
-  QRCode,
   Withdraw,
   Farms,
   Pools,
@@ -43,4 +44,7 @@ export {
   LiquidityPoolManagement,
   ManagementSubAccount,
   Console,
+  QRCodeGenerate,
+  TransactionManagement,
+  QRCodeScan
 };

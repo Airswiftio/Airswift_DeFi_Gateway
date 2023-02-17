@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router";
-import Logo from "../../../assets/management/logo.svg";
+import Logo from "../../../assets/management/logo.png";
 
 const formSchema = yup.object().shape({
   email: yup.string().email().required(),

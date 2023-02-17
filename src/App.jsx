@@ -18,7 +18,9 @@ import {
   DIDManagement,
   LiquidityPoolManagement,
   Console,
-  QRCode,
+  QRCodeGenerate,
+  TransactionManagement,
+  QRCodeScan,
   ManagementSubAccount,
 } from "@@/pages";
 import {
@@ -61,7 +63,7 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
 
         {/* Dev - Unprotected Management */}
-        <Route path="management" element={<ManagementLayout title="Airswift Management" />}>
+        <Route path="management" element={<ManagementLayout title="Pelago Management" />}>
           <Route index element={<Navigate to="dashboard" />} />
           <Route path="login" element={<ManagementLogin />} />
           <Route path="pw" element={<ManagementForgotPassword />} />
@@ -123,7 +125,10 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="assets" element={<MyAssets state={state} setState={setState} />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="qrcode" element={<QRCode />} />
+          <Route path="qrcode">
+            <Route index element={<QRCodeGenerate />} />
+            <Route path="transaction" element={<TransactionManagement /> } />
+          </Route>
           <Route path="withdraw" element={<Withdraw setState={setState} />} />
         </Route>
 

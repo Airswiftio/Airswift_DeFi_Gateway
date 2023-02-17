@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import { ManagementResetPassword } from "../../components";
-import Logo from "../../assets/management/logo.svg";
+import Logo from "../../assets/management/logo.png";
 import "./styles/login.scss";
 
 const ForgotPassword = () => {

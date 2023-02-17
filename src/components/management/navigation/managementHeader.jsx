@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import Popup from "reactjs-popup";
 import AuthContext from "@@/context/AuthProvider";
 import { useNavigate } from "react-router";
-import Logo from "@@/assets/management/logo.svg";
+import Logo from "@@/assets/management/logo.png";
 import { ProfileModal } from "@@/components";
 import "./managementHeader.scss";
 
@@ -56,7 +56,7 @@ const ManagementHeader = ({ url, setUrl }) => {
       </Popup>
 
       <Link to="/management/dashboard">
-        <img className="logo" src={Logo} alt="Airswift" />
+        <img className="logo" src={Logo} alt="Pelago" />
       </Link>
       <div className="navLinks">
         <Link

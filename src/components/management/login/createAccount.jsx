@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Field, Form } from "formik";
-import Logo from "../../../assets/management/logo.svg";
+import Logo from "../../../assets/management/logo.png";
 
 const ManagementCreateAccount = ({ setIsLogin, authenticate }) => {
   return (
@@ -28,7 +28,7 @@ const ManagementCreateAccount = ({ setIsLogin, authenticate }) => {
           <Field
             id="email"
             name="email"
-            placeholder="info@airswift.com"
+            placeholder="info@pelago.com"
             type="email"
           />
 
@@ -38,7 +38,7 @@ const ManagementCreateAccount = ({ setIsLogin, authenticate }) => {
           <label htmlFor="confirmPassword">Confirm password</label>
           <Field id="confirmPassword" name="confirmPassword" />
           <label>
-            <Field type="checkbox" name="agreeTerms" />I agree to Airswift
+            <Field type="checkbox" name="agreeTerms" />I agree to Pelago
             Management Terms and Agreement
           </label>
           <button className="btn" type="submit">

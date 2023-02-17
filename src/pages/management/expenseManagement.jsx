@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import { get as httpGet } from "@@/utils/request/http";
 import { get_exchange_rate, get_shop_currency_symbol } from "@@/utils/config";
 import { InfoCard, Datepicker, DropdownNew } from "@@/components";
+import { get as httpGet } from "@@/utils/request/http";
 import Expense from "@@/pages/management/expense";
 import "./styles/expenseManagement.scss";
 
@@ -63,7 +63,7 @@ const ExpenseManagement = () => {
 
   return (
     <div>
-      <div className="assetsContent">
+      <div className="expenseContent">
         <div className="cardRow">
           <InfoCard title="Total Expense" value={expenseTotal.total} type={1} key_index={1} />
           <InfoCard title="Today's Expense" value={expenseTotal.today} type={2} key_index={2} />

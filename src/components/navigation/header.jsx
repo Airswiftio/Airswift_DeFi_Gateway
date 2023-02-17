@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Popup from "reactjs-popup";
-import Logo from "../../assets/airswift.svg";
+import Logo from "../../assets/pelago.png";
 import { ProfileModal } from "../";
 import "./header.scss";
 
@@ -27,7 +27,7 @@ const Header = () => {
         <ProfileModal click={closeModal} />
       </Popup>
       <Link to="/">
-        <img className="logo" src={Logo} alt="Airswift" />
+        <img className="logo" src={Logo} alt="Pelago" />
       </Link>
       <div className="navLinks">
         <Link to="/" className={url.length === 1 ? "underline" : ""}>

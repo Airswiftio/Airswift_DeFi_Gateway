@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import Popup from "reactjs-popup";
 import { DefaultButton, ProgressModal } from "@@/components";
 import "./login.scss";
-import AirSwift from "@@/assets/airswift_payment_logo.svg";
+import AirSwift from "@@/assets/pelago_payment_logo.png";
 import { beforeSend, connectWallet } from "@@/utils/chain/wallet";
 import {
   CheckUserExist,
@@ -274,11 +274,11 @@ const Login = () => {
         <div className="loginWrapper">
           <div className="loginForm">
             <div className="formHeader">
-              <img src={AirSwift} alt="AirSwift" />
+              <img src={AirSwift} alt="Pelago" style={{width: "80%"}}/>
             </div>
             <div className="formTitle">
               <span>Welcome to</span>
-              <span className="logoTitle">AirSwift Payment Gateway</span>
+              <span className="logoTitle" style={{ fontSize: "200%" }}>Pelago Pay</span>
             </div>
 
             <div className="buttons">

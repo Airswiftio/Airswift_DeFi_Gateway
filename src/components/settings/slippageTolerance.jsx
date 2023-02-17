@@ -9,11 +9,11 @@ const SlippageTolerance = ({ slippageInit, setSlippageInit }) => {
   const onSubmit = async () => {
     const res = await httpPost("merchant/application/slippage", {
       app_id: 0,
-      slippage: parseInt(values.slippage),
+      slippage: parseFloat(values.slippage),
     });
     if (res.code === 1000) {
       toast.success("Update succeeded!");
-      setSlippageInit(parseInt(values.slippage));
+      setSlippageInit(parseFloat(values.slippage));
     } else {
       toast.error("Update failed!");
     }

@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { post } from "@@/pages/management/requests";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
-import Logo from "@@/assets/management/logo.svg";
+import Logo from "@@/assets/management/logo.png";
 import Refresh from "@@/assets/management/refresh.svg";
 import axios from "axios";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
@@ -105,7 +105,10 @@ const ManagementLogin = () => {
 
   return (
     <div className="formWrapper">
-      <img src={Logo} alt="Logo" />
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "end", gap: "1em", paddingBottom: "1em" }}>
+        <img src={Logo} alt="Logo" style={{ width: "50%", marginBottom: 0 }} />
+        <span style={{ fontSize: "150%"}}>Management</span>
+      </div>
       <div className="title">Log in</div>
       <form onSubmit={handleSubmit} className="form">
         <label htmlFor="username">Username</label>
@@ -128,15 +131,14 @@ const ManagementLogin = () => {
 
         <div className="captchaWrapper">
           <div>
-          <HCaptcha
-            sitekey="c594cd42-7325-4ca7-a19e-d7a6715a8f4e"
-            onLoad={onLoad}
-            onVerify={setToken}
-            ref={captchaRef}
-            className="captcha"
-          />
+            <HCaptcha
+              sitekey="c594cd42-7325-4ca7-a19e-d7a6715a8f4e"
+              onLoad={onLoad}
+              onVerify={setToken}
+              ref={captchaRef}
+              className="captcha"
+            />
           </div>
-
         </div>
 
         <span className="errorMessage">{error}</span>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Popup from "reactjs-popup";
-import Logo from "../../assets/management/logo.svg";
+import Logo from "../../assets/management/logo.png";
 import { ProfileModal } from "../";
 import "./liquidityHeader.scss";
 
@@ -43,7 +43,7 @@ const LiquidityHeader = () => {
       </Popup>
 
       <Link to="/management/login">
-        <img className="logo" src={Logo} alt="Airswift" />
+        <img className="logo" src={Logo} alt="Pelago" />
       </Link>
       <div className="navLinks">
         <Link

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import toast from "react-hot-toast";
 
-import { get as httpGet } from "@@/utils/request/http";
 import { conversionUtcDate, copy_text } from "@@/utils/function";
 import ExpenseHistoryTable from "./expenseHistoryTable";
+import { get as httpGet } from "@@/utils/request/http";
 import { Pagination } from "@@/components/";
 import "react-tooltip/dist/react-tooltip.css";
 import "./styles/expense.scss";
@@ -39,7 +39,7 @@ const Expense = ({ selectStatus, selectType, date }) => {
       getExpenseList();
   }, [selectStatus, selectType, date]);
 
-  const symbol = (chainName) => {
+  const getCurrencyType = (chainName) => {
     if (chainName === "Ethereum") return "Ether";
     if (chainName === "Harmony") return "ONE";
   }
@@ -64,7 +64,7 @@ const Expense = ({ selectStatus, selectType, date }) => {
             <span>{item.status}</span>
             <span>{item.chain_name}</span>
             <span>{item.type}</span>
-            <span className="over_play">{item.amount.toFixed(19)} {symbol(item.chain_name)}</span>
+            <span className="over_play">{item.amount.toFixed(19)} {getCurrencyType(item.chain_name)}</span>
             <span>{conversionUtcDate(item.created_at)}</span>
           </div>
         ))}
