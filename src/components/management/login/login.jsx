@@ -105,7 +105,7 @@ const ManagementLogin = () => {
 
   return (
     <div className="formWrapper">
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "end", gap: "1em", paddingBottom: "1em" }}>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "end", gap: "1em", paddingBottom: "3em" }}>
         <img src={Logo} alt="Logo" style={{ width: "50%", marginBottom: 0 }} />
         <span style={{ fontSize: "150%"}}>Management</span>
       </div>
