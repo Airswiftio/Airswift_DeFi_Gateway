@@ -43,7 +43,7 @@ const SlippageTolerance = ({ slippageInit, setSlippageInit }) => {
       <div className="slippageToleranceWrapper">
         <div className="inputWrapper">
           <label>
-            <input id="slippage" value={values.slippage} onChange={handleChange} />%
+            <input id="slippage" value={values.slippage} onChange={handleChange} autoComplete="off" />%
           </label>
         </div>
         <div className="slippage-btn" onClick={handleSubmit}>

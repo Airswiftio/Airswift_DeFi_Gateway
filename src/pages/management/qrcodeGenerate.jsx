@@ -33,11 +33,17 @@ function QRCodeGenerate() {
         currency: currencyList[selectedCurrency].title,
       });
     };
-    toast.promise(fetchData(), {
-      loading: "Generating ...",
-      success: "Generate succeeded!",
-      error: "Generate failed!",
-    }).then(() => navigate("./transaction"));
+    toast
+      .promise(fetchData(), {
+        loading: "Generating ...",
+        success: "Generate succeeded!",
+        error: "Generate failed!",
+      })
+      .then(() => {
+        setTimeout(() => {
+          navigate("./transaction");
+        }, 500);
+      });
   };
 
   const formSchema = yup.object().shape({
@@ -102,6 +108,7 @@ function QRCodeGenerate() {
                     placeholder="Order amount"
                     onChange={handleChange}
                     value={values.amount}
+                    autoComplete="off"
                   />
                   USD
                 </label>
