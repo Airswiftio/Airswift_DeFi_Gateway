@@ -23,6 +23,9 @@
 
     .formHeader {
       font-variation-settings: "wght" 500;
+      img {
+        width: 80%;
+      }
     }
 
     .formTitle {
@@ -36,7 +39,7 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
         font-variation-settings: "wght" 500;
-        font-size: 1.5em;
+        font-size: 2em;
       }
     }
 

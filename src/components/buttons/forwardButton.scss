@@ -1,0 +1,10 @@
+.forward {
+  cursor: pointer;
+  display: inline-flex;
+  gap: 1em;
+  color: rgba(255, 255, 255, 0.7);
+  img {
+    width: 18px;
+    transform: rotate(180deg);
+  }
+}

@@ -56,16 +56,9 @@ const ManagementHeader = ({ url, setUrl }) => {
       </Popup>
 
       <Link to="/management/dashboard" style={{ textDecoration: "none" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "end",
-            gap: "1em",
-          }}
-        >
-          <img className="logo" src={Logo} alt="Pelago" />
-          <span style={{ color: "white" }}>Management</span>
+        <div className="logoWrapper">
+          <img src={Logo} alt="Pelago" />
+          <span>Management</span>
         </div>
       </Link>
       <div className="navLinks">

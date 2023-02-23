@@ -10,12 +10,20 @@ import { select_currency } from "@@/utils/config";
 import Modal from "@@/components/myassets/modal";
 import Alert from "@@/components/PopUp/Alert";
 import { Pagination } from "@@/components/";
-import Doc from "@@/assets/document.svg";
-import Qrcode from "@@/assets/qr_code.svg";
 import "react-tooltip/dist/react-tooltip.css";
+import Qrcode from "@@/assets/qr_code.svg";
+import Doc from "@@/assets/document.svg";
 import "./styles/expense.scss";
 
-const QRCodeTransaction = ({ selectStatus, selectCurrency, date, search, searchTransID, setOpenScan, setPayoutAddress}) => {
+const QRCodeTransaction = ({
+  selectStatus,
+  selectCurrency,
+  date,
+  search,
+  searchTransID,
+  setOpenScan,
+  setPayoutAddress,
+}) => {
   const [page, setPage] = useState(1);
   const [transactionList, setTransactionList] = useState([]);
   const [transactionTotal, setTransactionTotal] = useState(0);
@@ -44,27 +52,28 @@ const QRCodeTransaction = ({ selectStatus, selectCurrency, date, search, searchT
       return false;
     }
     setPayoutAddress(res?.data.pay_out_address);
-    setOpenScan(true); 
-  }
+    setOpenScan(true);
+  };
 
   const pageSize = 10;
 
   const statusOptions = [
-    { key: "all", title: "All" },
+    { key: "normal", title: "All" },
     { key: "closed", title: "Closed" },
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
+    { key: "created", title: "Created" },
   ];
 
   const getPaymentList = async () => {
-
     let params = {
       // app_id:0,
       page: page,
       size: pageSize,
-      status: statusOptions?.[selectStatus]?.key ?? "all",
+      status: statusOptions?.[selectStatus]?.key ?? "created",
       payment_num: search,
       date: date ?? "",
+      display_all: "1"
     };
     const currencyOptions = select_currency();
     currencyOptions.unshift({ key: "all", title: "All" });
@@ -74,6 +83,17 @@ const QRCodeTransaction = ({ selectStatus, selectCurrency, date, search, searchT
     const res = await GetPaymentList(params);
     if (res?.code === 1000) {
       setTransactionTotal(res.data.total);
+      // success tag - overpay or under day
+      res.data.payments.forEach((item) => {
+        if (item.status === "success") {
+          if (item?.collection_amount * 1 > item?.order_amount * (1 + item.slippage / 100)) {
+            item.status_name = "overpay";
+          }
+          if (item?.collection_amount * 1 < item?.order_amount * (1 - item.slippage / 100)) {
+            item.status_name = "underpay";
+          }
+        }
+      });
       setTransactionList(res.data.payments);
     }
   };
@@ -127,7 +147,10 @@ const QRCodeTransaction = ({ selectStatus, selectCurrency, date, search, searchT
             >
               {item.payment_num}
             </span>
-            <span>{item.status}</span>
+            <span className="status">
+              {item.status}
+              {item.status_name && <div className="status__tag">{item.status_name}</div>}
+            </span>
             <span>ETH</span>
             <span>{item.currency_symbol}</span>
             <span>{conversionUtcDate(item.created_at)}</span>

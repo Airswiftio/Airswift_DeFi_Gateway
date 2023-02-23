@@ -274,11 +274,11 @@ const Login = () => {
         <div className="loginWrapper">
           <div className="loginForm">
             <div className="formHeader">
-              <img src={AirSwift} alt="Pelago" style={{width: "80%"}}/>
+              <img src={AirSwift} alt="Pelago" />
             </div>
             <div className="formTitle">
               <span>Welcome to</span>
-              <span className="logoTitle" style={{ fontSize: "200%" }}>Pelago</span>
+              <span className="logoTitle">Pelago</span>
             </div>
 
             <div className="buttons">

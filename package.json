@@ -2,7 +2,7 @@
   "name": "airswift-gateway",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://34.221.50.218:23456",
+  "proxy": "http://34.221.3.80:23456",
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "^1.4.4",
     "@testing-library/jest-dom": "^5.16.5",

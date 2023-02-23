@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+import ForwardButton from "@@/components/buttons/ForwardButton";
 import { DefaultButton, DropdownNew } from "@@/components";
 import { post as httpPost } from "@@/utils/request/http";
 import { select_currency } from "@@/utils/config";
@@ -54,7 +55,7 @@ function QRCodeGenerate() {
       .required("This field is requried"),
   });
 
-  const { values, handleChange, handleSubmit, errors } = useFormik({
+  const { values, handleChange, handleSubmit, isSubmitting, errors } = useFormik({
     initialValues: {
       amount: "",
     },
@@ -64,21 +65,24 @@ function QRCodeGenerate() {
     onSubmit: onSubmit,
   });
 
+  console.log(isSubmitting);
+
   return (
     <div className="qrcodeManagementWrapper">
       <div className="management">
+        <ForwardButton style={{ width: "800px", textAlign: "right" }} path="./transaction" />
         <div className="managementTableWrapper">
           <div className="main">
             <>
               <div className="title">Select Network and Cryptocurrency</div>
-              <div className="tip">
+              {/* <div className="tip">
                 <span className="tip__title">TIPS:</span>
                 <img src={Info} alt="info" />
                 <span className="tip__text">
                   ETH is the currency for making transaction on Ethereum chain, please make sure you
                   have enough ETH to support your transaction
                 </span>
-              </div>
+              </div> */}
               <div className="selectors">
                 <div className="select">
                   <span>Network</span>
@@ -115,7 +119,11 @@ function QRCodeGenerate() {
               </div>
               <span className="errorMessage">{errors.amount}</span>
               <div className="buttonRow">
-                <DefaultButton title="Generate QR Code" type={2} click={handleSubmit} />
+                <DefaultButton
+                  title="Generate QR Code"
+                  type={2}
+                  click={isSubmitting ? null : handleSubmit}
+                />
               </div>
             </>
           </div>

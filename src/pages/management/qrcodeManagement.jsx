@@ -13,7 +13,7 @@ const QRCodeManagement = () => {
   const [selectStatus, setSelectStatus] = useState();
   const [date, setDate] = useState();
   const [initial, setInitial] = useState(true);
-  const [selectCurrency, setSelectCurrency] = useState(0);
+  const [selectCurrency, setSelectCurrency] = useState();
   const [openScan, setOpenScan] = useState(false);
   const [payoutAddress, setPayoutAddress] = useState("");
 
@@ -38,6 +38,7 @@ const QRCodeManagement = () => {
     { key: "closed", title: "Closed" },
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
+    { key: "created", title: "Created" },
   ];
 
   return openScan ? (

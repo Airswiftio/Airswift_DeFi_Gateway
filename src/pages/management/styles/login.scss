@@ -15,10 +15,18 @@
     min-width: 400px;
     padding: 0 2em 2em;
 
-    img {
-      max-width: 80%;
-      align-self: center;
-      margin-bottom: 1em;
+    .logoWrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 1em;
+      padding-bottom: 3em;
+      img {
+        width: 50%;
+      }
+      span {
+        font-size: 1.5em;
+      }
     }
 
     .title {

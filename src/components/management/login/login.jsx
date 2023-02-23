@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useRef,useState } from "react";
-import Cookies from "js-cookie";
-import AuthContext from "@@/context/AuthProvider";
-import * as yup from "yup";
-import { post } from "@@/pages/management/requests";
-import { useFormik } from "formik";
-import { useNavigate } from "react-router";
-import Logo from "@@/assets/management/logo.png";
-import Refresh from "@@/assets/management/refresh.svg";
-import axios from "axios";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useNavigate } from "react-router";
+import { useFormik } from "formik";
+import Cookies from "js-cookie";
+import * as yup from "yup";
+
+import { post } from "@@/pages/management/requests";
+import AuthContext from "@@/context/AuthProvider";
+import Logo from "@@/assets/management/logo.png";
 
 const formSchema = yup.object().shape({
   username: yup.string().required(),
@@ -105,9 +104,9 @@ const ManagementLogin = () => {
 
   return (
     <div className="formWrapper">
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "end", gap: "1em", paddingBottom: "3em" }}>
-        <img src={Logo} alt="Logo" style={{ width: "50%", marginBottom: 0 }} />
-        <span style={{ fontSize: "150%"}}>Management</span>
+      <div className="logoWrapper">
+        <img src={Logo} alt="Logo" />
+        <span>Management</span>
       </div>
       <div className="title">Log in</div>
       <form onSubmit={handleSubmit} className="form">
