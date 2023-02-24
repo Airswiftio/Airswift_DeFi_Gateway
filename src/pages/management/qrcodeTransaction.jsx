@@ -58,7 +58,7 @@ const QRCodeTransaction = ({
   const pageSize = 10;
 
   const statusOptions = [
-    { key: "normal", title: "All" },
+    { key: "", title: "All" },
     { key: "closed", title: "Closed" },
     { key: "success", title: "Success" },
     { key: "pending", title: "Pending" },
