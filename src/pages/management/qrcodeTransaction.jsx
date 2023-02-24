@@ -73,7 +73,7 @@ const QRCodeTransaction = ({
       status: statusOptions?.[selectStatus]?.key ?? "",
       payment_num: search,
       date: date ?? "",
-      display_all: "1"
+      display_all: "1",
     };
     const currencyOptions = select_currency();
     currencyOptions.unshift({ key: "all", title: "All" });
@@ -83,13 +83,20 @@ const QRCodeTransaction = ({
     const res = await GetPaymentList(params);
     if (res?.code === 1000) {
       setTransactionTotal(res.data.total);
-      // success tag - overpay or under day
+      // overpay or underpay tag for success status or closed status
       res.data.payments.forEach((item) => {
-        if (item.status === "success") {
-          if (item?.collection_amount * 1 > item?.order_amount * (1 + item.slippage / 100)) {
+        if (item?.collection_amount === "0") return;
+        if (item?.status === "success") {
+          const overpay =
+            item?.collection_amount * 1 > item?.order_amount * (1 + item.slippage / 100);
+          if (overpay) {
             item.status_name = "overpay";
           }
-          if (item?.collection_amount * 1 < item?.order_amount * (1 - item.slippage / 100)) {
+        }
+        if (item?.status === "closed") {
+          const underpay =
+            item?.collection_amount * 1 < item?.order_amount * (1 - item.slippage / 100);
+          if (underpay) {
             item.status_name = "underpay";
           }
         }
