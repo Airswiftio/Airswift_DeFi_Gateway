@@ -70,7 +70,7 @@ const QRCodeTransaction = ({
       // app_id:0,
       page: page,
       size: pageSize,
-      status: statusOptions?.[selectStatus]?.key ?? "created",
+      status: statusOptions?.[selectStatus]?.key ?? "",
       payment_num: search,
       date: date ?? "",
       display_all: "1"

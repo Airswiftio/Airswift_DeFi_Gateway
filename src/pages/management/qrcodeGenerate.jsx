@@ -70,7 +70,7 @@ function QRCodeGenerate() {
   return (
     <div className="qrcodeManagementWrapper">
       <div className="management">
-        <ForwardButton style={{ width: "800px", textAlign: "right" }} path="./transaction" />
+        <ForwardButton style={{ width: "800px", textAlign: "right" }} path="./transaction" text="Transaction History" />
         <div className="managementTableWrapper">
           <div className="main">
             <>

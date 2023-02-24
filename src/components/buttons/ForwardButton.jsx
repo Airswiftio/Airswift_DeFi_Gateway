@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Back from "@@/assets/back.svg";
 import "./forwardButton.scss";
 
-const ForwardButton = ({ style, path }) => {
+const ForwardButton = ({ style, path, text = "Next" }) => {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(path);
@@ -13,7 +13,7 @@ const ForwardButton = ({ style, path }) => {
   return (
     <div style={style}>
       <span className="forward" onClick={handleClick}>
-        Next <img src={Back} alt="Forward" />
+        {text} <img src={Back} alt="Forward" />
       </span>
     </div>
   );
