@@ -65,8 +65,6 @@ function QRCodeGenerate() {
     onSubmit: onSubmit,
   });
 
-  console.log(isSubmitting);
-
   return (
     <div className="qrcodeManagementWrapper">
       <div className="management">

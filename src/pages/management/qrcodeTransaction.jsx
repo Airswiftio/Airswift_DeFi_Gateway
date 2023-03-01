@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import toast from "react-hot-toast";
 import Popup from "reactjs-popup";
+import dayjs from "dayjs";
 
 import { GetPaymentDetail, GetPaymentList } from "@@/utils/request/api";
 import { conversionUtcDate, copy_text } from "@@/utils/function";
@@ -66,7 +67,8 @@ const QRCodeTransaction = ({
   ];
 
   const getPaymentList = async () => {
-    let params = {
+    const offset = dayjs().utcOffset();
+    const params = {
       // app_id:0,
       page: page,
       size: pageSize,
@@ -74,6 +76,7 @@ const QRCodeTransaction = ({
       payment_num: search,
       date: date ?? "",
       display_all: "1",
+      tz: offset / 60
     };
     const currencyOptions = select_currency();
     currencyOptions.unshift({ key: "all", title: "All" });

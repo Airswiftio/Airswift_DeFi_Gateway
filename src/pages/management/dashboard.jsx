@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { get } from "./requests";
-import { SmallCard } from "../../components";
-import useLiquidityPoolTokens from "@@/hooks/useLiquidityPoolTokens";
+import dayjs from "dayjs";
 
+import useLiquidityPoolTokens from "@@/hooks/useLiquidityPoolTokens";
+import { SmallCard } from "../../components";
+import { get } from "./requests";
 import "./styles/dashboard.scss";
 
 const Dashboard = () => {
@@ -11,10 +12,10 @@ const Dashboard = () => {
   console.log(tokens, "Balance");
 
   useEffect(() => {
-    const timeZone = new Date().getTimezoneOffset() / -60;
+    const offset = dayjs().utcOffset();
     get(
       setOverviewData,
-      `${process.env.REACT_APP_API_URL}/admin/dashboard/overview?tz=${timeZone}`
+      `${process.env.REACT_APP_API_URL}/admin/dashboard/overview?tz=${offset / 60}`
     );
   }, []);
 

@@ -130,8 +130,9 @@ export function timeToLocalDate(timestamp = 0) {
 
 export function conversionUtcDate(date, type = 'local') {
   if (type === "local") {
-    // Pass in local to convert UTC time to local time
-    return dayjs.utc(date).local().format("YYYY-MM-DD HH:mm:ss");
+    // Switch from UTC to local time
+    const localTime = dayjs(date).local().format("YYYY-MM-DD HH:mm:ss");
+    return localTime;
   } else if (type === "UTC") {
     // Convert the time to UTC when it is passed in to UTC
     return dayjs(date).utc().format();
