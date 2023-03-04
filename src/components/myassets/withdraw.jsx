@@ -27,7 +27,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
     const [dataTotal, setDataTotal] = useState(0);
     const [itemData, setItemData] = useState({});
 
-    const pageSize = 10;
+    const pageSize = 3;
     const WithdrawStatus = [
         {key:'all',title:'All'},
         {key:'complete',title:'Complete'},
@@ -43,8 +43,10 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
             withdraw_num:search,
             date:date??'',
         }
-        if(selectCurrency !== null){
-            params.currency_id = select_currency()?.[selectCurrency]?.id
+        const currencyOptions = select_currency();
+        currencyOptions.unshift({ key: "all", title: "All" });
+        if (selectCurrency !== null) {
+          params.currency_id = currencyOptions?.[selectCurrency]?.id;
         }
         return await GetWithdrawList(params);
     }

@@ -7,6 +7,8 @@ import { getVCs } from "@@/utils/chain/did";
 import {get_exchange_rate, get_shop_currency_symbol, select_currency} from "@@/utils/config";
 import {useLocation} from "react-router-dom";
 
+import IncomeHistory from "@@/components/myassets/IncomeHistory";
+
 const Assets = ({state, setState}) => {
   //const [state, setState] = useState(0);
   const state_data = useLocation()?.state;
@@ -147,6 +149,7 @@ const Assets = ({state, setState}) => {
             />
           )}
         </div>
+        <IncomeHistory />
       </div>
     </div>
   );
