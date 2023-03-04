@@ -13,15 +13,14 @@ import "./historyTable.scss";
 const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, setFilters, activePage, setActivePage}) => {
   const renderColumn = () => 
     columns.map(column => {
+      // Amount
       if (column.accessor === "amount") {
         return (
           <React.Fragment key={column.accessor}>
-            <span id="amount" className="help">{column.label}<div>?</div></span>
-            <Tooltip
-              anchorId="amount"
-              place="bottom"
-              content="service fee 0.3%"
-            />
+            <span data-tooltip-id="amount" data-tooltip-content="service fee 0.3%" data-tooltip-place="bottom" className="help">
+              {column.label}<div>?</div>
+            </span>
+            <Tooltip id="amount" />
           </React.Fragment>
         );
       }
@@ -34,9 +33,11 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
       // Trans ID
       if (column.accessor === "payment_num") {
         return (
-          <React.Fragment key={content + index}>
+          <React.Fragment key={content}>
             <span
-              id={content}
+              data-tooltip-id={content}
+              data-tooltip-content={content}
+              data-tooltip-place="bottom"
               className="over_play cursor_pointer"
               onClick={() => {
                 copy_text(content) === true
@@ -46,68 +47,54 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
             >
               {content}
             </span>
-            <Tooltip
-              anchorId={content}
-              place="bottom"
-              content={content}
-            />
+            <Tooltip id={content} />
           </React.Fragment>
         );
       }
 
       // Status
-      if (column.accessor === "status") {
-        if (row.collection_amount === "0") return;
-        let statusTag;
-        // overpay
-        if (row.status === "success") {
-          const overpay =
-            row.collection_amount * 1 > row.order_amount * (1 + row.slippage / 100);
-          if (overpay) statusTag = "overpay";
-        }
-        // underpay
-        if (row.status === "closed") {
-          const underpay =
-            row.collection_amount * 1 < row.order_amount * (1 - row.slippage / 100);
-          if (underpay) statusTag = "underpay";
-        }
-        if (statusTag) return <span key={content + index} className="status">{content}<div className="status__tag">{statusTag}</div></span>;
+      if (column.accessor === "status" && row.statusTag) {
+        return (
+          <span key={content + index} className="status">
+            {content}<div className="status__tag">{row.statusTag}</div>
+          </span>
+        );
       }
 
       // Time 
       if (column.accessor === "created_at") {
         return <span key={content + index}>{conversionUtcDate(content)}</span>
       }
+      
+      // View More
       if (column.accessor === "view_more") {
         return (
-          <span key={content + index} className="cursor_pointer"> 
+          <span key={content + index} className="cursor_pointer" onClick={() => column.handler(row.payment_num)}> 
             <img src={Doc} alt="View more" />
           </span>
         )
       }
 
       // VCs
-      if (column.accessor === "vcs") {
-        const vcStatus = row.vc_status;
-        if (vcStatus === "lose" ) {
+      if (column.accessor === "vcs" && row.vcStatus) {
+        const status = row.vcStatus;
+        if (status === "lose" ) {
           return  (
-            <div key={content + index} className="RestoreVC"> 
+            <div key={content + index} className="RestoreVC" onClick={() => column.handler(row.vcs[0].vcid)}> 
               <div>Restore VC</div>
             </div>
-
           );
         }
-        if (vcStatus === "yes") {
+        if (status === "yes") {
           return (
             <span key={content + index}>
               <img src={Verified} alt="Verified" />
             </span>
           );
         }
-        if (vcStatus === "none") {
-          return <span key={content + index}>None </span>;
+        if (status === "none") {
+          return <span key={content + index}>None</span>;
         }
-        return <span></span>
       }
 
       // Default
