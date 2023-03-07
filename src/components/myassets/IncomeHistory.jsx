@@ -66,7 +66,7 @@ const IncomeHistory = () => {
     }
   }
 
-  const addVcStatus = (item, VCExistIDS) => {
+  const addVcStatus = (item, vcIdsAvailable) => {
     if (item?.vcs?.[0]?.vc_status === "Invalid") {
       item.vcStatus = "none";
     } else if (
@@ -78,7 +78,7 @@ const IncomeHistory = () => {
       item?.vcs?.[0]?.vc_status === "Created" ||
       item?.vcs?.[0]?.vc_status === "Active"
     ) {
-      item.vcStatus = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? "yes" : "lose";
+      item.vcStatus = vcIdsAvailable.includes(item?.vcs?.[0]?.vcid) ? "yes" : "lose";
     }
   }
 
@@ -102,7 +102,7 @@ const IncomeHistory = () => {
       status: filters.status ?? "normal",
       currency_id: filters.currency_id,
       date: filters.date,
-      payment_num: filters.payment_num,
+      payment_num: filters.search,
       display_all: 0
     };
     const res = await GetPaymentList(params);

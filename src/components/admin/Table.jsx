@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import toast from "react-hot-toast";
 
@@ -11,7 +11,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import "./historyTable.scss";
 import "./table.scss";
 
-const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, setFilters, activePage, setActivePage }) => {
+const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, setFilters, activePage, setActivePage, children }) => {
   const renderColumn = () => 
     columns.map(column => {
       // Amount
@@ -127,6 +127,7 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
           setActivePage={setActivePage} 
           totalPages={Math.ceil(count / rowsPerPage)} 
         />
+        { children }
       </div>
     </div>
   );

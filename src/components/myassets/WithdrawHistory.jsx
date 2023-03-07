@@ -20,7 +20,7 @@ const WithdrawHistory = () => {
   const [viewMore, setViewMore] = useState(false);
   const navigate = useNavigate();
 
-  const rowsPerPage = 5;
+  const rowsPerPage = 3;
     
   const handleViewMore = (item) => {
     if (item.status === "complete") {
@@ -38,11 +38,10 @@ const WithdrawHistory = () => {
       status: filters.status ?? "all",
       currency_id: filters.currency_id,
       date: filters.date,
-      withdraw_num: filters.withdraw_num,
+      withdraw_num: filters.search,
     }
     return await GetWithdrawList(params);
   }
-
 
   useEffect(() => {
     (async () => {
@@ -55,7 +54,7 @@ const WithdrawHistory = () => {
         }
       }
     })()
-    }, [filters, modalIsOpen]);
+    }, [page, filters, modalIsOpen]);
 
   const columns = [
     { accessor: 'withdraw_num', label: 'Trans ID', notify: true },
@@ -82,7 +81,15 @@ const WithdrawHistory = () => {
       <Popup open={viewMore} closeOnDocumentClick onClose={() => setViewMore(false)}>
         <ProcessModal click={() => setViewMore(false)} itemData={itemData} />
       </Popup>
-      <Table title="Withdraw History" columns={columns} rows={dataList} count={dataTotal} rowsPerPage={rowsPerPage}  options={options} filters={filters} setFilters={setFilters} activePage={page} setActivePage={setPage}/>
+      <Table title="Withdraw History" columns={columns} rows={dataList} count={dataTotal} rowsPerPage={rowsPerPage}  options={options} filters={filters} setFilters={setFilters} activePage={page} setActivePage={setPage} >
+        {dbGetUserWallet()?.roles === "admin" &&
+          <DefaultButton
+            title="Withdraw"
+            align={1}
+            click={() => navigate("/withdraw")}
+          />
+        }
+      </Table>
     </>
   );
 };

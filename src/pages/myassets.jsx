@@ -109,39 +109,7 @@ const Assets = ({state, setState}) => {
             key_index={2}
           />
         </div>
-        {state === 0 ? <IncomeHistory /> : 
-          (<div className="history">
-            <span className="title">{state === 0 ? "Income" : "Withdraw"} History</span>
-            <div className="selectorsWrapper">
-              <DropdownNew
-                buttonStyle={{ width: "150px" }}
-                options={state === 0 ? statusOptions : WithdrawStatus}
-                defaultTitle="Status"
-                selected={selectStatus}
-                setSelected={setSelectStatus}
-              />
-              <DropdownNew
-                buttonStyle={{ width: "150px" }}
-                options={currencyOptions}
-                defaultTitle="Currency"
-                selected={selectCurrency}
-                setSelected={setSelectCurrency}
-              />
-              <Datepicker date={date} setDate={setDate} initial={initial} setInitial={setInitial} />
-              <Search search={search} setSearch={setSearch} />
-              <div className="Search" onClick={SearchTransID}>Search</div>
-              <div className="Clear" onClick={ClearSearch}>Clear</div>
-            </div>
-            <Withdraw
-              selectStatus={selectStatus}
-              selectCurrency={selectCurrency}
-              date={date}
-              search={search}
-              searchTransID={searchTransID}
-            />
-          </div>
-          ) }
-        <WithdrawHistory />
+        {state === 0 ? <IncomeHistory /> : <WithdrawHistory />} 
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
 import React from "react";
 
-import LeftArrow from "../../assets/small_arrow_left.svg";
 import RightArrow from "../../assets/small_arrow_right.svg";
+import LeftArrow from "../../assets/small_arrow_left.svg";
 import "./pagination.scss";
 
 const Pagination = ({activePage, setActivePage, totalPages}) => {
-  console.log(activePage, "activePage");
   const setFirst = () => {
     setActivePage(1);
   }

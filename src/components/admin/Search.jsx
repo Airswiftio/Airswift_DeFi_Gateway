@@ -20,10 +20,10 @@ const Search = ({ title = "Trans ID", filters, setFilters }) => {
       <input
         className="input"
         placeholder={title}
-        value={filters.payment_num ?? ""}
+        value={filters.search ?? ""}
         onChange={(event) => {
           setFilters(prevState => {
-            return {...prevState, payment_num: event.target.value}
+            return {...prevState, search: event.target.value}
           })
         }}
       />
