@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import toast from "react-hot-toast";
 
@@ -8,36 +7,36 @@ import Pagination from "./Pagination";
 import Filter from "./Filter";
 import Verified from "@@/assets/verified.svg";
 import Doc from "@@/assets/document.svg";
+import "react-tooltip/dist/react-tooltip.css";
 import "./historyTable.scss";
+import "./table.scss";
 
-const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, setFilters, activePage, setActivePage}) => {
+const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, setFilters, activePage, setActivePage }) => {
   const renderColumn = () => 
     columns.map(column => {
       // Amount
-      if (column.accessor === "amount") {
+      if (column.tooltip) {
         return (
           <React.Fragment key={column.accessor}>
-            <span data-tooltip-id="amount" data-tooltip-content="service fee 0.3%" data-tooltip-place="bottom" className="help">
+            <span id={column.accessor} className="help">
               {column.label}<div>?</div>
             </span>
-            <Tooltip id="amount" />
+            <Tooltip anchorId={column.accessor} place="bottom" content={column.tooltip} />
           </React.Fragment>
         );
       }
-      return <span key={column.accessor}>{column.label}</span>
+      return <span key={column.accessor} style={column.style}>{column.label}</span>
     }) ;
 
   const renderRow = (row) => 
     columns.map((column, index) => {
       const content = row[column.accessor];
       // Trans ID
-      if (column.accessor === "payment_num") {
+      if (column.notify) {
         return (
           <React.Fragment key={content}>
             <span
-              data-tooltip-id={content}
-              data-tooltip-content={content}
-              data-tooltip-place="bottom"
+              id={content}
               className="over_play cursor_pointer"
               onClick={() => {
                 copy_text(content) === true
@@ -47,13 +46,13 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
             >
               {content}
             </span>
-            <Tooltip id={content} />
+            <Tooltip anchorId={content} place="bottom" content={content} />
           </React.Fragment>
         );
       }
 
       // Status
-      if (column.accessor === "status" && row.statusTag) {
+      if (column.tag && row.statusTag) {
         return (
           <span key={content + index} className="status">
             {content}<div className="status__tag">{row.statusTag}</div>
@@ -62,23 +61,23 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
       }
 
       // Time 
-      if (column.accessor === "created_at") {
+      if (column.localTime) {
         return <span key={content + index}>{conversionUtcDate(content)}</span>
       }
       
       // View More
       if (column.accessor === "view_more") {
         return (
-          <span key={content + index} className="cursor_pointer" onClick={() => column.handler(row.payment_num)}> 
-            <img src={Doc} alt="View more" />
-          </span>
+            <span key={content + index} className="cursor_pointer" style={column.style} onClick={() => column.handler(row)}> 
+              <img src={Doc} alt="View more" />
+            </span> 
         )
       }
 
       // VCs
       if (column.accessor === "vcs" && row.vcStatus) {
         const status = row.vcStatus;
-        if (status === "lose" ) {
+        if (status === "lose") {
           return  (
             <div key={content + index} className="RestoreVC" onClick={() => column.handler(row.vcs[0].vcid)}> 
               <div>Restore VC</div>
@@ -106,12 +105,11 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
     setActivePage(1);
   },[filters])
 
-  console.log(rows, "rows")
   return (
-    <div className="history">
-      <span className="title">{title}</span>
+    <div className="table">
+      <span className="table__title">{title}</span>
       <Filter options={options} filters={filters} setFilters={setFilters} setActivePage={setActivePage}/>
-      <div className="incomeWrapper">
+      <div className="table__content">
         <div className="historyTableWrapper">
           <div className="columnLabels">
             {renderColumn()}

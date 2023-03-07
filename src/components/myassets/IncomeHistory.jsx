@@ -1,48 +1,42 @@
 import React, { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 
-import { addAllVCs, array_column, array_column2, array_values, getVCsByIDS } from "@@/utils/function";
 import { GetPaymentDetail, GetPaymentList, MarkVCInvalid } from "@@/utils/request/api";
-import Table from "@@/components/admin/Table"
+import { addAllVCs, array_values, getVCsByIDS } from "@@/utils/function";
+import Table from "@@/components/admin/Table";
 import Alert from "@@/components/PopUp/Alert";
 import { getVCs } from "@@/utils/chain/did";
 import { Modal } from "../";
-import "./income.scss";
 
 const IncomeHistory = () => {
+  const [filters, setFilters] = useState({});
+  const [page, setPage] = useState(1);
   const [refreshNum, setRefreshNum] = useState(0);
-  const [modalIsOpen, setIsOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
   const [dataTotal, setDataTotal] = useState(0);
+  const [viewMore, setViewMore] = useState(false);
   const [itemData, setItemData] = useState({});
   const [openAlert, setOpenAlert] = useState(false);
-  const [openLoading, setOpenLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [alertData, setAlertData] = useState({});
-  const [filters, setFilters] = useState({status: "", currency_id: "", date: "", payment_num: ""});
-  const [page, setPage] = useState(1);
 
   const rowsPerPage= 5;
 
-  const handleViewMore = async (payment_num) => {
-    const res = await GetPaymentDetail(payment_num);
+  const handleViewMore = async (item) => {
+    const res = await GetPaymentDetail(item.payment_num);
     if (res?.code !== 1000) {
       setOpenAlert(true);
       setAlertData({ msg: "Failed to get payment!" });
       return false;
     }
     setItemData(res?.data);
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
+    setViewMore(true);
   };
 
   const handleVc = async (vc_id) => {
-    setOpenLoading(true);
+    setLoading(true);
     const res = await MarkVCInvalid({
       vc_ids: [vc_id],
-      // all: true,
     });
     if (res?.code !== 1000) {
       setOpenAlert(true);
@@ -51,7 +45,7 @@ const IncomeHistory = () => {
     }
     setTimeout(async function () {
       await getVCs();
-      setOpenLoading(false);
+      setLoading(false);
       setRefreshNum(refreshNum + 1);
     }, 5000);
   };
@@ -103,62 +97,46 @@ const IncomeHistory = () => {
 
   const getList = async () => {
     const params = {
-      // app_id:0,
       page: page,
       size: rowsPerPage,
-      status: filters.status,
-      payment_num: filters.payment_num,
-      date: filters.date,
+      status: filters.status ?? "normal",
       currency_id: filters.currency_id,
+      date: filters.date,
+      payment_num: filters.payment_num,
       display_all: 0
     };
     const res = await GetPaymentList(params);
-    console.log("Payments: ", res);
     if (res?.code === 1000) {
-      let payments_data = res?.data?.payments ?? [];
+      const payments_data = res?.data?.payments ?? [];
+      console.log(payments_data, "payments_data");
 
-      console.log("1", payments_data);
 
       //Only success status can have vc
-      let VCids = [];
-      payments_data.map((item, index) => {
-        if ((item.status === "success" || item.status === "closed") && item?.vcs?.[0]?.vcid) {
-          VCids = [...VCids, item?.vcs?.[0]?.vcid];
+      const vcIds = payments_data.map(payment => {
+        if ((payment.status === "success" || payment.status === "closed") && payment?.vcs?.[0]?.vcid) {
+          return payment?.vcs?.[0]?.vcid;
         }
-        return item;
       });
 
-      console.log("VC", VCids);
-
-      console.log("2", payments_data);
-      // VCids=VCids.filter(Boolean);
-      let VCList = await getVCsByIDS(VCids);
-      console.log("VC", VCList);
-      let VCExistIDS = array_column(VCList, "vc_id");
-      let VCList1 = array_column2(VCList, "vc_id");
-
-      console.log("3", payments_data);
-
-      payments_data.map((item, index) => {
+      const vcListArr = await getVCsByIDS(vcIds);
+      const vcListObj = vcListArr.reduce((acc, cur) => ({...acc, [cur.vc_id]: cur}), {});
+      const vcIdsAvailable = vcListArr.map(vc => vc.vc_id);
+      payments_data.map(( item ) => {
         item.vc_status = "none";
         if (item.status === "success" || (item.status === "closed" && item?.vcs?.length > 0)) {
           addStatusTag(item);
-          addVcStatus(item, VCExistIDS);
-          addVcToList(item, VCList1);
+          addVcStatus(item, vcIdsAvailable);
+          addVcToList(item, vcListObj);
         }
-        item.vc_exist = VCExistIDS.includes(item?.vcs?.[0]?.vcid) ? true : false;
+        item.vc_exist = vcIdsAvailable.includes(item?.vcs?.[0]?.vcid) ? true : false;
         return item;
       });
 
-      const vc_data = array_values(VCList1);
+      const vc_data = array_values(vcListObj);
       if (vc_data?.length > 0) {
         await addAllVCs(vc_data);
       }
-      console.log("VCList1", VCList1);
-      console.log("aa", array_values(VCList1));
 
-      // console.log('rrd',rrd);
-      console.log("4", payments_data);
       setDataList(payments_data);
       setDataTotal(res?.data?.total);
     }
@@ -170,16 +148,15 @@ const IncomeHistory = () => {
 
   useEffect(() => {
     getVCs();
-    // getWithdrawTotal();
   }, []);
   
   const columns = [
-    { accessor: 'payment_num', label: 'Trans ID' },
-    { accessor: 'status', label: 'Status' },
+    { accessor: 'payment_num', label: 'Trans ID', notify: true },
+    { accessor: 'status', label: 'Status', tag: true },
     { accessor: 'currency_symbol', label: 'Currency' },
-    { accessor: 'amount', label: 'Amount' },
-    { accessor: 'created_at', label: 'Time' },
-    { accessor: 'view_more', label: 'View More', handler: handleViewMore },
+    { accessor: 'amount', label: 'Amount', tooltip: "service fee 0.3%" },
+    { accessor: 'created_at', label: 'Time', localTime: true },
+    { accessor: 'view_more', label: 'View More', handler: handleViewMore, style: {width: "150px"} },
     { accessor: 'vcs', label: 'VCs', handler: handleVc },
   ];
 
@@ -197,19 +174,14 @@ const IncomeHistory = () => {
 
   return (
     <>
-      <Popup open={modalIsOpen} closeOnDocumentClick onClose={closeModal}>
-        <Modal click={closeModal} data={itemData} />
+      <Popup open={viewMore} closeOnDocumentClick onClose={() => setViewMore(false)}>
+        <Modal click={() => setViewMore(false)} data={itemData} />
+      </Popup>
+      <Popup open={loading} closeOnDocumentClick={false} onClose={() => setLoading(false)} overlayStyle={{ background: "rgba(0,0,0,0.8)" }} >
+        <div className="loading"> Waiting ... </div>
       </Popup>
       <Popup open={openAlert} closeOnDocumentClick onClose={() => setOpenAlert(false)}>
         <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
-      </Popup>
-      <Popup
-        open={openLoading}
-        closeOnDocumentClick={false}
-        onClose={() => setOpenLoading(false)}
-        overlayStyle={{ background: "rgba(0,0,0,0.8)" }}
-      >
-        <div className="loading"> Waiting ... </div>
       </Popup>
       <Table title="Income History" columns={columns} rows={dataList} count={dataTotal} rowsPerPage={rowsPerPage}  options={options} filters={filters} setFilters={setFilters} activePage={page} setActivePage={setPage}/>
     </>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 
 import LeftArrow from "../../assets/small_arrow_left.svg";
 import RightArrow from "../../assets/small_arrow_right.svg";
@@ -20,8 +20,6 @@ const Pagination = ({activePage, setActivePage, totalPages}) => {
   const setLast = () => {
     setActivePage(totalPages);
   }
-  // const beginning = activePage === 1 ? 1 : rowsPerPage * (activePage - 1) + 1;
-  // const end = activePage === totalPages ? count : beginning + rowsPerPage - 1;
 
   return (
     <div className="pagination">

@@ -27,7 +27,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
     const [dataTotal, setDataTotal] = useState(0);
     const [itemData, setItemData] = useState({});
 
-    const pageSize = 3;
+    const pageSize = 10;
     const WithdrawStatus = [
         {key:'all',title:'All'},
         {key:'complete',title:'Complete'},
@@ -43,10 +43,8 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
             withdraw_num:search,
             date:date??'',
         }
-        const currencyOptions = select_currency();
-        currencyOptions.unshift({ key: "all", title: "All" });
-        if (selectCurrency !== null) {
-          params.currency_id = currencyOptions?.[selectCurrency]?.id;
+        if(selectCurrency !== null){
+            params.currency_id = select_currency()?.[selectCurrency]?.id;
         }
         return await GetWithdrawList(params);
     }
@@ -102,7 +100,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
                             <span className="center_text">{item?.currency_symbol}</span>
                             <span className="center_text">{item?.amount}</span>
                             <span className="center_text">{conversionUtcDate(item.created_at)}</span>
-                            {item?.status === 'complete'
+                            {item?.status !== 'complete'
                                 ? (<div className="onChainStatus2 center_text" onClick={()=>viewChainTx(item)} ><img src={Doc} alt="View more" /></div>)
                                 : (
                                     <div className="onChainStatus center_text" onClick={()=>ViewMore(item)}>
@@ -126,7 +124,6 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
                 />
             }
 
-            {/*<div className="help">How can I use VP?</div>*/}
         </div>
     );
 };

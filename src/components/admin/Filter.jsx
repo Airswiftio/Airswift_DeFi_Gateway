@@ -1,9 +1,9 @@
 import React, {useState}  from "react";
 
 import { select_currency } from "@@/utils/config";
-import Search from "./Search";
 import Datepicker from "./DatePicker";
 import Dropdown from "./DropDown";
+import Search from "./Search";
 
 const Filter = ({options, filters, setFilters}) => {
   const optionsList = [
@@ -15,7 +15,7 @@ const Filter = ({options, filters, setFilters}) => {
   ];
 
   return ( 
-    <div className="selectorsWrapper">
+    <div className="table__filter">
       {optionsList.map((options, index) => 
         <Dropdown
           key={index}
