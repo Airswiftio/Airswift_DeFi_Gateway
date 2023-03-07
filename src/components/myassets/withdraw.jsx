@@ -44,7 +44,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
             date:date??'',
         }
         if(selectCurrency !== null){
-            params.currency_id = select_currency()?.[selectCurrency]?.id
+            params.currency_id = select_currency()?.[selectCurrency]?.id;
         }
         return await GetWithdrawList(params);
     }
@@ -100,7 +100,7 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
                             <span className="center_text">{item?.currency_symbol}</span>
                             <span className="center_text">{item?.amount}</span>
                             <span className="center_text">{conversionUtcDate(item.created_at)}</span>
-                            {item?.status === 'complete'
+                            {item?.status !== 'complete'
                                 ? (<div className="onChainStatus2 center_text" onClick={()=>viewChainTx(item)} ><img src={Doc} alt="View more" /></div>)
                                 : (
                                     <div className="onChainStatus center_text" onClick={()=>ViewMore(item)}>
@@ -124,7 +124,6 @@ const Withdraw = ({search,selectStatus,selectCurrency,date,searchTransID}) => {
                 />
             }
 
-            {/*<div className="help">How can I use VP?</div>*/}
         </div>
     );
 };

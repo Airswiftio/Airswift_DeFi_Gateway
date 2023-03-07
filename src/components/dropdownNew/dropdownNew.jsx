@@ -2,14 +2,14 @@ import React, { useState,useEffect } from "react";
 import "./dropdownNew.scss";
 
 const DropdownNew = ({
-                       options,
-                       selected,
-                         setSelected,
-                       buttonStyle = null,
-                       dropStyle = null,
-                         defaultTitle = 'Please select',
-                         optionKey = null,
-                       doSomething = null,
+  options,
+  selected,
+  setSelected,
+  buttonStyle = null,
+  dropStyle = null,
+  defaultTitle = 'Please select',
+  optionKey = null,
+  doSomething = null,
 }) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   /*let selectedIndex = 0;
