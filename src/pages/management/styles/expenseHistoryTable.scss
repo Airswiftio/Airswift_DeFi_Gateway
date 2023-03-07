@@ -31,9 +31,9 @@
     span {
       width: 100px;
     }
-    span:nth-last-child(2) {
-      width: 200px;
-    }
+    // span:nth-last-child(2) {
+    //   width: 200px;
+    // }
   }
 
   .historyTableContent {
@@ -55,9 +55,9 @@
       font-family: "Poppins";
       background: rgba(255, 255, 255, 0.05);
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      span:nth-last-child(2) {
-        width: 200px;
-      }
+      // span:nth-last-child(2) {
+      //   width: 200px;
+      // }
     }
   }
 }
