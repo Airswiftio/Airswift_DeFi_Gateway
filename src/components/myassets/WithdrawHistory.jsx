@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
+import dayjs from "dayjs";
 
 import { GetWithdrawList } from "@@/utils/request/api";
 import { dbGetUserWallet } from "@@/utils/function";
@@ -32,6 +33,7 @@ const WithdrawHistory = () => {
   };
 
   const getWithdrawHistory = async () => {
+    const offset = dayjs().utcOffset();
     const params = {
       page: page,
       size: rowsPerPage,
@@ -39,6 +41,7 @@ const WithdrawHistory = () => {
       currency_id: filters.currency_id,
       date: filters.date,
       withdraw_num: filters.search,
+      tz: offset / 60
     }
     return await GetWithdrawList(params);
   }

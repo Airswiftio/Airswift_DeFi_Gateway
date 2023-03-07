@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
+import dayjs from "dayjs";
 
 import { GetPaymentDetail, GetPaymentList, MarkVCInvalid } from "@@/utils/request/api";
 import { addAllVCs, array_values, getVCsByIDS } from "@@/utils/function";
@@ -96,6 +97,7 @@ const IncomeHistory = () => {
   }
 
   const getList = async () => {
+    const offset = dayjs().utcOffset();
     const params = {
       page: page,
       size: rowsPerPage,
@@ -103,7 +105,8 @@ const IncomeHistory = () => {
       currency_id: filters.currency_id,
       date: filters.date,
       payment_num: filters.search,
-      display_all: 0
+      display_all: 0,
+      tz: offset / 60
     };
     const res = await GetPaymentList(params);
     if (res?.code === 1000) {
