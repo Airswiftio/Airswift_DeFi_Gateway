@@ -23,11 +23,11 @@ const WithdrawHistory = () => {
   const rowsPerPage = 3;
     
   const handleViewMore = (item) => {
-    if (item.status === "complete") {
-      window.open(`${process.env.REACT_APP_EXPLORER_URL}/tx/${item.tx_hash}`)
-    } else {
+    if (item.status === "pending") {
       setViewMore(true);
       setItemData(item);
+    } else {
+      window.open(`${process.env.REACT_APP_EXPLORER_URL}/tx/${item.tx_hash}`)
     }
   };
 
