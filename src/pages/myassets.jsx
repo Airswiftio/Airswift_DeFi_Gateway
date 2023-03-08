@@ -48,7 +48,6 @@ const Assets = ({state, setState}) => {
   }, []);
 
   return (
-    <div>
       <div className="assetsContent">
         <Toggle setState={setState} state={state} />
         <div className="cardRow">
@@ -67,7 +66,6 @@ const Assets = ({state, setState}) => {
         </div>
         {state === 0 ? <IncomeHistory /> : <WithdrawHistory />} 
       </div>
-    </div>
   );
 };
 

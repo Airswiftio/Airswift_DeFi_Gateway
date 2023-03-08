@@ -56,7 +56,7 @@ const QRCodeTransaction = ({
     setOpenScan(true);
   };
 
-  const pageSize = 10;
+  const pageSize = 5;
 
   const statusOptions = [
     { key: "", title: "All" },

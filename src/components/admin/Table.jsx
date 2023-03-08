@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import toast from "react-hot-toast";
 
 import { copy_text, conversionUtcDate } from "@@/utils/function";
-import Pagination from "./Pagination";
+import Pagination from "@@/components/pagination/pagination"; 
 import Filter from "./Filter";
 import Verified from "@@/assets/verified.svg";
 import Doc from "@@/assets/document.svg";
@@ -129,9 +129,9 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
           </div>
         </div>
         <Pagination 
-          activePage={activePage} 
-          setActivePage={setActivePage} 
-          totalPages={Math.ceil(count / rowsPerPage)} 
+          page={activePage} 
+          setPage={setActivePage} 
+          pages={Math.ceil(count / rowsPerPage)} 
         />
         { children }
       </div>

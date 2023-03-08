@@ -111,8 +111,6 @@ const IncomeHistory = () => {
     const res = await GetPaymentList(params);
     if (res?.code === 1000) {
       const payments_data = res?.data?.payments ?? [];
-      console.log(payments_data, "payments_data");
-
 
       //Only success status can have vc
       const vcIds = payments_data.map(payment => {
