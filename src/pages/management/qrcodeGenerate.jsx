@@ -8,7 +8,6 @@ import ForwardButton from "@@/components/buttons/ForwardButton";
 import { DefaultButton, DropdownNew } from "@@/components";
 import { post as httpPost } from "@@/utils/request/http";
 import { select_currency } from "@@/utils/config";
-import Info from "@@/assets/info.svg";
 import "./styles/qrcode.scss";
 
 function QRCodeGenerate() {
@@ -16,19 +15,12 @@ function QRCodeGenerate() {
   const [selectedCurrency, setSelectedCurrency] = useState(0);
   const navigate = useNavigate();
 
-  const networkList = [
-    {
-      key: "Ethereum",
-      title: "ETHEREUM",
-      img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
-    },
-  ];
-
+  const networkList = select_currency("tree");
   const currencyList = select_currency();
 
-  const onSubmit = () => {
+  const onSubmit = (values, { setSubmitting }) => {
     const fetchData = async () => {
-      const res = await httpPost("merchant/application/0/payment/create", {
+      await httpPost("merchant/application/0/payment/create", {
         amount_in_cent: Math.round(values.amount * 100),
         chain_id: 1,
         currency: currencyList[selectedCurrency].title,
@@ -44,6 +36,8 @@ function QRCodeGenerate() {
         setTimeout(() => {
           navigate("./transaction");
         }, 500);
+      }).catch(error => {
+        setSubmitting(false);
       });
   };
 
@@ -51,7 +45,7 @@ function QRCodeGenerate() {
     amount: yup
       .number()
       .typeError("Please enter a number")
-      .min(0, "Amount must greater 0")
+      .min(0.01, "The minimal order amount is 0.01 USD")
       .required("This field is requried"),
   });
 
@@ -73,14 +67,6 @@ function QRCodeGenerate() {
           <div className="main">
             <>
               <div className="title">Select Network and Cryptocurrency</div>
-              {/* <div className="tip">
-                <span className="tip__title">TIPS:</span>
-                <img src={Info} alt="info" />
-                <span className="tip__text">
-                  ETH is the currency for making transaction on Ethereum chain, please make sure you
-                  have enough ETH to support your transaction
-                </span>
-              </div> */}
               <div className="selectors">
                 <div className="select">
                   <span>Network</span>
@@ -107,7 +93,7 @@ function QRCodeGenerate() {
                 <label>
                   <input
                     id="amount"
-                    placeholder="Order amount"
+                    placeholder="Minimal order amount is 0.01"
                     onChange={handleChange}
                     value={values.amount}
                     autoComplete="off"
