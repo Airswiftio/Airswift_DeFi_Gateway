@@ -67,7 +67,7 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
       
       // View More
       if (column.accessor === "view_more") {
-        if (row.status === "pending") {
+        if (column.onChainStatus && row.status === "pending") {
           return ( <span key={content + index} className="cursor_pointer" style={column.style} onClick={() => column.handler(row)}> 
             <div className="onChainStatus center_text">On Chain Status</div>
           </span> 

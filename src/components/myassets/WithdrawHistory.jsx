@@ -50,7 +50,11 @@ const WithdrawHistory = () => {
     (async () => {
       const res = await getWithdrawHistory();
       if(res?.code === 1000){
-        setDataList(res?.data?.withdraws ?? []);
+        const withdraws = res?.data?.withdraws ?? [];
+        withdraws.forEach(withdraw => {
+          if (withdraw.status === "created") withdraw.status = "pending";
+        });
+        setDataList(withdraws);
         setDataTotal(res?.data?.total);
         if (modalIsOpen) {
           setItemData(res?.data?.withdraws.find(el => el.withdraw_num === itemData.withdraw_num));
@@ -65,7 +69,7 @@ const WithdrawHistory = () => {
     { accessor: 'currency_symbol', label: 'Currency' },
     { accessor: 'amount', label: 'Amount' },
     { accessor: 'created_at', label: 'Time', localTime: true },
-    { accessor: 'view_more', label: 'View More', handler: handleViewMore, style: {width: "150px"} },
+    { accessor: 'view_more', label: 'View More', handler: handleViewMore, onChainStatus: true, style: {width: "150px"} },
   ];
 
   const options = [
@@ -74,7 +78,7 @@ const WithdrawHistory = () => {
       data: [
         { key: "all", title: "All" },
         { key: "complete", title: "Complete" },
-        { key: "pending", title: "Pending" },
+        { key: "created", title: "Pending" },
       ],
     }
   ];  
