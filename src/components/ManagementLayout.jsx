@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import AuthContext from "@@/context/AuthProvider";
 import { ManagementHeader } from "./";
 const ManagementLayout = ({ title }) => {
@@ -14,7 +14,7 @@ const ManagementLayout = ({ title }) => {
     document.title = title;
   }, []);
 
-  return (
+  return (authCtx.auth === false && !url.includes("/login") ? <Navigate to="/management/login" /> :
     <div className="App">
       {!url.includes("/login") ? <ManagementHeader url={url} setUrl={setUrl} /> : null}
       <Outlet />

@@ -2,7 +2,7 @@
   "name": "airswift-gateway",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://gateway.pelagotech.com",
+  "proxy": "http://uat-gateway.airswift.io",
   "dependencies": {
     "@hcaptcha/react-hcaptcha": "^1.4.4",
     "@testing-library/jest-dom": "^5.16.5",
