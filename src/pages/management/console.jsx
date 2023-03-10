@@ -1,23 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { DefaultButton, DropdownNew } from "@@/components";
+import { get as httpGet } from "@@/utils/request/http";
 import AuthContext from "@@/context/AuthProvider";
-
 import "./styles/console.scss";
 
 function Console() {
+  const [networks, setNetworks] = useState([]);
   const [selectedNetwork, setSelectedNetwork] = useState(0);
   const [selectedConsole, setSelectedConsole] = useState(0);
 
-  const networks = [
-    {
-      title: "ETHEREUM",
-      tableHeader: "Ethereum",
-      img: "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
-    },
-  ];
-  
   const authCtx = useContext(AuthContext);
   const consoles = [
     { title: "All", path: "network", tableHeader: "Network", priv: "currency" },
@@ -35,6 +28,23 @@ function Console() {
   const handleClick = () => {
     navigate(consoles[selectedConsole].path);
   };
+    
+  useEffect(() => {
+    (async () => {
+      const res = await httpGet("admin/blockchain/list", {
+        page: 1,
+        size: 10,
+        status: "all",
+      });
+      if (res.code === 1000) {
+        const networkList = res.data.blockchains.map(chain => {
+          const network = { title: chain.name, img: chain.image_url }; 
+          return network; 
+        });
+        setNetworks(networkList);
+      }
+    })()
+  }, []);
   
   return (
     <div className="merchantManagementWrapper">
