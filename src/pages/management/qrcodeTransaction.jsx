@@ -66,6 +66,8 @@ const QRCodeTransaction = ({
     { key: "created", title: "Created" },
   ];
 
+  const network = select_currency("tree")[0].key;
+
   const getPaymentList = async () => {
     const offset = dayjs().utcOffset();
     const params = {
@@ -104,6 +106,7 @@ const QRCodeTransaction = ({
           }
         }
       });
+      console.log(res.data.payments, 'payments');
       setTransactionList(res.data.payments);
     }
   };
@@ -161,7 +164,7 @@ const QRCodeTransaction = ({
               {item.status}
               {item.status_name && <div className="status__tag">{item.status_name}</div>}
             </span>
-            <span>ETH</span>
+            <span>{network}</span>
             <span>{item.currency_symbol}</span>
             <span>{conversionUtcDate(item.created_at)}</span>
             <span className="cursor_pointer" onClick={() => openScan(item)}>

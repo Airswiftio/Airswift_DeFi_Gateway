@@ -136,7 +136,6 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
             <Popup open={openAlert} closeOnDocumentClick onClose={()=>setOpenAlert(false)}>
                 <Alert alertData={alertData} setCloseAlert={setOpenAlert} />
             </Popup>
-            <button  className="back" onClick={() => setStep()}>Back</button>
             <div className="title">Select available transactions</div>
             <div className="historyTableWrapper">
                 <div className="columnLabels">
@@ -162,12 +161,13 @@ const ConfirmWithdraw = ({Currency, setStep, setState}) => {
                     )}
                 </div>
             </div>
-            <DefaultButton
-                title="Confirm Withdraw"
-                align={1}
-                click={() => confirmWithdraw()}
-            />
-            {/*<div className="help">How can I use VP?</div>*/}
+            <div className="buttonRow">
+              <DefaultButton
+                  title="Confirm Withdraw"
+                  align={1}
+                  click={() => confirmWithdraw()}
+              />
+            </div>
         </div>
     );
 };

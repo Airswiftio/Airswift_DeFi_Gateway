@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ConfirmWithdraw, DefaultButton, DropdownNew } from "@@/components";
+import BackButton from "@@/components/buttons/BackButton";
 import { select_currency } from "@@/utils/config";
 import "./withdraw.scss";
 
 const Withdraw = ({ setState }) => {
   const [confirm, setConfirm] = useState(false);
   const [step, setStep] = useState(0);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const [selectNetwork, setSelectNetwork] = useState(0);
   const [selectCurrency, setSelectCurrency] = useState(0);
   const Options = select_currency("tree");
@@ -27,45 +28,17 @@ const Withdraw = ({ setState }) => {
 
   return (
     <div className="withdrawPageWrapper">
-      {step === 0 && (
+      <div className="management">
         <div className="controls">
-          <button
-            className="backButton"
-            onClick={() =>
-              navigate("/assets", {
-                state: { status: 1 },
-              })
-            }
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2.5"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-              />
-            </svg>
-            Back
-          </button>
-          <div className="banner">Withdraw</div>
+          {step === 0 ?
+            <BackButton style={{ width: "calc(60% + 4em)", textAlign: "left" }} link={{path: "/assets", status: 1}} /> :
+            <BackButton style={{ width: "calc(60% + 4em)", textAlign: "left" }} changeState={back} />
+          }
         </div>
-      )}
       <div className="main">
         {step === 0 && (
           <>
-            <div className="title">Select Network and Cryptocurrency</div>
-            <div className="tip">
-              <span className="title">TIPS:</span>
-              <span className="text">
-                ETH is the currency for making transaction on Ethereum chain, please make sure you
-                have enough ETH to support your transaction
-              </span>
-            </div>
+            <div className="title" style={{padding: "25px 0"}}>Select Network and Cryptocurrency</div>
             <div className="selectors">
               <div className="select">
                 <span>Network</span>
@@ -103,6 +76,7 @@ const Withdraw = ({ setState }) => {
         )}
 
         {step === 1 && <ConfirmWithdraw Currency={Currency} setStep={back} setState={setState} />}
+      </div>
       </div>
     </div>
   );
