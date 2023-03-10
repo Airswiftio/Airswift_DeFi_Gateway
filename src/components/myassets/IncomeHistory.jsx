@@ -69,17 +69,17 @@ const IncomeHistory = () => {
 
   const addVcStatus = (item, vcIdsAvailable) => {
     if (item?.vcs?.[0]?.vc_status === "Invalid") {
-      item.vcStatus = "none";
+      item.vc_status = "none";
     } else if (
       item?.vcs?.[0]?.vc_status === "Withdraw" ||
       item?.vcs?.[0]?.vc_status === "Processing"
     ) {
-      item.vcStatus = "yes";
+      item.vc_status = "yes";
     } else if (
       item?.vcs?.[0]?.vc_status === "Created" ||
       item?.vcs?.[0]?.vc_status === "Active"
     ) {
-      item.vcStatus = vcIdsAvailable.includes(item?.vcs?.[0]?.vcid) ? "yes" : "lose";
+      item.vc_status = vcIdsAvailable.includes(item?.vcs?.[0]?.vcid) ? "yes" : "lose";
     }
   }
 

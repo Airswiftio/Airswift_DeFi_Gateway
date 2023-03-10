@@ -81,8 +81,8 @@ const Table = ({ title, columns, rows, rowsPerPage, count, options, filters, set
       }
 
       // VCs
-      if (column.accessor === "vcs" && row.vcStatus) {
-        const status = row.vcStatus;
+      if (column.accessor === "vcs" && row.vc_status) {
+        const status = row.vc_status;
         if (status === "lose") {
           return  (
             <div key={content + index} className="RestoreVC" onClick={() => column.handler(row.vcs[0].vcid)}> 
