@@ -145,10 +145,18 @@ const IncomeHistory = () => {
 
   useEffect(() => {
     getList();
-  }, [page, refreshNum, filters]);
+  }, [page, refreshNum]);
+
+  useEffect(() => {
+    if (page === 1) {
+      getList();
+    }
+    setPage(1);
+  }, [filters]);
 
   useEffect(() => {
     getVCs();
+    getList();
   }, []);
   
   const columns = [
