@@ -40,7 +40,7 @@ const Expense = ({ selectStatus, selectType, date }) => {
   }, [selectStatus, selectType, date]);
 
   const getCurrencyType = (chainName) => {
-    if (chainName === "Ethereum") return "Ether";
+    if (chainName === "Ethereum") return "ETH";
     if (chainName === "Harmony") return "ONE";
   }
   
@@ -64,7 +64,7 @@ const Expense = ({ selectStatus, selectType, date }) => {
             <span>{item.status}</span>
             <span>{item.chain_name}</span>
             <span>{item.type}</span>
-            <span className="over_play">{item.amount.toFixed(19)} {getCurrencyType(item.chain_name)}</span>
+            <span className="over_play" style={{ width: "200px" }}>{item.amount.toFixed(19)} {getCurrencyType(item.chain_name)}</span>
             <span>{conversionUtcDate(item.created_at)}</span>
           </div>
         ))}

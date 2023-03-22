@@ -18,7 +18,7 @@ const ExpenseHistoryTable = ({ children, vc = true, select }) => {
         <span>Status</span>
         <span>Chain</span>
         <span>Type</span>
-        <span>Amount </span>
+        <span style={{ width: "200px" }}>Amount </span>
         <span>Time</span>
       </div>
       <div className="historyTableContent">{children}</div>
