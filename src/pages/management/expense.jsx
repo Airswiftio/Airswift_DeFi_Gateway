@@ -42,6 +42,7 @@ const Expense = ({ selectStatus, selectType, date }) => {
   const getCurrencyType = (chainName) => {
     if (chainName === "Ethereum") return "ETH";
     if (chainName === "Harmony") return "ONE";
+    if (chainName === "Polygon") return "MATIC";
   }
   
   return (

@@ -19,7 +19,7 @@ const Modal = ({ click, data }) => {
             <div className="label">Transaction ID: </div>
             <div className="item">{data?.payment_num}</div>
             <div className="label">Original Price: </div>
-            <div className="item">{data?.origin_amount} {data?.pay_currency_symbol}</div>
+            <div className="item">{data?.origin_amount}</div>
             <div className="label">Pay Price: </div>
             <div className="item">{data?.pay_amount} {data?.pay_currency_symbol}</div>
             <div className="label">Exchange Rate: </div>
